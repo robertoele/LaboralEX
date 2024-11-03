@@ -4,44 +4,79 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.example.laboralex.database.AppDatabase
+import com.example.laboralex.database.entity.User
+import com.example.laboralex.ui.screens.company.CompaniesList
+import com.example.laboralex.ui.screens.company.CompanyScreen
+import com.example.laboralex.ui.screens.main.MainScreen
+import com.example.laboralex.ui.screens.user.UserScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
+import com.example.laboralex.viewmodel.CompanyViewModel
+import com.example.laboralex.viewmodel.UserViewModel
+import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
+
+    private val db by lazy {
+        Room.databaseBuilder(applicationContext, AppDatabase::class.java, "laboralex.db").build()
+    }
+
+    private val userViewModel by viewModels<UserViewModel>(factoryProducer = {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return UserViewModel(db.UserDao()) as T
+            }
+        }
+    })
+
+    private val companyViewModel by viewModels<CompanyViewModel>(factoryProducer = {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return CompanyViewModel(db.companyDao()) as T
+            }
+        }
+    })
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             LaboralEXTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination =  MainScreen
+                ) {
+                    composable<MainScreen> {
+                        MainScreen(navController, companyViewModel, userViewModel)
+                    }
+                    composable<UserScreen> {
+                        UserScreen(navController, userViewModel)
+                    }
+                    composable<CompanyScreen> {
+                        CompanyScreen(navController, companyViewModel)
+                    }
+                    composable<CompaniesScreen> {
+                        CompaniesList(navController, companyViewModel)
+                    }
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LaboralEXTheme {
-        Greeting("Android")
-    }
+    @Serializable
+    object MainScreen
+    @Serializable
+    object UserScreen
+    @Serializable
+    object CompanyScreen
+    @Serializable
+    object CompaniesScreen
 }

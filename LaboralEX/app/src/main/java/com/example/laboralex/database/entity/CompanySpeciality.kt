@@ -3,6 +3,7 @@ package com.example.laboralex.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 @Entity(
     foreignKeys = [
@@ -23,6 +24,7 @@ import androidx.room.ForeignKey
     ]
 )
 data class CompanySpeciality(
+    @PrimaryKey val id: Int,
     @ColumnInfo("company_id") val companyId: Int,
     @ColumnInfo("speciality_id") val specialityId: Int
 )
