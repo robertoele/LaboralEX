@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LaboralEX</string>
+    <string name="name">Nombre</string>
+    <string name="first_surname">Primer apellido</string>
+    <string name="second_surname">Segundo apellido</string>
+    <string name="create_user_welcome">¡Cuéntanos algo de ti!"</string>
+    <string name="description">Descripción</string>
 </resources>

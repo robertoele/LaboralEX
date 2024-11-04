@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.viewmodel.CompanyViewModel
 import com.example.laboralex.viewmodel.UserViewModel
@@ -20,7 +20,7 @@ fun MainScreen(
 
 @Composable
 private fun UserData(userViewModel: UserViewModel) {
-    val userName = userViewModel.userName.collectAsState()
+    val userName = userViewModel.name.collectAsStateWithLifecycle()
 
     Column {
         TextField(userName.value, onValueChange = userViewModel::changeName)

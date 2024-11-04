@@ -5,6 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
@@ -15,6 +18,7 @@ import com.example.laboralex.database.AppDatabase
 import com.example.laboralex.database.entity.User
 import com.example.laboralex.ui.screens.company.CompaniesList
 import com.example.laboralex.ui.screens.company.CompanyScreen
+import com.example.laboralex.ui.screens.main.CreateUser
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.screens.user.UserScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
@@ -52,13 +56,17 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination =  MainScreen
+                    startDestination =  CreateUserScreen,
+                    modifier = Modifier.padding(25.dp)
                 ) {
                     composable<MainScreen> {
                         MainScreen(navController, companyViewModel, userViewModel)
                     }
                     composable<UserScreen> {
                         UserScreen(navController, userViewModel)
+                    }
+                    composable<CreateUserScreen> {
+                        CreateUser(userViewModel, this@MainActivity)
                     }
                     composable<CompanyScreen> {
                         CompanyScreen(navController, companyViewModel)
@@ -79,4 +87,6 @@ class MainActivity : ComponentActivity() {
     object CompanyScreen
     @Serializable
     object CompaniesScreen
+    @Serializable
+    object CreateUserScreen
 }

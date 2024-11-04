@@ -6,10 +6,31 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class UserViewModel(userDao: UserDao): ViewModel() {
-    private val _userName = MutableStateFlow("userDao.getById(0).firstName")
-    val userName = _userName.asStateFlow()
+    private val _name = MutableStateFlow("")
+    val name = _name.asStateFlow()
+
+    private val _surname = MutableStateFlow("")
+    val surname = _surname.asStateFlow()
+
+    private val _userSurname2 = MutableStateFlow("")
+    val secondSurname = _userSurname2.asStateFlow()
+
+    private val _description = MutableStateFlow("")
+    val description = _description.asStateFlow()
 
     fun changeName(newName: String) {
-        _userName.value = newName
+        _name.value = newName
+    }
+
+    fun changeSurname(newSurname: String) {
+        _surname.value = newSurname
+    }
+
+    fun changeSecondSurname(newSurname: String) {
+        _userSurname2.value = newSurname
+    }
+
+    fun changeDescription(newDescription: String) {
+        _description.value = newDescription
     }
 }
