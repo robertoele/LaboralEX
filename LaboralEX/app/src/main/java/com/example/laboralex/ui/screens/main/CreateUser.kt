@@ -2,6 +2,7 @@ package com.example.laboralex.ui.screens.main
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -13,7 +14,7 @@ import com.example.laboralex.viewmodel.UserViewModel
 @Composable
 fun CreateUser(viewModel: UserViewModel, activity: ComponentActivity) {
     val userName = viewModel.name.collectAsStateWithLifecycle()
-    val userSurname = viewModel.surname.collectAsStateWithLifecycle()
+    val userSurname = viewModel.firstSurname.collectAsStateWithLifecycle()
     val userSecondSurname = viewModel.secondSurname.collectAsStateWithLifecycle()
     val description = viewModel.description.collectAsStateWithLifecycle()
 
@@ -31,5 +32,9 @@ fun CreateUser(viewModel: UserViewModel, activity: ComponentActivity) {
 
         Text(activity.getString(R.string.description))
         TextField(description.value, viewModel::changeDescription)
+
+        Button(onClick = viewModel::saveUser) {
+            Text("Guardar")
+        }
     }
 }

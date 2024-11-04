@@ -1,19 +1,22 @@
 package com.example.laboralex.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.UserDao
+import com.example.laboralex.database.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class UserViewModel(userDao: UserDao): ViewModel() {
+class UserViewModel(private val userDao: UserDao): ViewModel() {
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 
-    private val _surname = MutableStateFlow("")
-    val surname = _surname.asStateFlow()
+    private val _firstSurname = MutableStateFlow("")
+    val firstSurname = _firstSurname.asStateFlow()
 
-    private val _userSurname2 = MutableStateFlow("")
-    val secondSurname = _userSurname2.asStateFlow()
+    private val _secondSurname = MutableStateFlow("")
+    val secondSurname = _secondSurname.asStateFlow()
 
     private val _description = MutableStateFlow("")
     val description = _description.asStateFlow()
@@ -23,14 +26,27 @@ class UserViewModel(userDao: UserDao): ViewModel() {
     }
 
     fun changeSurname(newSurname: String) {
-        _surname.value = newSurname
+        _firstSurname.value = newSurname
     }
 
     fun changeSecondSurname(newSurname: String) {
-        _userSurname2.value = newSurname
+        _secondSurname.value = newSurname
     }
 
     fun changeDescription(newDescription: String) {
         _description.value = newDescription
+    }
+
+    fun saveUser() {
+        viewModelScope.launch {
+            userDao.insertAll(
+                User(
+                    firstName = name.value,
+                    firstSurname = firstSurname.value,
+                    secondSurname = secondSurname.value,
+                    profilePictureId = null
+                )
+            )
+        }
     }
 }
