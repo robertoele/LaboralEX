@@ -7,34 +7,48 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.example.laboralex.R
+import com.example.laboralex.ui.NavigationManager
+import com.example.laboralex.ui.components.QualitiesForm
+import com.example.laboralex.viewmodel.SpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 
 
 @Composable
-fun CreateUser(viewModel: UserViewModel, activity: ComponentActivity) {
-    val userName = viewModel.name.collectAsStateWithLifecycle()
-    val userSurname = viewModel.firstSurname.collectAsStateWithLifecycle()
-    val userSecondSurname = viewModel.secondSurname.collectAsStateWithLifecycle()
-    val description = viewModel.description.collectAsStateWithLifecycle()
+fun CreateUser(
+    navController: NavController,
+    userViewModel: UserViewModel,
+    specialityViewModel: SpecialityViewModel,
+    activity: ComponentActivity
+) {
+    val userName = userViewModel.name.collectAsStateWithLifecycle()
+    val userSurname = userViewModel.firstSurname.collectAsStateWithLifecycle()
+    val userSecondSurname = userViewModel.secondSurname.collectAsStateWithLifecycle()
+    val description = userViewModel.description.collectAsStateWithLifecycle()
 
     Column {
         Text(activity.getString(R.string.create_user_welcome))
 
         Text(activity.getString(R.string.name))
-        TextField(userName.value, viewModel::changeName)
+        TextField(userName.value, userViewModel::changeName)
 
         Text(activity.getString(R.string.first_surname))
-        TextField(userSurname.value, viewModel::changeSurname)
+        TextField(userSurname.value, userViewModel::changeSurname)
 
         Text(activity.getString(R.string.second_surname))
-        TextField(userSecondSurname.value, viewModel::changeSecondSurname)
+        TextField(userSecondSurname.value, userViewModel::changeSecondSurname)
 
         Text(activity.getString(R.string.description))
-        TextField(description.value, viewModel::changeDescription)
+        TextField(description.value, userViewModel::changeDescription)
 
-        Button(onClick = viewModel::saveUser) {
-            Text("Guardar")
+        QualitiesForm(specialityViewModel)
+
+        Button(onClick = {
+            userViewModel.saveUser()
+            navController.navigate(NavigationManager.MainScreen)
+        }) {
+            Text("Continuar")
         }
     }
 }

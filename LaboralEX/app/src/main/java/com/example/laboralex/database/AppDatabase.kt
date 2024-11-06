@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.laboralex.database.dao.CompanyDao
 import com.example.laboralex.database.dao.CompanySpecialityDao
+import com.example.laboralex.database.dao.SpecialityDao
 import com.example.laboralex.database.dao.UserDao
 import com.example.laboralex.database.dao.UserSpecialityDao
 import com.example.laboralex.database.entity.Company
@@ -15,6 +16,7 @@ import com.example.laboralex.database.entity.UserSpeciality
 @Database(entities = [Company::class, CompanySpeciality::class, Speciality::class, User::class, UserSpeciality::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun companyDao(): CompanyDao
+    abstract fun specialityDao(): SpecialityDao
     abstract fun companySpecialityDao(): CompanySpecialityDao
     abstract fun UserDao(): UserDao
     abstract fun UserSpecialityDao(): UserSpecialityDao
