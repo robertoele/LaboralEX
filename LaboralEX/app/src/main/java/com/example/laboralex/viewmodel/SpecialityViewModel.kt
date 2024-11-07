@@ -28,4 +28,6 @@ class SpecialityViewModel(private val specialityDao: SpecialityDao): ViewModel()
             specialityDao.delete(speciality)
         }
     }
+
+    suspend fun getSpecialities() = specialityDao.getAll()
 }
