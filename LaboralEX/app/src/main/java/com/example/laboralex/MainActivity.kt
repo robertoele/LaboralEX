@@ -32,32 +32,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val db by lazy {
-        Room.databaseBuilder(applicationContext, AppDatabase::class.java, "laboralex.db").build()
-    }
-
-    private val companyViewModel by viewModels<CompanyViewModel>(factoryProducer = {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CompanyViewModel(db.companyDao()) as T
-            }
-        }
-    })
-
-    private val specialityViewModel by viewModels<SpecialityViewModel>(factoryProducer = {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return SpecialityViewModel(db.specialityDao()) as T
-            }
-        }
-    })
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             LaboralEXTheme {
                 val userViewModel = hiltViewModel<UserViewModel>()
+                val specialityViewModel = hiltViewModel<SpecialityViewModel>()
+                val companyViewModel = hiltViewModel<CompanyViewModel>()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,

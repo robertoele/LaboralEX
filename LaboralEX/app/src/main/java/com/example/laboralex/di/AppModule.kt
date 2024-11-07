@@ -22,4 +22,12 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserDao(db: AppDatabase) = db.UserDao()
+
+    @Provides
+    @Singleton
+    fun providesSpecialityDao(db: AppDatabase) = db.SpecialityDao()
+
+    @Provides
+    @Singleton
+    fun providesCompanyDao(db: AppDatabase) = db.CompanyDao()
 }

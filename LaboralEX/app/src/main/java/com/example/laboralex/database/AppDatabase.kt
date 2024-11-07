@@ -15,8 +15,8 @@ import com.example.laboralex.database.entity.UserSpeciality
 
 @Database(entities = [Company::class, CompanySpeciality::class, Speciality::class, User::class, UserSpeciality::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun companyDao(): CompanyDao
-    abstract fun specialityDao(): SpecialityDao
+    abstract fun CompanyDao(): CompanyDao
+    abstract fun SpecialityDao(): SpecialityDao
     abstract fun companySpecialityDao(): CompanySpecialityDao
     abstract fun UserDao(): UserDao
     abstract fun UserSpecialityDao(): UserSpecialityDao
