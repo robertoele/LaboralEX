@@ -13,4 +13,6 @@ class NavigationManager {
         object CompaniesScreen
         @Serializable
         object CreateUserScreen
+        @Serializable
+        object InsertCompaniesScreen
 }

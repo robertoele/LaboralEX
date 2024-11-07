@@ -46,7 +46,7 @@ fun CreateUser(
 
         Button(onClick = {
             userViewModel.saveUser()
-            navController.navigate(NavigationManager.MainScreen)
+            navController.navigate(NavigationManager.InsertCompaniesScreen)
         }) {
             Text("Continuar")
         }

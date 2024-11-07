@@ -10,16 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.laboralex.database.AppDatabase
-import com.example.laboralex.database.entity.User
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.screens.company.CompaniesList
 import com.example.laboralex.ui.screens.company.CompanyScreen
+import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.CreateUser
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.screens.user.UserScreen
@@ -27,7 +26,6 @@ import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CompanyViewModel
 import com.example.laboralex.viewmodel.SpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
-import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
 
@@ -78,6 +76,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<NavigationManager.CreateUserScreen> {
                         CreateUser(navController, userViewModel, specialityViewModel, this@MainActivity)
+                    }
+                    composable<NavigationManager.InsertCompaniesScreen> {
+                        InsertCompaniesScreen(navController, companyViewModel)
                     }
                     composable<NavigationManager.CompanyScreen> {
                         CompanyScreen(navController, companyViewModel)
