@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
@@ -31,7 +32,6 @@ fun InsertCompaniesScreen(
     val name = companyViewModel.name.collectAsStateWithLifecycle()
     var companySpeciality by remember { mutableStateOf("") }
     val specialities = remember { mutableListOf<Speciality>() }
-    //SuggestionChip()
     Column {
         Text("Ahora, añadamos algunas empresas en las que estés interesado")
         Spacer(Modifier.height(10.dp))
@@ -48,7 +48,11 @@ fun InsertCompaniesScreen(
         Text("Sugerencias")
         FlowRow {
             listOf("Android", "GitHub", "Corutinas", "Dagger-Hilt", "Compose").forEach {
-                SuggestionChip(onClick = { specialities.add(Speciality(name = it)) }, label = { Text(it) })
+                SuggestionChip(
+                    modifier = Modifier.padding(5.dp),
+                    onClick = { specialities.add(Speciality(name = it)) },
+                    label = { Text(it) }
+                )
             }
         }
 

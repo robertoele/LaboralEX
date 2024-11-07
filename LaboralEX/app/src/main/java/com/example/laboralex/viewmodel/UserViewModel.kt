@@ -4,11 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.UserDao
 import com.example.laboralex.database.entity.User
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel(private val userDao: UserDao): ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor(private val userDao: UserDao): ViewModel() {
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 

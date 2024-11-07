@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
@@ -26,20 +27,14 @@ import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CompanyViewModel
 import com.example.laboralex.viewmodel.SpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val db by lazy {
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "laboralex.db").build()
     }
-
-    private val userViewModel by viewModels<UserViewModel>(factoryProducer = {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return UserViewModel(db.UserDao()) as T
-            }
-        }
-    })
 
     private val companyViewModel by viewModels<CompanyViewModel>(factoryProducer = {
         object : ViewModelProvider.Factory {
@@ -62,6 +57,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LaboralEXTheme {
+                val userViewModel = hiltViewModel<UserViewModel>()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
