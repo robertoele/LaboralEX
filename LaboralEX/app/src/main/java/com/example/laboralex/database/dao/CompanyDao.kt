@@ -9,14 +9,14 @@ import com.example.laboralex.database.entity.Company
 @Dao
 interface CompanyDao {
     @Insert
-    fun insertAll(vararg companies: Company)
+    suspend fun insertAll(vararg companies: Company)
 
     @Delete
-    fun delete(company: Company)
+    suspend fun delete(company: Company)
 
     @Query("SELECT * FROM Company")
-    fun getAll(): List<Company>
+    suspend fun getAll(): List<Company>
 
     @Query("SELECT * FROM Company WHERE id = :id")
-    fun getById(id: Int): Company
+    suspend fun getById(id: Int): Company
 }

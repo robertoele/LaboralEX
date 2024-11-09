@@ -20,9 +20,9 @@ class SpecialityViewModel @Inject constructor(private val specialityDao: Special
         _name.value = newName
     }
 
-    fun save() {
+    fun save(speciality: Speciality) {
         viewModelScope.launch {
-            specialityDao.insertAll(Speciality(name = _name.value))
+            specialityDao.insertAll(speciality)
         }
     }
 
