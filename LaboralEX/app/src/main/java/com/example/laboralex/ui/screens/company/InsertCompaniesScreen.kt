@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.database.entity.Speciality
+import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.viewmodel.CompanyViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -47,12 +48,8 @@ fun InsertCompaniesScreen(
         }
         Text("Sugerencias")
         FlowRow {
-            listOf("Android", "GitHub", "Corutinas", "Dagger-Hilt", "Compose").forEach {
-                SuggestionChip(
-                    modifier = Modifier.padding(5.dp),
-                    onClick = { specialities.add(Speciality(name = it)) },
-                    label = { Text(it) }
-                )
+            ChipFlowRow(listOf("Android", "GitHub", "Corutinas", "Dagger-Hilt", "Compose")) {
+                specialities.add(Speciality(name = it))
             }
         }
 
