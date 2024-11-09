@@ -1,16 +1,11 @@
 package com.example.laboralex.ui.screens.user
 
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,6 +13,7 @@ import androidx.navigation.NavController
 import com.example.laboralex.R
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.QualitiesForm
+import com.example.laboralex.ui.components.TextFieldWithHeader
 import com.example.laboralex.viewmodel.SpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 
@@ -36,17 +32,23 @@ fun CreateUser(
     Column(Modifier.verticalScroll(rememberScrollState())) {
         Text(activity.getString(R.string.create_user_welcome))
 
-        Text(activity.getString(R.string.name))
-        TextField(userName.value, userViewModel::changeName)
-
-        TextField(
-            value = userSurname.value,
-            onValueChange = userViewModel::changeSurname,
-            label = { Text(activity.getString(R.string.first_surname)) }
+        TextFieldWithHeader(
+            value = userName.value,
+            name = activity.getString(R.string.name),
+            onValueChanged = userViewModel::changeName
         )
 
-        Text(activity.getString(R.string.second_surname))
-        TextField(userSecondSurname.value, userViewModel::changeSecondSurname)
+        TextFieldWithHeader(
+            value = userSurname.value,
+            name = activity.getString(R.string.first_surname),
+            onValueChanged = userViewModel::changeSurname
+        )
+
+        TextFieldWithHeader(
+            value = userSecondSurname.value,
+            name = activity.getString(R.string.second_surname),
+            onValueChanged = userViewModel::changeSecondSurname
+        )
 
         QualitiesForm(specialityViewModel)
 
