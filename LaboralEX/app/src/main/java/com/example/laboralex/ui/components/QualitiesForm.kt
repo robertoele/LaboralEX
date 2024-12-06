@@ -31,10 +31,4 @@ fun QualitiesForm(viewModel: SpecialityViewModel) {
     ChipFlowRow(listOf("Android", "GitHub", "Corutinas", "Dagger-Hilt", "Compose")) {
         viewModel.save(Speciality(name = it))
     }
-    Button(onClick = {
-        viewModel.save(Speciality(name = name.value))
-        viewModel.changeName("")
-    }) {
-        Text("Agregar")
-    }
 }

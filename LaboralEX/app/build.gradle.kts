@@ -83,4 +83,6 @@ dependencies {
     implementation(libs.androidx.hilt)
     kapt(libs.hilt.android.compiler)
 
+    implementation(libs.material3)
+
 }
