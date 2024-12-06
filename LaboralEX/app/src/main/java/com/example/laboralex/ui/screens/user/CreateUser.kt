@@ -26,8 +26,7 @@ fun CreateUser(
     activity: ComponentActivity
 ) {
     val userName = userViewModel.name.collectAsStateWithLifecycle()
-    val userSurname = userViewModel.firstSurname.collectAsStateWithLifecycle()
-    val userSecondSurname = userViewModel.secondSurname.collectAsStateWithLifecycle()
+    val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
 
     Column(Modifier.verticalScroll(rememberScrollState())) {
         Text(activity.getString(R.string.create_user_welcome))
@@ -40,14 +39,8 @@ fun CreateUser(
 
         TextFieldWithHeader(
             value = userSurname.value,
-            name = activity.getString(R.string.first_surname),
-            onValueChanged = userViewModel::changeSurname
-        )
-
-        TextFieldWithHeader(
-            value = userSecondSurname.value,
-            name = activity.getString(R.string.second_surname),
-            onValueChanged = userViewModel::changeSecondSurname
+            name = activity.getString(R.string.surname),
+            onValueChanged = userViewModel::changeSurnames
         )
 
         QualitiesForm(specialityViewModel)

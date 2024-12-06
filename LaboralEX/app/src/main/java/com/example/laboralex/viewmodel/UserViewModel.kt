@@ -11,15 +11,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(private val userDao: UserDao): ViewModel() {
+class UserViewModel @Inject constructor(private val userDao: UserDao) : ViewModel() {
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 
-    private val _firstSurname = MutableStateFlow("")
-    val firstSurname = _firstSurname.asStateFlow()
-
-    private val _secondSurname = MutableStateFlow("")
-    val secondSurname = _secondSurname.asStateFlow()
+    private val _surnames = MutableStateFlow("")
+    val surnames = _surnames.asStateFlow()
 
     private val _description = MutableStateFlow("")
     val description = _description.asStateFlow()
@@ -28,12 +25,8 @@ class UserViewModel @Inject constructor(private val userDao: UserDao): ViewModel
         _name.value = newName
     }
 
-    fun changeSurname(newSurname: String) {
-        _firstSurname.value = newSurname
-    }
-
-    fun changeSecondSurname(newSurname: String) {
-        _secondSurname.value = newSurname
+    fun changeSurnames(newSurname: String) {
+        _surnames.value = newSurname
     }
 
     fun changeDescription(newDescription: String) {
@@ -45,8 +38,7 @@ class UserViewModel @Inject constructor(private val userDao: UserDao): ViewModel
             userDao.insertAll(
                 User(
                     firstName = name.value,
-                    firstSurname = firstSurname.value,
-                    secondSurname = secondSurname.value,
+                    surnames = surnames.value,
                     profilePictureId = null
                 )
             )
