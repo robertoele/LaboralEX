@@ -11,10 +11,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SpecialityViewModel @Inject constructor(private val specialityDao: SpecialityDao): ViewModel() {
+class SpecialityViewModel @Inject constructor(private val specialityDao: SpecialityDao) :
+    ViewModel() {
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
+    
+    val specialities: MutableList<Speciality> = mutableListOf()
+
+    init {
+        viewModelScope.launch {
+            specialities.addAll(getSpecialities())
+        }
+    }
 
     fun changeName(newName: String) {
         _name.value = newName

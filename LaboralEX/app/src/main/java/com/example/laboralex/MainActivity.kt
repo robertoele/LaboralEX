@@ -15,12 +15,13 @@ import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.screens.company.CompaniesList
 import com.example.laboralex.ui.screens.company.CompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
-import com.example.laboralex.ui.screens.user.CreateUser
 import com.example.laboralex.ui.screens.main.MainScreen
+import com.example.laboralex.ui.screens.user.CreateUser
 import com.example.laboralex.ui.screens.user.UserScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CompanyViewModel
 import com.example.laboralex.viewmodel.SpecialityViewModel
+import com.example.laboralex.viewmodel.UserSpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,11 +35,12 @@ class MainActivity : ComponentActivity() {
             LaboralEXTheme {
                 val userViewModel = hiltViewModel<UserViewModel>()
                 val specialityViewModel = hiltViewModel<SpecialityViewModel>()
+                val userSpecialityViewModel = hiltViewModel<UserSpecialityViewModel>()
                 val companyViewModel = hiltViewModel<CompanyViewModel>()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination =  NavigationManager.CreateUserScreen,
+                    startDestination = NavigationManager.CreateUserScreen,
                     modifier = Modifier.padding(25.dp)
                 ) {
                     composable<NavigationManager.MainScreen> {
@@ -48,7 +50,13 @@ class MainActivity : ComponentActivity() {
                         UserScreen(navController, userViewModel)
                     }
                     composable<NavigationManager.CreateUserScreen> {
-                        CreateUser(navController, userViewModel, specialityViewModel, this@MainActivity)
+                        CreateUser(
+                            navController,
+                            userViewModel,
+                            specialityViewModel,
+                            userSpecialityViewModel,
+                            this@MainActivity
+                        )
                     }
                     composable<NavigationManager.InsertCompaniesScreen> {
                         InsertCompaniesScreen(navController, companyViewModel)

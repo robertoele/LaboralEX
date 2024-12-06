@@ -15,6 +15,7 @@ import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.QualitiesForm
 import com.example.laboralex.ui.components.TextFieldWithHeader
 import com.example.laboralex.viewmodel.SpecialityViewModel
+import com.example.laboralex.viewmodel.UserSpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 
 
@@ -23,6 +24,7 @@ fun CreateUser(
     navController: NavController,
     userViewModel: UserViewModel,
     specialityViewModel: SpecialityViewModel,
+    userSpecialityViewModel: UserSpecialityViewModel,
     activity: ComponentActivity
 ) {
     val userName = userViewModel.name.collectAsStateWithLifecycle()
@@ -43,6 +45,7 @@ fun CreateUser(
             onValueChanged = userViewModel::changeSurnames
         )
 
+        Text("Especialidades")
         QualitiesForm(specialityViewModel)
 
         Button(onClick = {
