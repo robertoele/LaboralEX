@@ -26,7 +26,8 @@ import com.example.laboralex.viewmodel.SpecialityViewModel
 @Composable
 fun QualitiesForm(viewModel: SpecialityViewModel) {
     Card {
-        val name = viewModel.name.collectAsStateWithLifecycle()
+        DropDownTextField(viewModel)
+        /*val name = viewModel.name.collectAsStateWithLifecycle()
         TextField(
             value = name.value,
             onValueChange = viewModel::changeName,
@@ -38,7 +39,7 @@ fun QualitiesForm(viewModel: SpecialityViewModel) {
                     Icon(Icons.Default.Add, contentDescription = null)
                 }
             }
-        )
+        )*/
         ChipFlowRow(listOf("Android", "GitHub", "Corutinas", "Dagger-Hilt", "Compose")) {
             viewModel.save(Speciality(name = it))
         }
@@ -48,9 +49,9 @@ fun QualitiesForm(viewModel: SpecialityViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DropDownTextField(viewModel: SpecialityViewModel) {
-    var expanded by remember { mutableStateOf(true) }
+    var expanded by remember { mutableStateOf(false) }
     Column {
-        ExposedDropdownMenuBox(expanded = true, onExpandedChange = { expanded = true }) {
+        ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
             val name = viewModel.name.collectAsStateWithLifecycle()
             val specialities: List<Speciality> =
                 remember { listOf(Speciality(name = "Android"), Speciality(name = "Kotlin")) }
@@ -74,9 +75,16 @@ private fun DropDownTextField(viewModel: SpecialityViewModel) {
                     }
                 }
             )
-            ExposedDropdownMenu(expanded = true, onDismissRequest = { expanded = true }) {
+            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 filteredSpecialities.forEach {
-                    DropdownMenuItem(text = { Text(it.name) }, onClick = { println("Holo") })
+                    DropdownMenuItem(
+                        text = { Text(it.name) },
+                        onClick = {
+                            viewModel.save(Speciality(name = name.value))
+                            viewModel.changeName("")
+                            expanded = false
+                        }
+                    )
                 }
             }
         }
