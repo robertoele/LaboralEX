@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.R
+import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.QualitiesForm
 import com.example.laboralex.ui.components.TextFieldWithHeader
 import com.example.laboralex.viewmodel.SpecialityViewModel
-import com.example.laboralex.viewmodel.UserSpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 
 
@@ -24,7 +24,7 @@ fun CreateUser(
     navController: NavController,
     userViewModel: UserViewModel,
     specialityViewModel: SpecialityViewModel,
-    userSpecialityViewModel: UserSpecialityViewModel,
+    specialities: List<Speciality>,
     activity: ComponentActivity
 ) {
     val userName = userViewModel.name.collectAsStateWithLifecycle()
@@ -46,7 +46,7 @@ fun CreateUser(
         )
 
         Text("Especialidades")
-        QualitiesForm(specialityViewModel)
+        QualitiesForm(specialityViewModel, specialities)
 
         Button(onClick = {
             userViewModel.saveUser()

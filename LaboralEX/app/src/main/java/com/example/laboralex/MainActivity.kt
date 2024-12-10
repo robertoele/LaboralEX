@@ -5,12 +5,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.screens.company.CompaniesList
 import com.example.laboralex.ui.screens.company.CompanyScreen
@@ -24,6 +31,9 @@ import com.example.laboralex.viewmodel.SpecialityViewModel
 import com.example.laboralex.viewmodel.UserSpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+
+private enum class LoadingState { LOADING, LOADED }
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -50,13 +60,25 @@ class MainActivity : ComponentActivity() {
                         UserScreen(navController, userViewModel)
                     }
                     composable<NavigationManager.CreateUserScreen> {
-                        CreateUser(
-                            navController,
-                            userViewModel,
-                            specialityViewModel,
-                            userSpecialityViewModel,
-                            this@MainActivity
-                        )
+                        var loadingState by remember { mutableStateOf(LoadingState.LOADING) }
+                        val specialities = mutableListOf<Speciality>()
+                        specialityViewModel.run {
+                            viewModelScope.launch {
+                                specialities.addAll(getSpecialities())
+                                runOnUiThread { loadingState = LoadingState.LOADED }
+                            }
+                        }
+                        if (loadingState == LoadingState.LOADING) {
+                            CircularProgressIndicator()
+                        } else {
+                            CreateUser(
+                                navController,
+                                userViewModel,
+                                specialityViewModel,
+                                specialities,
+                                this@MainActivity
+                            )
+                        }
                     }
                     composable<NavigationManager.InsertCompaniesScreen> {
                         InsertCompaniesScreen(navController, companyViewModel)

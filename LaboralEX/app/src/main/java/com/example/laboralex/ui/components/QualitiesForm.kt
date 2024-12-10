@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,22 +25,35 @@ import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.viewmodel.SpecialityViewModel
 
 @Composable
-fun QualitiesForm(viewModel: SpecialityViewModel) {
+fun QualitiesForm(
+    viewModel: SpecialityViewModel,
+    specialities: List<Speciality>
+) {
+    val specialitiesList = remember { mutableStateListOf<String>() }
+
     Card {
-        DropDownTextField(viewModel)
-        ChipFlowRow(emptyList<String>()) {}
+        DropDownTextField(viewModel, specialities) { specialitiesList.add(it) }
+        ChipFlowRow(specialitiesList) { }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DropDownTextField(viewModel: SpecialityViewModel) {
+private fun DropDownTextField(
+    viewModel: SpecialityViewModel,
+    specialities: List<Speciality>,
+    addToList: (speciality: String) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
+    val add: (name: String) -> Unit = {
+        viewModel.save(Speciality(name = it))
+        addToList(it)
+        viewModel.changeName("")
+        expanded = false
+    }
     Column {
         ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
             val name = viewModel.name.collectAsStateWithLifecycle()
-            val specialities: List<Speciality> =
-                remember { listOf(Speciality(name = "Android"), Speciality(name = "Kotlin")) }
             val filteredSpecialities =
                 specialities.filter { it.name.contains(name.value, ignoreCase = true) }
             TextField(
@@ -52,10 +66,7 @@ private fun DropDownTextField(viewModel: SpecialityViewModel) {
                     .fillMaxWidth()
                     .menuAnchor(MenuAnchorType.PrimaryEditable),
                 trailingIcon = {
-                    Button(onClick = {
-                        viewModel.save(Speciality(name = name.value))
-                        viewModel.changeName("")
-                    }) {
+                    Button(onClick = { add(name.value) }) {
                         Icon(Icons.Default.Add, contentDescription = null)
                     }
                 }
@@ -64,11 +75,7 @@ private fun DropDownTextField(viewModel: SpecialityViewModel) {
                 filteredSpecialities.forEach {
                     DropdownMenuItem(
                         text = { Text(it.name) },
-                        onClick = {
-                            viewModel.save(Speciality(name = name.value))
-                            viewModel.changeName("")
-                            expanded = false
-                        }
+                        onClick = { add(it.name) }
                     )
                 }
             }

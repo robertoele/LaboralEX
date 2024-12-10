@@ -16,7 +16,8 @@ object AppModule {
 
     @Provides
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "laboralex.db").build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, "laboralex.db")
+            .createFromAsset("laboralex_default.db").build()
     }
 
     @Provides
