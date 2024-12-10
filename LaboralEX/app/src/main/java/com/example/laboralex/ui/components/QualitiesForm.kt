@@ -27,19 +27,6 @@ import com.example.laboralex.viewmodel.SpecialityViewModel
 fun QualitiesForm(viewModel: SpecialityViewModel) {
     Card {
         DropDownTextField(viewModel)
-        /*val name = viewModel.name.collectAsStateWithLifecycle()
-        TextField(
-            value = name.value,
-            onValueChange = viewModel::changeName,
-            trailingIcon = {
-                Button(onClick = {
-                    viewModel.save(Speciality(name = name.value))
-                    viewModel.changeName("")
-                }) {
-                    Icon(Icons.Default.Add, contentDescription = null)
-                }
-            }
-        )*/
         ChipFlowRow(listOf("Android", "GitHub", "Corutinas", "Dagger-Hilt", "Compose")) {
             viewModel.save(Speciality(name = it))
         }
