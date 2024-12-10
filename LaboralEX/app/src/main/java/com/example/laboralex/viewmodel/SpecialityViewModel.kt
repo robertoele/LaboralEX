@@ -16,14 +16,6 @@ class SpecialityViewModel @Inject constructor(private val specialityDao: Special
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
-    
-    val specialities: MutableList<Speciality> = mutableListOf()
-
-    init {
-        viewModelScope.launch {
-            specialities.addAll(getSpecialities())
-        }
-    }
 
     fun changeName(newName: String) {
         _name.value = newName
