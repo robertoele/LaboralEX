@@ -27,9 +27,7 @@ import com.example.laboralex.viewmodel.SpecialityViewModel
 fun QualitiesForm(viewModel: SpecialityViewModel) {
     Card {
         DropDownTextField(viewModel)
-        ChipFlowRow(listOf("Android", "GitHub", "Corutinas", "Dagger-Hilt", "Compose")) {
-            viewModel.save(Speciality(name = it))
-        }
+        ChipFlowRow(emptyList<String>()) {}
     }
 }
 
