@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -15,58 +14,40 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.laboralex.database.entity.Speciality
+import com.example.laboralex.viewmodel.CompanyViewModel
 import com.example.laboralex.viewmodel.SpecialityViewModel
-
-@Composable
-fun QualitiesForm(
-    viewModel: SpecialityViewModel,
-    specialities: List<Speciality>
-) {
-    val specialitiesList = remember { mutableStateListOf<String>() }
-
-    Card {
-        DropDownTextField(viewModel, specialities) { specialitiesList.add(it) }
-        ChipFlowRow(specialitiesList) { }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DropDownTextField(
-    viewModel: SpecialityViewModel,
+fun DropdownTextField(
+    companyViewModel: CompanyViewModel,
+    specialityViewModel: SpecialityViewModel,
     specialities: List<Speciality>,
     onSpecialityAdd: (speciality: String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val add: (name: String) -> Unit = {
-        viewModel.save(Speciality(name = it))
-        onSpecialityAdd(it)
-        viewModel.changeName("")
-        expanded = false
-    }
     Column {
         ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
-            val name = viewModel.name.collectAsStateWithLifecycle()
+            val name = specialityViewModel.name.collectAsStateWithLifecycle()
             val filteredSpecialities =
                 specialities.filter { it.name.contains(name.value, ignoreCase = true) }
             TextField(
                 value = name.value,
                 onValueChange = {
-                    viewModel.changeName(it)
+                    specialityViewModel.changeName(it)
                     expanded = specialities.isNotEmpty()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(MenuAnchorType.PrimaryEditable),
                 trailingIcon = {
-                    Button(onClick = { add(name.value) }) {
+                    Button(onClick = { onSpecialityAdd(name.value) }) {
                         Icon(Icons.Default.Add, contentDescription = null)
                     }
                 }
@@ -75,7 +56,7 @@ private fun DropDownTextField(
                 filteredSpecialities.forEach {
                     DropdownMenuItem(
                         text = { Text(it.name) },
-                        onClick = { add(it.name) }
+                        onClick = { }
                     )
                 }
             }
