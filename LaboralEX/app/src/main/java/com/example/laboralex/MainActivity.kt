@@ -4,12 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -61,7 +65,8 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<NavigationManager.CreateUserScreen> {
                         var loadingState by remember { mutableStateOf(LoadingState.LOADING) }
-                        val specialities = mutableListOf<Speciality>()
+                        val specialities = remember { mutableStateListOf<Speciality>() }
+                        
                         specialityViewModel.run {
                             viewModelScope.launch {
                                 specialities.addAll(getSpecialities())
@@ -69,7 +74,12 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         if (loadingState == LoadingState.LOADING) {
-                            CircularProgressIndicator()
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
                         } else {
                             CreateUser(
                                 navController,

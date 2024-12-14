@@ -18,7 +18,6 @@ import com.example.laboralex.ui.components.TextFieldWithHeader
 import com.example.laboralex.viewmodel.SpecialityViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 
-
 @Composable
 fun CreateUser(
     navController: NavController,
