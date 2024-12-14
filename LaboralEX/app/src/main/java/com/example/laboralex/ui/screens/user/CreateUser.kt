@@ -45,7 +45,7 @@ fun CreateUser(
             onValueChanged = userViewModel::changeSurnames
         )
 
-        Text("Especialidades")
+        Text("Aptitudes")
         QualitiesForm(specialityViewModel, specialities)
 
         Button(onClick = {

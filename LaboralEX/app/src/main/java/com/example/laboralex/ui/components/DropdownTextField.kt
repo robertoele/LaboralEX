@@ -18,45 +18,42 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.laboralex.database.entity.Speciality
-import com.example.laboralex.viewmodel.CompanyViewModel
-import com.example.laboralex.viewmodel.SpecialityViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownTextField(
-    companyViewModel: CompanyViewModel,
-    specialityViewModel: SpecialityViewModel,
-    specialities: List<Speciality>,
-    onSpecialityAdd: (speciality: String) -> Unit
+    elements: List<String>,
+    value: String,
+    onValueChanged: (value: String) -> Unit,
+    onValueSelected: (value: String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     Column {
         ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
-            val name = specialityViewModel.name.collectAsStateWithLifecycle()
-            val filteredSpecialities =
-                specialities.filter { it.name.contains(name.value, ignoreCase = true) }
+            val filtered = elements.filter { it.contains(value, ignoreCase = true) }
             TextField(
-                value = name.value,
-                onValueChange = {
-                    specialityViewModel.changeName(it)
-                    expanded = specialities.isNotEmpty()
-                },
+                value = value,
+                onValueChange = onValueChanged,
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(MenuAnchorType.PrimaryEditable),
                 trailingIcon = {
-                    Button(onClick = { onSpecialityAdd(name.value) }) {
+                    Button(onClick = {
+                        onValueSelected(value)
+                        expanded = false
+                    }) {
                         Icon(Icons.Default.Add, contentDescription = null)
                     }
                 }
             )
             ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                filteredSpecialities.forEach {
+                filtered.forEach {
                     DropdownMenuItem(
-                        text = { Text(it.name) },
-                        onClick = { }
+                        text = { Text(it) },
+                        onClick = {
+                            onValueSelected(it)
+                            expanded = false
+                        }
                     )
                 }
             }

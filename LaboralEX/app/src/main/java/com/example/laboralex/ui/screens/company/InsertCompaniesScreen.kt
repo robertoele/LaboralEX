@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.database.entity.Speciality
-import com.example.laboralex.ui.components.DropdownTextField
 import com.example.laboralex.viewmodel.CompanyViewModel
 import com.example.laboralex.viewmodel.SpecialityViewModel
 
@@ -33,13 +32,6 @@ fun InsertCompaniesScreen(
         Text("Nombre")
         TextField(name.value, companyViewModel::onNameChanged)
         Text("Especialidades que busca la empresa: ")
-        DropdownTextField(
-            companyViewModel = companyViewModel,
-            specialityViewModel = specialityViewModel,
-            specialities = listOf()
-        ) {
-            specialities.add(Speciality(name = it))
-        }
         Row {
             Button(onClick = companyViewModel::save) { Text("Agregar empresa") }
         }

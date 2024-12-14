@@ -1,42 +1,32 @@
 package com.example.laboralex.ui.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.viewmodel.SpecialityViewModel
 
 @Composable
-fun QualitiesForm(
-    viewModel: SpecialityViewModel,
-    specialities: List<Speciality>
-) {
+fun QualitiesForm(viewModel: SpecialityViewModel, specialities: List<Speciality>) {
     val specialitiesList = remember { mutableStateListOf<String>() }
-
+    val specialitiesNames = remember { specialities.map { it.name } }
     Card {
-        DropDownTextField(viewModel, specialities) { specialitiesList.add(it) }
+        val name = viewModel.name.collectAsStateWithLifecycle()
+        DropdownTextField(
+            elements = specialitiesNames,
+            value = name.value,
+            onValueChanged = viewModel::changeName
+        ) { valueSelected ->
+            viewModel.save(Speciality(name = valueSelected))
+            viewModel.changeName("")
+        }
         ChipFlowRow(specialitiesList) { }
     }
 }
 
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DropDownTextField(
@@ -81,4 +71,4 @@ private fun DropDownTextField(
             }
         }
     }
-}
+}*/
