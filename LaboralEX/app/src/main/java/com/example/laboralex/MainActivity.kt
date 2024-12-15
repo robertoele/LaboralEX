@@ -84,7 +84,6 @@ class MainActivity : ComponentActivity() {
                             CreateUser(
                                 navController,
                                 userViewModel,
-                                specialityViewModel,
                                 specialities,
                                 this@MainActivity
                             )

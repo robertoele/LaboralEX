@@ -21,6 +21,9 @@ class UserViewModel @Inject constructor(private val userDao: UserDao) : ViewMode
     private val _description = MutableStateFlow("")
     val description = _description.asStateFlow()
 
+    private val _skill = MutableStateFlow("")
+    val skill = _skill.asStateFlow()
+
     fun changeName(newName: String) {
         _name.value = newName
     }
@@ -31,6 +34,10 @@ class UserViewModel @Inject constructor(private val userDao: UserDao) : ViewMode
 
     fun changeDescription(newDescription: String) {
         _description.value = newDescription
+    }
+
+    fun changeSkill(newSkill: String) {
+        _skill.value = newSkill
     }
 
     fun saveUser() {
