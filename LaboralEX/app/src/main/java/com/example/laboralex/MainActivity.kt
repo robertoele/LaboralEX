@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                     composable<NavigationManager.CreateUserScreen> {
                         var loadingState by remember { mutableStateOf(LoadingState.LOADING) }
                         val specialities = remember { mutableStateListOf<Speciality>() }
-                        
+
                         specialityViewModel.run {
                             viewModelScope.launch {
                                 specialities.addAll(getSpecialities())
@@ -91,7 +91,20 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     composable<NavigationManager.InsertCompaniesScreen> {
-                        InsertCompaniesScreen(navController, companyViewModel, specialityViewModel)
+                        var loadingState by remember { mutableStateOf(LoadingState.LOADING) }
+                        val specialities = remember { mutableStateListOf<Speciality>() }
+
+                        specialityViewModel.run {
+                            viewModelScope.launch {
+                                specialities.addAll(getSpecialities())
+                                runOnUiThread { loadingState = LoadingState.LOADED }
+                            }
+                        }
+                        if (loadingState == LoadingState.LOADING) {
+                            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
+                            }
+                        } else InsertCompaniesScreen(navController, companyViewModel, specialities)
                     }
                     composable<NavigationManager.CompanyScreen> {
                         CompanyScreen(navController, companyViewModel)
