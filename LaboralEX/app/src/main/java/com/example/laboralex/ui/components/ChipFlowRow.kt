@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun <T> ChipFlowRow(chipsList: List<T>, onSelected: (T) -> Unit) {
+fun <T> ChipFlowRow(chipsList: List<T>, onSelected: (T) -> Unit = {}) {
     FlowRow {
         chipsList.forEach {
             SuggestionChip(

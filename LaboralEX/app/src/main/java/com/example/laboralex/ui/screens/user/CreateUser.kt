@@ -2,15 +2,16 @@ package com.example.laboralex.ui.screens.user
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -32,39 +33,54 @@ fun CreateUser(
     when (userViewModel.loadingState.collectAsState().value) {
         State.LOADING -> LoadingScreen()
         State.LOADED -> {
-            val userName = userViewModel.name.collectAsStateWithLifecycle()
-            val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                Text(activity.getString(R.string.create_user_welcome))
-
-                TextFieldWithHeader(
-                    value = userName.value,
-                    name = activity.getString(R.string.name),
-                    onValueChanged = userViewModel::changeName
-                )
-
-                TextFieldWithHeader(
-                    value = userSurname.value,
-                    name = activity.getString(R.string.surname),
-                    onValueChanged = userViewModel::changeSurnames
-                )
-
-                Text("Aptitudes")
-                QualitiesForm(userViewModel)
-
-                Button(
-                    modifier = Modifier.align(Alignment.End),
-                    onClick = {
-                        userViewModel.saveUser()
-                        navController.navigate(NavigationManager.InsertCompaniesScreen)
-                    }
-                ) {
-                    Text("Continuar")
-                }
+            Scaffold(
+                floatingActionButton = { ContinueButton(userViewModel, navController) }
+            ) { padding ->
+                UserForm(navController, userViewModel, activity, Modifier.padding(padding))
             }
         }
     }
+}
 
+@Composable
+private fun ContinueButton(userViewModel: UserViewModel, navController: NavController) {
+    Button(
+        onClick = {
+            userViewModel.saveUser()
+            navController.navigate(NavigationManager.InsertCompaniesScreen)
+        }
+    ) {
+        Text("Continuar")
+    }
+}
+
+@Composable
+private fun UserForm(
+    navController: NavController,
+    userViewModel: UserViewModel,
+    activity: ComponentActivity,
+    modifier: Modifier = Modifier
+) {
+    val userName = userViewModel.name.collectAsStateWithLifecycle()
+    val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
+    Column(modifier = modifier.then(Modifier.verticalScroll(rememberScrollState()))) {
+        Text(activity.getString(R.string.create_user_welcome))
+
+        TextFieldWithHeader(
+            value = userName.value,
+            name = activity.getString(R.string.name),
+            onValueChanged = userViewModel::changeName
+        )
+
+        TextFieldWithHeader(
+            value = userSurname.value,
+            name = activity.getString(R.string.surname),
+            onValueChanged = userViewModel::changeSurnames
+        )
+
+        Text("Aptitudes")
+        QualitiesForm(userViewModel)
+    }
 }
 
 @Composable
@@ -79,8 +95,9 @@ private fun QualitiesForm(viewModel: UserViewModel) {
         ) {
             viewModel.changeSkill("")
         }
-        Text("Sugerencias")
-        ChipFlowRow(viewModel.specialities.map { it.name }) {
+        if (viewModel.specialities.isNotEmpty()) {
+            Text("Sugerencias")
+            ChipFlowRow(viewModel.specialities.map { it.name })
         }
         viewModel.specialities.forEach { Text(it.name) }
     }
