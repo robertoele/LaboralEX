@@ -1,5 +1,6 @@
 package com.example.laboralex.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.SpecialityDao
@@ -19,11 +20,12 @@ class UserViewModel @Inject constructor(
     private val specialityDao: SpecialityDao
 ) : ViewModel() {
 
-    val specialities = mutableListOf<Speciality>()
+    val possibleSpecialities = mutableListOf<Speciality>()
+    val userSpecialities = mutableStateListOf<String>()
 
     init {
         viewModelScope.launch {
-            specialities.addAll(specialityDao.getAll())
+            possibleSpecialities.addAll(specialityDao.getAll())
             _loadingState.value = State.LOADED
         }
     }

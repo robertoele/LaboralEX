@@ -35,9 +35,7 @@ fun CreateUser(
         State.LOADED -> {
             Scaffold(
                 floatingActionButton = { ContinueButton(userViewModel, navController) }
-            ) { padding ->
-                UserForm(navController, userViewModel, activity, Modifier.padding(padding))
-            }
+            ) { UserForm(userViewModel, activity, Modifier.padding(it)) }
         }
     }
 }
@@ -56,7 +54,6 @@ private fun ContinueButton(userViewModel: UserViewModel, navController: NavContr
 
 @Composable
 private fun UserForm(
-    navController: NavController,
     userViewModel: UserViewModel,
     activity: ComponentActivity,
     modifier: Modifier = Modifier
@@ -85,7 +82,7 @@ private fun UserForm(
 
 @Composable
 private fun QualitiesForm(viewModel: UserViewModel) {
-    val specialitiesNames = remember { viewModel.specialities.map { it.name } }
+    val specialitiesNames = remember { viewModel.possibleSpecialities.map { it.name } }
     Card {
         val skill = viewModel.skill.collectAsStateWithLifecycle()
         DropdownTextField(
@@ -93,12 +90,15 @@ private fun QualitiesForm(viewModel: UserViewModel) {
             value = skill.value,
             onValueChanged = viewModel::changeSkill
         ) {
-            viewModel.changeSkill("")
+            if (it.isNotEmpty()) {
+                viewModel.changeSkill("")
+                viewModel.userSpecialities.add(it)
+            }
         }
-        if (viewModel.specialities.isNotEmpty()) {
+        if (viewModel.possibleSpecialities.isNotEmpty()) {
             Text("Sugerencias")
-            ChipFlowRow(viewModel.specialities.map { it.name })
+            ChipFlowRow(viewModel.possibleSpecialities.map { it.name })
         }
-        viewModel.specialities.forEach { Text(it.name) }
+        viewModel.userSpecialities.forEach { Text(it) }
     }
 }
