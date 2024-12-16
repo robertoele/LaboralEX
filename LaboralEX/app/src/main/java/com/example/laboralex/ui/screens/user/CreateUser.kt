@@ -8,16 +8,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.R
-import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.DropdownTextField
+import com.example.laboralex.ui.components.LoadingScreen
+import com.example.laboralex.ui.components.State
 import com.example.laboralex.ui.components.TextFieldWithHeader
 import com.example.laboralex.viewmodel.UserViewModel
 
@@ -25,45 +27,49 @@ import com.example.laboralex.viewmodel.UserViewModel
 fun CreateUser(
     navController: NavController,
     userViewModel: UserViewModel,
-    specialities: List<Speciality>,
     activity: ComponentActivity
 ) {
-    val userName = userViewModel.name.collectAsStateWithLifecycle()
-    val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
+    when (userViewModel.loadingState.collectAsState().value) {
+        State.LOADING -> LoadingScreen()
+        State.LOADED -> {
+            val userName = userViewModel.name.collectAsStateWithLifecycle()
+            val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                Text(activity.getString(R.string.create_user_welcome))
 
-    Column(Modifier.verticalScroll(rememberScrollState())) {
-        Text(activity.getString(R.string.create_user_welcome))
+                TextFieldWithHeader(
+                    value = userName.value,
+                    name = activity.getString(R.string.name),
+                    onValueChanged = userViewModel::changeName
+                )
 
-        TextFieldWithHeader(
-            value = userName.value,
-            name = activity.getString(R.string.name),
-            onValueChanged = userViewModel::changeName
-        )
+                TextFieldWithHeader(
+                    value = userSurname.value,
+                    name = activity.getString(R.string.surname),
+                    onValueChanged = userViewModel::changeSurnames
+                )
 
-        TextFieldWithHeader(
-            value = userSurname.value,
-            name = activity.getString(R.string.surname),
-            onValueChanged = userViewModel::changeSurnames
-        )
+                Text("Aptitudes")
+                QualitiesForm(userViewModel)
 
-        Text("Aptitudes")
-        QualitiesForm(userViewModel, specialities)
-
-        Button(
-            modifier = Modifier.align(Alignment.End),
-            onClick = {
-                userViewModel.saveUser()
-                navController.navigate(NavigationManager.InsertCompaniesScreen)
+                Button(
+                    modifier = Modifier.align(Alignment.End),
+                    onClick = {
+                        userViewModel.saveUser()
+                        navController.navigate(NavigationManager.InsertCompaniesScreen)
+                    }
+                ) {
+                    Text("Continuar")
+                }
             }
-        ) {
-            Text("Continuar")
         }
     }
+
 }
 
 @Composable
-private fun QualitiesForm(viewModel: UserViewModel, specialities: List<Speciality>) {
-    val specialitiesNames = remember { specialities.map { it.name } }
+private fun QualitiesForm(viewModel: UserViewModel) {
+    val specialitiesNames = remember { viewModel.specialities.map { it.name } }
     Card {
         val skill = viewModel.skill.collectAsStateWithLifecycle()
         DropdownTextField(
@@ -74,8 +80,8 @@ private fun QualitiesForm(viewModel: UserViewModel, specialities: List<Specialit
             viewModel.changeSkill("")
         }
         Text("Sugerencias")
-        ChipFlowRow(specialities.map { it.name }) {
+        ChipFlowRow(viewModel.specialities.map { it.name }) {
         }
-        specialities.forEach { Text(it.name) }
+        viewModel.specialities.forEach { Text(it.name) }
     }
 }
