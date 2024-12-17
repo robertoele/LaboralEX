@@ -8,6 +8,7 @@ import com.example.laboralex.database.dao.UserDao
 import com.example.laboralex.database.dao.UserSpecialityDao
 import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.database.entity.User
+import com.example.laboralex.database.entity.UserSpeciality
 import com.example.laboralex.ui.components.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,16 +66,24 @@ class UserViewModel @Inject constructor(
 
     fun saveUser() {
         viewModelScope.launch {
-            userDao.insertAll(
+            val userId = userDao.insert(
                 User(
                     firstName = name.value,
                     surnames = surnames.value,
                     profilePictureId = null
                 )
             )
-            val specialitiesToAdd = specialityDao.getAll().filter { it.name !in userSpecialities }
-            specialityDao.insertAll(*specialitiesToAdd.toTypedArray())
-            userSpecialityDao.insertAll()
+
+            val specialitiesNames = userSpecialities.filter {
+                it !in specialityDao.getAll().map { speciality -> speciality.name }
+            }
+
+            val specialitiesToAdd = specialitiesNames.map { Speciality(name = it) }
+
+            val specialityIds = specialityDao.insertAll(*specialitiesToAdd.toTypedArray())
+            val userSpecialities =
+                specialityIds.map { UserSpeciality(userId = userId, specialityId = it) }
+            userSpecialityDao.insertAll(*userSpecialities.toTypedArray())
         }
     }
 }

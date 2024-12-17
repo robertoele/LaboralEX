@@ -8,6 +8,10 @@ import com.example.laboralex.database.entity.User
 
 @Dao
 interface UserDao {
+
+    @Insert
+    suspend fun insert(user: User): Long
+    
     @Insert
     suspend fun insertAll(vararg users: User): List<Long>
 
