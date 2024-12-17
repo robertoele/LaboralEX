@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.SpecialityDao
 import com.example.laboralex.database.dao.UserDao
+import com.example.laboralex.database.dao.UserSpecialityDao
 import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.database.entity.User
 import com.example.laboralex.ui.components.State
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val userDao: UserDao,
-    private val specialityDao: SpecialityDao
+    private val specialityDao: SpecialityDao,
+    private val userSpecialityDao: UserSpecialityDao
 ) : ViewModel() {
 
     val possibleSpecialities = mutableListOf<Speciality>()
@@ -70,6 +72,9 @@ class UserViewModel @Inject constructor(
                     profilePictureId = null
                 )
             )
+            val specialitiesToAdd = specialityDao.getAll().filter { it.name !in userSpecialities }
+            specialityDao.insertAll(*specialitiesToAdd.toTypedArray())
+            userSpecialityDao.insertAll()
         }
     }
 }

@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class UserSpeciality(
-    @PrimaryKey val id: Int,
-    @ColumnInfo("userId") val userId: Int,
-    @ColumnInfo("specialityId") val specialityId: Int,
+    @PrimaryKey val id: Long,
+    @ColumnInfo("userId") val userId: Long,
+    @ColumnInfo("specialityId") val specialityId: Long,
 )

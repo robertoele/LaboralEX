@@ -18,5 +18,5 @@ interface CompanyDao {
     suspend fun getAll(): List<Company>
 
     @Query("SELECT * FROM Company WHERE id = :id")
-    suspend fun getById(id: Int): Company
+    suspend fun getById(id: Long): Company
 }

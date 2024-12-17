@@ -18,8 +18,8 @@ interface CompanySpecialityDao {
     suspend fun getAll(): List<CompanySpeciality>
 
     @Query("SELECT * FROM CompanySpeciality WHERE company_id = :id")
-    suspend fun getByCompanyId(id: Int): List<CompanySpeciality>
+    suspend fun getByCompanyId(id: Long): List<CompanySpeciality>
 
     @Query("SELECT * FROM CompanySpeciality WHERE speciality_id = :id")
-    suspend fun getBySpecialityId(id: Int): List<CompanySpeciality>
+    suspend fun getBySpecialityId(id: Long): List<CompanySpeciality>
 }

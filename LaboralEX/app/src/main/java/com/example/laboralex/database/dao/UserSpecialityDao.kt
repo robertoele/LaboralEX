@@ -9,7 +9,7 @@ import com.example.laboralex.database.entity.UserSpeciality
 @Dao
 interface UserSpecialityDao {
     @Insert
-    suspend fun insertAll(vararg companies: UserSpeciality)
+    suspend fun insertAll(vararg userSpecialities: UserSpeciality)
 
     @Delete
     suspend fun delete(company: UserSpeciality)
@@ -18,8 +18,8 @@ interface UserSpecialityDao {
     suspend fun getAll(): List<UserSpeciality>
 
     @Query("SELECT * FROM UserSpeciality WHERE specialityId = :id")
-    suspend fun getBySpecialityId(id: Int): UserSpeciality
+    suspend fun getBySpecialityId(id: Long): UserSpeciality
 
     @Query("SELECT * FROM UserSpeciality WHERE userId = :id")
-    suspend fun getByUserId(id: Int): UserSpeciality
+    suspend fun getByUserId(id: Long): UserSpeciality
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CompanySpecialityViewModel @Inject constructor(private val companySpecialityDao: CompanySpecialityDao) :
     ViewModel() {
-    fun getCompanySpecialities(id: Int) {
+    fun getCompanySpecialities(id: Long) {
         viewModelScope.launch { companySpecialityDao.getByCompanyId(id) }
     }
 }
