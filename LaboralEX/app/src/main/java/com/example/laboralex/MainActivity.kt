@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.screens.company.CreateCompanyScreen
-import com.example.laboralex.ui.screens.company.CreateCompanyScreenxxxxxasasd
+import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.screens.user.CreateUser
 import com.example.laboralex.ui.screens.user.UserScreen
@@ -49,11 +49,11 @@ class MainActivity : ComponentActivity() {
                     composable<NavigationManager.CreateUserScreen> {
                         CreateUser(navController, userViewModel, this@MainActivity)
                     }
-                    composable<NavigationManager.InsertCompaniesScreen> {
-                        CreateCompanyScreen(navController, insertCompaniesViewModel)
+                    composable<NavigationManager.CreateCompanyScreen> {
+                        CreateCompanyScreen(navController, createCompanyViewModel)
                     }
-                    composable<NavigationManager.CompanyScreen> {
-                        CreateCompanyScreenxxxxxasasd(navController, createCompanyViewModel)
+                    composable<NavigationManager.InsertCompaniesScreen> {
+                        InsertCompaniesScreen(navController, insertCompaniesViewModel)
                     }
                 }
             }

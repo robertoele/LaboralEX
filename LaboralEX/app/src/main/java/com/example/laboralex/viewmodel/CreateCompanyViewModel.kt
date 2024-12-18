@@ -1,17 +1,32 @@
 package com.example.laboralex.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import com.example.laboralex.ui.components.State
+import androidx.lifecycle.viewModelScope
+import com.example.laboralex.database.dao.SpecialityDao
+import com.example.laboralex.database.entity.Company
+import com.example.laboralex.database.entity.Speciality
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CreateCompanyViewModel : ViewModel() {
+@HiltViewModel
+class CreateCompanyViewModel @Inject constructor(
+    private val specialityDao: SpecialityDao
+) : ViewModel() {
 
-    private val _loadingState = MutableStateFlow(State.LOADING)
-    val loadingState = _loadingState.asStateFlow()
-
+    val possibleSpecialities = mutableListOf<Speciality>()
+    val displayed = mutableStateListOf<Company>()
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            possibleSpecialities.addAll(specialityDao.getAll())
+        }
+    }
 
     fun onNameChanged(newName: String) {
         _name.value = newName
