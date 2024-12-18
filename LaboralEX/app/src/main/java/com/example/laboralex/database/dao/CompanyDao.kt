@@ -9,7 +9,10 @@ import com.example.laboralex.database.entity.Company
 @Dao
 interface CompanyDao {
     @Insert
-    suspend fun insertAll(vararg companies: Company)
+    suspend fun insertAll(vararg companies: Company): List<Long>
+
+    @Insert
+    suspend fun insert(company: Company): Long
 
     @Delete
     suspend fun delete(company: Company)

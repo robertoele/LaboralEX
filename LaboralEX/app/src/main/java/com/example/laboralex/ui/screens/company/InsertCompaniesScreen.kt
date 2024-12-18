@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -19,6 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.laboralex.database.entity.Company
+import com.example.laboralex.database.entity.Speciality
+import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.DropdownTextField
 import com.example.laboralex.ui.components.LoadingScreen
 import com.example.laboralex.ui.components.State
@@ -47,15 +51,27 @@ private fun CompaniesForm(modifier: Modifier = Modifier, companyViewModel: Compa
         Spacer(Modifier.height(10.dp))
         Text("Nombre")
         TextField(name.value, companyViewModel::onNameChanged)
-        Text("Especialidades que busca la empresa: ")
-        DropdownTextField(
-            elements = companyViewModel.specialities.map { it.name },
-            value = speciality,
-            onValueChanged = { speciality = it }
-        ) { }
+        Text("Aptitudes que busca la empresa: ")
+        Card {
+            DropdownTextField(
+                elements = companyViewModel.possibleSpecialities.map { it.name },
+                value = speciality,
+                onValueChanged = { speciality = it }
+            ) { }
+            if (companyViewModel.possibleSpecialities.isNotEmpty()) {
+                Text("Sugerencias")
+                ChipFlowRow(companyViewModel.possibleSpecialities.map { it.name })
+            }
+        }
+
         Button(
             modifier = Modifier.align(Alignment.End),
-            onClick = companyViewModel::save
+            onClick = companyViewModel::saveCompany
         ) { Text("Agregar empresa") }
     }
+}
+
+@Composable
+private fun CompanyCard(company: Company, specialities: List<Speciality>) {
+
 }

@@ -1,10 +1,12 @@
 package com.example.laboralex.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CompanyDao
 import com.example.laboralex.database.dao.SpecialityDao
 import com.example.laboralex.database.entity.Company
+import com.example.laboralex.database.entity.CompanySpeciality
 import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.components.State
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,11 +21,13 @@ class CompanyViewModel @Inject constructor(
     private val specialityDao: SpecialityDao
 ) : ViewModel() {
 
-    val specialities = mutableListOf<Speciality>()
+    val possibleSpecialities = mutableListOf<Speciality>()
+    val displayed = mutableStateListOf<Company>()
+    val companySpeciality = mutableStateListOf<CompanySpeciality>()
 
     init {
         viewModelScope.launch {
-            specialities.addAll(specialityDao.getAll())
+            possibleSpecialities.addAll(specialityDao.getAll())
             _loadingState.value = State.LOADED
         }
     }
@@ -38,9 +42,13 @@ class CompanyViewModel @Inject constructor(
         _name.value = newName
     }
 
-    fun save() {
+    fun saveCompany() {
         viewModelScope.launch {
-            companyDao.insertAll(Company(name = name.value))
+            val id = companyDao.insert(Company(name = name.value))
+            val companyInserted = Company(id = id, name = name.value)
+
+            displayed.add(companyInserted)
+            //companySpeciality.add()
         }
     }
 }
