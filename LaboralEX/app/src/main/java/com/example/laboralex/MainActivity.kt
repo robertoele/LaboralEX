@@ -12,14 +12,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.laboralex.ui.NavigationManager
-import com.example.laboralex.ui.screens.company.CompaniesList
-import com.example.laboralex.ui.screens.company.CompanyScreen
-import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
+import com.example.laboralex.ui.screens.company.CreateCompanyScreen
+import com.example.laboralex.ui.screens.company.CreateCompanyScreenxxxxxasasd
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.screens.user.CreateUser
 import com.example.laboralex.ui.screens.user.UserScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
-import com.example.laboralex.viewmodel.CompanyViewModel
+import com.example.laboralex.viewmodel.CreateCompanyViewModel
+import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +32,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             LaboralEXTheme {
                 val userViewModel = hiltViewModel<UserViewModel>()
-                val companyViewModel = hiltViewModel<CompanyViewModel>()
+                val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
+                val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -40,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.padding(25.dp)
                 ) {
                     composable<NavigationManager.MainScreen> {
-                        MainScreen(navController, companyViewModel, userViewModel)
+                        MainScreen(navController, userViewModel)
                     }
                     composable<NavigationManager.UserScreen> {
                         UserScreen(navController, userViewModel)
@@ -49,13 +50,10 @@ class MainActivity : ComponentActivity() {
                         CreateUser(navController, userViewModel, this@MainActivity)
                     }
                     composable<NavigationManager.InsertCompaniesScreen> {
-                        InsertCompaniesScreen(navController, companyViewModel)
+                        CreateCompanyScreen(navController, insertCompaniesViewModel)
                     }
                     composable<NavigationManager.CompanyScreen> {
-                        CompanyScreen(navController, companyViewModel)
-                    }
-                    composable<NavigationManager.CompaniesScreen> {
-                        CompaniesList(navController, companyViewModel)
+                        CreateCompanyScreenxxxxxasasd(navController, createCompanyViewModel)
                     }
                 }
             }

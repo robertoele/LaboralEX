@@ -9,18 +9,15 @@ import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.CompanySpeciality
 import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.components.State
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class CompanyViewModel @Inject constructor(
-    private val companyDao: CompanyDao,
-    private val specialityDao: SpecialityDao
+class InsertCompaniesViewModel @Inject constructor(
+    private val specialityDao: SpecialityDao,
+    private val companyDao: CompanyDao
 ) : ViewModel() {
-
     val possibleSpecialities = mutableListOf<Speciality>()
     val displayed = mutableStateListOf<Company>()
     val companySpeciality = mutableStateListOf<CompanySpeciality>()

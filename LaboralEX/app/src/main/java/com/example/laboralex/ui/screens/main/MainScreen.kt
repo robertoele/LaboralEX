@@ -6,15 +6,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.laboralex.viewmodel.CompanyViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 
 @Composable
-fun MainScreen(
-    navController: NavController,
-    companyViewModel: CompanyViewModel,
-    userViewModel: UserViewModel
-) {
+fun MainScreen(navController: NavController, userViewModel: UserViewModel) {
     UserData(userViewModel)
 }
 
