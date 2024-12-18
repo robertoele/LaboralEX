@@ -10,9 +10,6 @@ class NavigationManager {
     object UserScreen
 
     @Serializable
-    object CompanyScreen
-
-    @Serializable
     object CreateUserScreen
 
     @Serializable
