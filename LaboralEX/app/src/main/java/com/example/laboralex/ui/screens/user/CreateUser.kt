@@ -97,7 +97,9 @@ private fun QualitiesForm(viewModel: UserViewModel) {
         }
         if (viewModel.possibleSpecialities.isNotEmpty()) {
             Text("Sugerencias")
-            ChipFlowRow(viewModel.possibleSpecialities.map { it.name })
+            ChipFlowRow(viewModel.possibleSpecialities.map { it.name }) {
+                viewModel.userSpecialities.add(it)
+            }
         }
         viewModel.userSpecialities.forEach { Text(it) }
     }
