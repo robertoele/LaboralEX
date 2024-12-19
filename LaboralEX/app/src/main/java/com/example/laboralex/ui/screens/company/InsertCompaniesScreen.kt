@@ -39,7 +39,13 @@ private fun CompaniesList(
     navController: NavController,
     insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
-    Scaffold { padding ->
+    Scaffold(
+        floatingActionButton = {
+            Button(onClick = {}) {
+                Text("Continuar")
+            }
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
