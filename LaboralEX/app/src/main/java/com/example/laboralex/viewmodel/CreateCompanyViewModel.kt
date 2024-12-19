@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.SpecialityDao
-import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.Speciality
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,8 @@ class CreateCompanyViewModel @Inject constructor(
 ) : ViewModel() {
 
     val possibleSpecialities = mutableListOf<Speciality>()
-    val displayed = mutableStateListOf<Company>()
+    val displayed = mutableStateListOf<Speciality>()
+
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 

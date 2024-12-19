@@ -15,14 +15,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.DropdownTextField
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
+import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 
 @Composable
 fun CreateCompanyScreen(
     navController: NavController,
-    companyViewModel: CreateCompanyViewModel
+    companyViewModel: CreateCompanyViewModel,
+    insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
     val name = companyViewModel.name.collectAsStateWithLifecycle()
     var speciality by remember { mutableStateOf("") }
@@ -43,13 +46,14 @@ fun CreateCompanyScreen(
                     value = speciality,
                     onValueChanged = { speciality = it }
                 ) {
-
+                    companyViewModel.displayed.add(Speciality(name = it))
                 }
                 if (companyViewModel.possibleSpecialities.isNotEmpty()) {
                     Text("Sugerencias")
                     ChipFlowRow(companyViewModel.possibleSpecialities.map { it.name })
                 }
             }
+            companyViewModel.displayed.forEach { Text(it.name) }
         }
     }
 

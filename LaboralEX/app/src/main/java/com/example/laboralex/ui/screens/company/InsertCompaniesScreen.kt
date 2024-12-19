@@ -20,10 +20,13 @@ fun InsertCompaniesScreen(
         Button(onClick = {
             navController.navigate(NavigationManager.CreateCompanyScreen)
         }) { Text("Comenzar") }
+        insertCompaniesViewModel.displayed.forEach {
+            CompanyCard(it, listOf()) //TODO
+        }
     }
 }
 
 @Composable
 private fun CompanyCard(company: Company, specialities: List<Speciality>) {
-
+    //TODO
 }

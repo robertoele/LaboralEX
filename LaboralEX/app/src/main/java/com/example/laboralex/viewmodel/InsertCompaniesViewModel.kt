@@ -21,7 +21,6 @@ class InsertCompaniesViewModel @Inject constructor(
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 
-
     fun saveCompany() {
         viewModelScope.launch {
             val id = companyDao.insert(Company(name = name.value))
