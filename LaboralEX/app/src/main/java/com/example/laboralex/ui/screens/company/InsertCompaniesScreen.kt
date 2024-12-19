@@ -29,7 +29,7 @@ fun InsertCompaniesScreen(
     navController: NavController,
     insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
-    if (insertCompaniesViewModel.companiesDisplayed.isNotEmpty()) {
+    if (insertCompaniesViewModel.companiesAdded.isNotEmpty()) {
         CompaniesList(navController, insertCompaniesViewModel)
     } else WelcomeScreen(navController)
 }
@@ -53,7 +53,7 @@ private fun CompaniesList(
         ) {
             Text("Empresas en las que estoy interesado", textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.height(5.dp))
-            insertCompaniesViewModel.companiesDisplayed.forEach { (company, specialities) ->
+            insertCompaniesViewModel.companiesAdded.forEach { (company, specialities) ->
                 CompanyCard(company, specialities)
             }
         }

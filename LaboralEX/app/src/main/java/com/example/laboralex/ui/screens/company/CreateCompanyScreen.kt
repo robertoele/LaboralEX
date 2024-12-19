@@ -34,8 +34,8 @@ fun CreateCompanyScreen(
         floatingActionButton = {
             Button(
                 onClick = {
-                    insertCompaniesViewModel.companiesDisplayed[Company(name = name.value)] =
-                        companyViewModel.specialitiesDisplayed //TODO
+                    insertCompaniesViewModel.companiesAdded[Company(name = name.value)] =
+                        companyViewModel.specialitiesAdded
                     navController.popBackStack()
                 }
             ) { Text("Agregar empresa") }
@@ -51,14 +51,14 @@ fun CreateCompanyScreen(
                     value = speciality,
                     onValueChanged = { speciality = it }
                 ) {
-                    companyViewModel.specialitiesDisplayed.add(Speciality(name = it))
+                    companyViewModel.specialitiesAdded.add(Speciality(name = it))
                 }
                 if (companyViewModel.possibleSpecialities.isNotEmpty()) {
                     Text("Sugerencias")
                     ChipFlowRow(companyViewModel.possibleSpecialities.map { it.name })
                 }
             }
-            companyViewModel.specialitiesDisplayed.forEach { Text(it.name) }
+            companyViewModel.specialitiesAdded.forEach { Text(it.name) }
         }
     }
 
