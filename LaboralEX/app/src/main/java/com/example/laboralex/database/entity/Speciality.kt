@@ -8,4 +8,8 @@ import androidx.room.PrimaryKey
 data class Speciality(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo("name") val name: String
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}
