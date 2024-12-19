@@ -28,5 +28,6 @@ fun InsertCompaniesScreen(
 
 @Composable
 private fun CompanyCard(company: Company, specialities: List<Speciality>) {
+    Text(company.name)
     //TODO
 }

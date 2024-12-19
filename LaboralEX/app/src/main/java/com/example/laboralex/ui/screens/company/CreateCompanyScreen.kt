@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.DropdownTextField
@@ -32,7 +33,10 @@ fun CreateCompanyScreen(
     Scaffold(
         floatingActionButton = {
             Button(
-                onClick = {}
+                onClick = {
+                    insertCompaniesViewModel.displayed.add(Company(name = name.value)) //TODO
+                    navController.popBackStack()
+                }
             ) { Text("Agregar empresa") }
         }
     ) { padding ->

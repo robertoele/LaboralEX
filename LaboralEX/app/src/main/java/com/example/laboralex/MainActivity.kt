@@ -50,7 +50,11 @@ class MainActivity : ComponentActivity() {
                         CreateUser(navController, userViewModel, this@MainActivity)
                     }
                     composable<NavigationManager.CreateCompanyScreen> {
-                        CreateCompanyScreen(navController, createCompanyViewModel)
+                        CreateCompanyScreen(
+                            navController,
+                            createCompanyViewModel,
+                            insertCompaniesViewModel
+                        )
                     }
                     composable<NavigationManager.InsertCompaniesScreen> {
                         InsertCompaniesScreen(navController, insertCompaniesViewModel)
