@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -28,13 +29,13 @@ fun InsertCompaniesScreen(
     navController: NavController,
     insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
-    if (insertCompaniesViewModel.displayed.isNotEmpty()) {
-        MainComposable(navController, insertCompaniesViewModel)
+    if (insertCompaniesViewModel.companiesDisplayed.isNotEmpty()) {
+        CompaniesList(navController, insertCompaniesViewModel)
     } else WelcomeScreen(navController)
 }
 
 @Composable
-private fun MainComposable(
+private fun CompaniesList(
     navController: NavController,
     insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
@@ -46,8 +47,8 @@ private fun MainComposable(
         ) {
             Text("Empresas en las que estoy interesado", textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.height(5.dp))
-            insertCompaniesViewModel.displayed.forEach {
-                CompanyCard(it, listOf()) //TODO
+            insertCompaniesViewModel.companiesDisplayed.forEach { (company, specialities) ->
+                CompanyCard(company, specialities)
             }
         }
     }
@@ -55,7 +56,7 @@ private fun MainComposable(
 
 @Composable
 private fun CompanyCard(company: Company, specialities: List<Speciality>) {
-    Card {
+    Card(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = company.name,
             modifier = Modifier.padding(3.dp),

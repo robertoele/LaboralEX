@@ -17,7 +17,7 @@ class CreateCompanyViewModel @Inject constructor(
 ) : ViewModel() {
 
     val possibleSpecialities = mutableListOf<Speciality>()
-    val displayed = mutableStateListOf<Speciality>()
+    val specialitiesDisplayed = mutableStateListOf<Speciality>()
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
