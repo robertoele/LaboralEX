@@ -37,13 +37,14 @@ fun CreateCompanyScreen(
                     insertCompaniesViewModel.companiesAdded[Company(name = name.value)] =
                         companyViewModel.specialitiesAdded
                     navController.popBackStack()
+                    companyViewModel.changeName("")
                 }
             ) { Text("Agregar empresa") }
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             Text("Nombre")
-            TextField(name.value, companyViewModel::onNameChanged)
+            TextField(name.value, companyViewModel::changeName)
             Text("Aptitudes que busca la empresa: ")
             Card {
                 DropdownTextField(

@@ -2,13 +2,18 @@ package com.example.laboralex.ui.screens.company
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +46,9 @@ private fun CompaniesList(
 ) {
     Scaffold(
         floatingActionButton = {
-            Button(onClick = {}) {
+            Button(onClick = {
+                navController.navigate(NavigationManager.MainScreen)
+            }) {
                 Text("Continuar")
             }
         }
@@ -51,7 +58,12 @@ private fun CompaniesList(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            Text("Empresas en las que estoy interesado", textAlign = TextAlign.Center)
+            Row {
+                Text("Empresas en las que estoy interesado", textAlign = TextAlign.Center)
+                IconButton(onClick = { navController.navigate(NavigationManager.CreateCompanyScreen) }) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                }
+            }
             Spacer(modifier = Modifier.height(5.dp))
             insertCompaniesViewModel.companiesAdded.forEach { (company, specialities) ->
                 CompanyCard(company, specialities)

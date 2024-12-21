@@ -28,7 +28,7 @@ class CreateCompanyViewModel @Inject constructor(
         }
     }
 
-    fun onNameChanged(newName: String) {
+    fun changeName(newName: String) {
         _name.value = newName
     }
 }
