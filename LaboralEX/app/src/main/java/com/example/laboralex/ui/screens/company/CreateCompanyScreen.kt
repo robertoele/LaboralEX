@@ -34,8 +34,10 @@ fun CreateCompanyScreen(
         floatingActionButton = {
             Button(
                 onClick = {
+                    companyViewModel.saveCompany()
                     insertCompaniesViewModel.companiesAdded[Company(name = name.value)] =
                         companyViewModel.specialitiesAdded
+                    //companyViewModel.specialitiesAdded.clear()
                     navController.popBackStack()
                     companyViewModel.changeName("")
                 }

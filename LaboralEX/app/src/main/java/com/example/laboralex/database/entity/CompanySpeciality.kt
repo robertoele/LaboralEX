@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class CompanySpeciality(
-    @PrimaryKey val id: Long,
+    @PrimaryKey val id: Long = 0,
     @ColumnInfo("company_id") val companyId: Long,
     @ColumnInfo("speciality_id") val specialityId: Long
 )
