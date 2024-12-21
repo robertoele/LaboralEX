@@ -52,7 +52,7 @@ fun CreateCompanyScreen(
                     value = speciality,
                     onValueChanged = { speciality = it }
                 ) {
-                    companyViewModel.specialitiesAdded.add(Speciality(name = it))
+                    companyViewModel.addSpeciality(Speciality(name = it))
                 }
                 if (companyViewModel.possibleSpecialities.isNotEmpty()) {
                     Text("Sugerencias")

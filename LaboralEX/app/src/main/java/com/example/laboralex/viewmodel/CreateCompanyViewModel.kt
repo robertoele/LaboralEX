@@ -3,7 +3,9 @@ package com.example.laboralex.viewmodel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.laboralex.database.dao.CompanyDao
 import com.example.laboralex.database.dao.SpecialityDao
+import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.Speciality
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateCompanyViewModel @Inject constructor(
+    private val companyDao: CompanyDao,
     private val specialityDao: SpecialityDao
 ) : ViewModel() {
 
@@ -31,4 +34,14 @@ class CreateCompanyViewModel @Inject constructor(
     fun changeName(newName: String) {
         _name.value = newName
     }
+
+    fun saveCompany() {
+        val companyToInsert = Company(name = name.value)
+        viewModelScope.launch {
+            val companyId = companyDao.insert(companyToInsert)
+
+        }
+    }
+
+    fun addSpeciality(speciality: Speciality) = specialitiesAdded.add(speciality)
 }
