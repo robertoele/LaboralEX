@@ -34,7 +34,7 @@ fun CreateCompanyScreen(
             Button(
                 onClick = {
                     companyViewModel.saveCompany()
-                    //companyViewModel.specialitiesAdded.clear()
+                    companyViewModel.specialitiesAdded.clear()
                     navController.popBackStack()
                     companyViewModel.changeName("")
                 }
