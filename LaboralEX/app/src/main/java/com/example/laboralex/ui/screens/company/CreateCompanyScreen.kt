@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.DropdownTextField
@@ -35,8 +34,6 @@ fun CreateCompanyScreen(
             Button(
                 onClick = {
                     companyViewModel.saveCompany()
-                    insertCompaniesViewModel.companiesAdded[Company(name = name.value)] =
-                        companyViewModel.specialitiesAdded
                     //companyViewModel.specialitiesAdded.clear()
                     navController.popBackStack()
                     companyViewModel.changeName("")

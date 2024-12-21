@@ -45,7 +45,7 @@ class CreateCompanyViewModel @Inject constructor(
             val companySpeciality = specialitiesAdded.map {
                 CompanySpeciality(companyId = companyId, specialityId = it.id)
             }
-            companySpecialityDao.insertAll(*companySpeciality.toTypedArray())
+            //companySpecialityDao.insertAll(*companySpeciality.toTypedArray())
         }
     }
 

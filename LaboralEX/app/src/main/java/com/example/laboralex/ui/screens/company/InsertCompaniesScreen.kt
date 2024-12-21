@@ -16,11 +16,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.Speciality
@@ -33,15 +35,16 @@ fun InsertCompaniesScreen(
     navController: NavController,
     insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
-    if (insertCompaniesViewModel.companiesAdded.isNotEmpty()) {
-        CompaniesList(navController, insertCompaniesViewModel)
-    } else WelcomeScreen(navController)
+    val companiesAdded by insertCompaniesViewModel.companiesAdded.collectAsStateWithLifecycle()
+
+    if (companiesAdded.isNotEmpty()) CompaniesList(navController, companiesAdded)
+    else WelcomeScreen(navController)
 }
 
 @Composable
 private fun CompaniesList(
     navController: NavController,
-    insertCompaniesViewModel: InsertCompaniesViewModel
+    companiesAdded: List<Company>
 ) {
     Scaffold(
         floatingActionButton = {
@@ -64,8 +67,8 @@ private fun CompaniesList(
                 }
             }
             Spacer(modifier = Modifier.height(5.dp))
-            insertCompaniesViewModel.companiesAdded.forEach { (company, specialities) ->
-                CompanyCard(company, specialities)
+            companiesAdded.forEach { company ->
+                CompanyCard(company, listOf())
             }
         }
     }
