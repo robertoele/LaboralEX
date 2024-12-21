@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,9 +57,9 @@ private fun CompaniesList(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Empresas en las que estoy interesado", textAlign = TextAlign.Center)
-                IconButton(onClick = { navController.navigate(NavigationManager.CreateCompanyScreen) }) {
+                Button(onClick = { navController.navigate(NavigationManager.CreateCompanyScreen) }) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = null)
                 }
             }
