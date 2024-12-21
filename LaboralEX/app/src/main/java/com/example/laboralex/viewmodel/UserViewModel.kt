@@ -42,9 +42,6 @@ class UserViewModel @Inject constructor(
     private val _surnames = MutableStateFlow("")
     val surnames = _surnames.asStateFlow()
 
-    private val _description = MutableStateFlow("")
-    val description = _description.asStateFlow()
-
     private val _skill = MutableStateFlow("")
     val skill = _skill.asStateFlow()
 
@@ -54,10 +51,6 @@ class UserViewModel @Inject constructor(
 
     fun changeSurnames(newSurname: String) {
         _surnames.value = newSurname
-    }
-
-    fun changeDescription(newDescription: String) {
-        _description.value = newDescription
     }
 
     fun changeSkill(newSkill: String) {
