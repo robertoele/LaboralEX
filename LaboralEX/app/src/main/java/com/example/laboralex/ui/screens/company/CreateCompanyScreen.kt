@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.laboralex.database.entity.Speciality
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.DropdownTextField
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
@@ -28,13 +27,13 @@ fun CreateCompanyScreen(
     insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
     val name = companyViewModel.name.collectAsStateWithLifecycle()
-    var speciality by remember { mutableStateOf("") }
+    var skillId by remember { mutableStateOf("") }
     Scaffold(
         floatingActionButton = {
             Button(
                 onClick = {
                     companyViewModel.saveCompany()
-                    companyViewModel.specialitiesAdded.clear()
+                    companyViewModel.companySkills.clear()
                     navController.popBackStack()
                     companyViewModel.changeName("")
                 }
@@ -47,18 +46,18 @@ fun CreateCompanyScreen(
             Text("Aptitudes que busca la empresa: ")
             Card {
                 DropdownTextField(
-                    elements = companyViewModel.possibleSpecialities.map { it.name },
-                    value = speciality,
-                    onValueChanged = { speciality = it }
+                    elements = companyViewModel.allSkills.map { it.name },
+                    value = skillId,
+                    onValueChanged = { skillId = it }
                 ) {
-                    companyViewModel.addSpeciality(Speciality(name = it))
+                    companyViewModel.companySkills.add(it)
                 }
-                if (companyViewModel.possibleSpecialities.isNotEmpty()) {
+                if (companyViewModel.allSkills.isNotEmpty()) {
                     Text("Sugerencias")
-                    ChipFlowRow(companyViewModel.possibleSpecialities.map { it.name })
+                    ChipFlowRow(companyViewModel.allSkills.map { it.name })
                 }
             }
-            companyViewModel.specialitiesAdded.forEach { Text(it.name) }
+            companyViewModel.companySkills.forEach { Text(it) }
         }
     }
 

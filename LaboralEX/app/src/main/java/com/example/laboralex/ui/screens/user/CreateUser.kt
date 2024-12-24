@@ -82,25 +82,25 @@ private fun UserForm(
 
 @Composable
 private fun QualitiesForm(viewModel: UserViewModel) {
-    val specialitiesNames = remember { viewModel.allSpecialities.map { it.name } }
+    val skillsNames = remember { viewModel.allSkills.map { it.name } }
     Card {
         val skill = viewModel.skill.collectAsStateWithLifecycle()
         DropdownTextField(
-            elements = specialitiesNames,
+            elements = skillsNames,
             value = skill.value,
             onValueChanged = viewModel::changeSkill
         ) {
             if (it.isNotEmpty()) {
                 viewModel.changeSkill("")
-                viewModel.userSpecialities.add(it)
+                viewModel.userSkills.add(it)
             }
         }
-        if (viewModel.allSpecialities.isNotEmpty()) {
+        if (viewModel.allSkills.isNotEmpty()) {
             Text("Sugerencias")
-            ChipFlowRow(viewModel.allSpecialities.map { it.name }) {
-                viewModel.userSpecialities.add(it)
+            ChipFlowRow(viewModel.allSkills.map { it.name }) {
+                viewModel.userSkills.add(it)
             }
         }
-        viewModel.userSpecialities.forEach { Text(it) }
+        viewModel.userSkills.forEach { Text(it) }
     }
 }

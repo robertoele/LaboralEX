@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.database.entity.Company
-import com.example.laboralex.database.entity.CompanySpeciality
-import com.example.laboralex.database.entity.Speciality
+import com.example.laboralex.database.entity.CompanySkill
+import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
@@ -52,7 +52,7 @@ private fun CompaniesList(
     navController: NavController,
     insertCompaniesViewModel: InsertCompaniesViewModel,
     companiesAdded: List<Company>,
-    companySpecialities: List<CompanySpeciality>
+    companySkills: List<CompanySkill>
 ) {
     Scaffold(
         floatingActionButton = {
@@ -77,7 +77,7 @@ private fun CompaniesList(
             Spacer(modifier = Modifier.height(5.dp))
             companiesAdded.forEach { company ->
                 val skills = insertCompaniesViewModel.allSkills.filter { skill ->
-                    skill.id in companySpecialities.filter { it.companyId == company.id }
+                    skill.id in companySkills.filter { it.companyId == company.id }
                         .map { companySkill -> companySkill.id }
                 }
                 CompanyCard(company, skills)
@@ -87,14 +87,14 @@ private fun CompaniesList(
 }
 
 @Composable
-private fun CompanyCard(company: Company, specialities: List<Speciality>) {
+private fun CompanyCard(company: Company, skills: List<Skill>) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = company.name,
             modifier = Modifier.padding(3.dp),
             textAlign = TextAlign.Center
         )
-        ChipFlowRow(specialities)
+        ChipFlowRow(skills)
     }
 }
 
@@ -104,12 +104,12 @@ private fun CompanyCardPreview() {
     CompanyCard(
         Company(name = "Este"),
         listOf(
-            Speciality(name = "Jetpack Compose"),
-            Speciality(name = "Kotlin"),
-            Speciality(name = "Android"),
-            Speciality(name = "Godot"),
-            Speciality(name = "Unity"),
-            Speciality(name = "Retrofit")
+            Skill(name = "Jetpack Compose"),
+            Skill(name = "Kotlin"),
+            Skill(name = "Android"),
+            Skill(name = "Godot"),
+            Skill(name = "Unity"),
+            Skill(name = "Retrofit")
         )
     )
 }

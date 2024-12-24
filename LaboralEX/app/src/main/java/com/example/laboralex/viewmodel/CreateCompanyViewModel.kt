@@ -4,11 +4,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CompanyDao
-import com.example.laboralex.database.dao.CompanySpecialityDao
-import com.example.laboralex.database.dao.SpecialityDao
+import com.example.laboralex.database.dao.CompanySkillDao
+import com.example.laboralex.database.dao.SkillDao
 import com.example.laboralex.database.entity.Company
-import com.example.laboralex.database.entity.CompanySpeciality
-import com.example.laboralex.database.entity.Speciality
+import com.example.laboralex.database.entity.CompanySkill
+import com.example.laboralex.database.entity.Skill
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,19 +18,19 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateCompanyViewModel @Inject constructor(
     private val companyDao: CompanyDao,
-    private val specialityDao: SpecialityDao,
-    private val companySpecialityDao: CompanySpecialityDao
+    private val skillDao: SkillDao,
+    private val companySkillDao: CompanySkillDao
 ) : ViewModel() {
 
-    val possibleSpecialities = mutableListOf<Speciality>()
-    val specialitiesAdded = mutableStateListOf<Speciality>()
+    val allSkills = mutableListOf<Skill>()
+    val companySkills = mutableStateListOf<String>()
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 
     init {
         viewModelScope.launch {
-            possibleSpecialities.addAll(specialityDao.getAll())
+            allSkills.addAll(skillDao.getAll())
         }
     }
 
@@ -42,12 +42,24 @@ class CreateCompanyViewModel @Inject constructor(
         val companyToInsert = Company(name = name.value)
         viewModelScope.launch {
             val companyId = companyDao.insert(companyToInsert)
-            val companySpeciality = specialitiesAdded.map {
-                CompanySpeciality(companyId = companyId, specialityId = it.id)
+
+            val newSkills =
+                companySkills.filter { skill -> skill !in allSkills.map { it.name } }
+                    .map { name -> Skill(name = name) }
+
+            val existingSkills = allSkills.filter { it.name in companySkills }
+                .map { skill -> skill.id }
+
+            val skillsIds =
+                skillDao.insertAll(*newSkills.toTypedArray()) + existingSkills
+
+            val companySkillsToInsert = skillsIds.map {
+                CompanySkill(companyId = companyId, skillId = it)
             }
-            //companySpecialityDao.insertAll(*companySpeciality.toTypedArray())
+
+            companySkillDao.insertAll(*companySkillsToInsert.toTypedArray())
+
         }
     }
 
-    fun addSpeciality(speciality: Speciality) = specialitiesAdded.add(speciality)
 }

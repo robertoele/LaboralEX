@@ -26,7 +26,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesSpecialityDao(db: AppDatabase) = db.SpecialityDao()
+    fun providesSkillDao(db: AppDatabase) = db.SkillDao()
 
     @Provides
     @Singleton
@@ -34,9 +34,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesUserSpecialityDao(db: AppDatabase) = db.UserSpecialityDao()
+    fun providesUserSkillDao(db: AppDatabase) = db.UserSkillDao()
 
     @Provides
     @Singleton
-    fun proviesCompanySpecialityDao(db: AppDatabase) = db.CompanySpecialityDao()
+    fun proviesCompanySkillDao(db: AppDatabase) = db.CompanySkillDao()
 }

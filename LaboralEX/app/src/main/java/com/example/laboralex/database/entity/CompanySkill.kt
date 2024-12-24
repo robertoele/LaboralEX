@@ -8,23 +8,23 @@ import androidx.room.PrimaryKey
 @Entity(
     foreignKeys = [
         ForeignKey(
-            entity = User::class,
-            parentColumns = arrayOf("uid"),
-            childColumns = arrayOf("userId"),
+            entity = Company::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("company_id"),
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = Speciality::class,
+            entity = Skill::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("specialityId"),
+            childColumns = arrayOf("skill_id"),
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
     ]
 )
-data class UserSpeciality(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo("userId") val userId: Long,
-    @ColumnInfo("specialityId") val specialityId: Long,
+data class CompanySkill(
+    @PrimaryKey val id: Long = 0,
+    @ColumnInfo("company_id") val companyId: Long,
+    @ColumnInfo("skill_id") val skillId: Long
 )
