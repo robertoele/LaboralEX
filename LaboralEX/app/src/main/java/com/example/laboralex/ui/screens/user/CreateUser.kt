@@ -82,7 +82,7 @@ private fun UserForm(
 
 @Composable
 private fun QualitiesForm(viewModel: UserViewModel) {
-    val specialitiesNames = remember { viewModel.possibleSpecialities.map { it.name } }
+    val specialitiesNames = remember { viewModel.allSpecialities.map { it.name } }
     Card {
         val skill = viewModel.skill.collectAsStateWithLifecycle()
         DropdownTextField(
@@ -95,9 +95,9 @@ private fun QualitiesForm(viewModel: UserViewModel) {
                 viewModel.userSpecialities.add(it)
             }
         }
-        if (viewModel.possibleSpecialities.isNotEmpty()) {
+        if (viewModel.allSpecialities.isNotEmpty()) {
             Text("Sugerencias")
-            ChipFlowRow(viewModel.possibleSpecialities.map { it.name }) {
+            ChipFlowRow(viewModel.allSpecialities.map { it.name }) {
                 viewModel.userSpecialities.add(it)
             }
         }

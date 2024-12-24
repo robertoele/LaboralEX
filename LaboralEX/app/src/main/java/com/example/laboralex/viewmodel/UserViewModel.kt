@@ -23,12 +23,12 @@ class UserViewModel @Inject constructor(
     private val userSpecialityDao: UserSpecialityDao
 ) : ViewModel() {
 
-    val possibleSpecialities = mutableListOf<Speciality>()
+    val allSpecialities = mutableListOf<Speciality>()
     val userSpecialities = mutableStateListOf<String>()
 
     init {
         viewModelScope.launch {
-            possibleSpecialities.addAll(specialityDao.getAll())
+            allSpecialities.addAll(specialityDao.getAll())
             _loadingState.value = State.LOADED
         }
     }
@@ -67,17 +67,20 @@ class UserViewModel @Inject constructor(
                 )
             )
 
-            val specialitiesNames = userSpecialities.filter {
-                it !in specialityDao.getAll().map { speciality -> speciality.name }
-            }
+            val newSpecialities =
+                userSpecialities.filter { it !in allSpecialities.map { speciality -> speciality.name } }
+                    .map { name -> Speciality(name = name) }
 
-            val specialitiesToAdd = specialitiesNames.map { Speciality(name = it) }
+            val existingSpecialities = allSpecialities.filter { it.name in userSpecialities }
+                .map { speciality -> speciality.id }
+            
+            val userSpecialitiesIds =
+                specialityDao.insertAll(*newSpecialities.toTypedArray()) + existingSpecialities
 
-            val specialityIds =
-                specialityDao.insertAll(*specialitiesToAdd.toTypedArray()) //FIXME Creo que esto sólo inserta las habilidades que no existían
-            val userSpecialities =
-                specialityIds.map { UserSpeciality(userId = userId, specialityId = it) }
-            userSpecialityDao.insertAll(*userSpecialities.toTypedArray())
+            val userSpecialitiesToInsert =
+                userSpecialitiesIds.map { UserSpeciality(userId = userId, specialityId = it) }
+
+            userSpecialityDao.insertAll(*userSpecialitiesToInsert.toTypedArray())
         }
     }
 }
