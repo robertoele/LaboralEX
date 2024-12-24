@@ -73,7 +73,8 @@ class UserViewModel @Inject constructor(
 
             val specialitiesToAdd = specialitiesNames.map { Speciality(name = it) }
 
-            val specialityIds = specialityDao.insertAll(*specialitiesToAdd.toTypedArray())
+            val specialityIds =
+                specialityDao.insertAll(*specialitiesToAdd.toTypedArray()) //FIXME Creo que esto sólo inserta las habilidades que no existían
             val userSpecialities =
                 specialityIds.map { UserSpeciality(userId = userId, specialityId = it) }
             userSpecialityDao.insertAll(*userSpecialities.toTypedArray())
