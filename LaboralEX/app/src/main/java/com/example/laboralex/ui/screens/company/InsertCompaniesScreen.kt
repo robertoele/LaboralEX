@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.database.entity.Company
-import com.example.laboralex.database.entity.CompanySkill
 import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.ChipFlowRow
@@ -37,12 +36,10 @@ fun InsertCompaniesScreen(
     insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
     val companiesAdded by insertCompaniesViewModel.companiesAdded.collectAsStateWithLifecycle()
-    val companySkills by insertCompaniesViewModel.companySkills.collectAsStateWithLifecycle()
     if (companiesAdded.isNotEmpty()) CompaniesList(
         navController,
         insertCompaniesViewModel,
-        companiesAdded,
-        companySkills
+        companiesAdded
     )
     else WelcomeScreen(navController)
 }
@@ -51,9 +48,10 @@ fun InsertCompaniesScreen(
 private fun CompaniesList(
     navController: NavController,
     insertCompaniesViewModel: InsertCompaniesViewModel,
-    companiesAdded: List<Company>,
-    companySkills: List<CompanySkill>
+    companiesAdded: List<Company>
 ) {
+    val companySkills by insertCompaniesViewModel.companySkills.collectAsStateWithLifecycle()
+    val allSkills by insertCompaniesViewModel.allSkills.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
             Button(onClick = {
@@ -76,7 +74,7 @@ private fun CompaniesList(
             }
             Spacer(modifier = Modifier.height(5.dp))
             companiesAdded.forEach { company ->
-                val skills = insertCompaniesViewModel.allSkills.filter { skill ->
+                val skills = allSkills.filter { skill ->
                     skill.id in companySkills.filter { it.companyId == company.id }
                         .map { companySkill -> companySkill.id }
                 }

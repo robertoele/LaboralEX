@@ -1,5 +1,6 @@
 package com.example.laboralex.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CompanyDao
@@ -27,18 +28,25 @@ class InsertCompaniesViewModel @Inject constructor(
     private val _companySkills = MutableStateFlow<List<CompanySkill>>(emptyList())
     val companySkills: StateFlow<List<CompanySkill>> = _companySkills
 
-    val allSkills = mutableListOf<Skill>()
+    private val _allSkills = MutableStateFlow<List<Skill>>(emptyList())
+    val allSkills: StateFlow<List<Skill>> = _allSkills
 
     init {
         viewModelScope.launch {
-            allSkills.addAll(skillDao.getAll())
+
+            skillDao.getAllAsFlow().collect {
+                Log.i("Flows", "Skills flow")
+                _allSkills.value = it
+            }
 
             companyDao.getCompaniesAsFlow().collect {
+                Log.i("Flows", "Companies flow")
                 _companiesAdded.value = it
             }
 
-            companySkillDao.getAllAsFlow().collect { skills ->
-                _companySkills.value = skills
+            companySkillDao.getAllAsFlow().collect {
+                Log.i("Flows", "CompanySkills flow")
+                _companySkills.value = it
             }
         }
     }
