@@ -38,28 +38,26 @@ class CreateCompanyViewModel @Inject constructor(
         _name.value = newName
     }
 
-    fun saveCompany() {
+    suspend fun saveCompany() {
         val companyToInsert = Company(name = name.value)
-        viewModelScope.launch {
-            val companyId = companyDao.insert(companyToInsert)
+        val companyId = companyDao.insert(companyToInsert)
 
-            val newSkills =
-                companySkills.filter { skill -> skill !in allSkills.map { it.name } }
-                    .map { name -> Skill(name = name) }
+        val newSkills =
+            companySkills.filter { skill -> skill !in allSkills.map { it.name } }
+                .map { name -> Skill(name = name) }
 
-            val existingSkills = allSkills.filter { it.name in companySkills }
-                .map { skill -> skill.id }
+        val existingSkills = allSkills.filter { it.name in companySkills }
+            .map { skill -> skill.id }
 
-            val skillsIds =
-                skillDao.insertAll(*newSkills.toTypedArray()) + existingSkills
+        val skillsIds =
+            skillDao.insertAll(*newSkills.toTypedArray()) + existingSkills
 
-            val companySkillsToInsert = skillsIds.map {
-                CompanySkill(companyId = companyId, skillId = it)
-            }
-
-            companySkillDao.insertAll(*companySkillsToInsert.toTypedArray())
-
+        val companySkillsToInsert = skillsIds.map {
+            CompanySkill(companyId = companyId, skillId = it)
         }
+
+        companySkillDao.insertAll(*companySkillsToInsert.toTypedArray())
+
     }
 
 }

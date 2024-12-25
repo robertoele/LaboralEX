@@ -14,11 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.DropdownTextField
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun CreateCompanyScreen(
@@ -32,8 +34,10 @@ fun CreateCompanyScreen(
         floatingActionButton = {
             Button(
                 onClick = {
-                    companyViewModel.saveCompany()
-                    companyViewModel.companySkills.clear()
+                    companyViewModel.viewModelScope.launch {
+                        companyViewModel.saveCompany()
+                        companyViewModel.companySkills.clear()
+                    }
                     navController.popBackStack()
                     companyViewModel.changeName("")
                 }
