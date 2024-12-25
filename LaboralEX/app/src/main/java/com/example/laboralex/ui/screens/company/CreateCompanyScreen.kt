@@ -29,6 +29,7 @@ fun CreateCompanyScreen(
     insertCompaniesViewModel: InsertCompaniesViewModel
 ) {
     val name = companyViewModel.name.collectAsStateWithLifecycle()
+    val allSkills = companyViewModel.allSkills.collectAsStateWithLifecycle()
     var skillId by remember { mutableStateOf("") }
     Scaffold(
         floatingActionButton = {
@@ -50,15 +51,15 @@ fun CreateCompanyScreen(
             Text("Aptitudes que busca la empresa: ")
             Card {
                 DropdownTextField(
-                    elements = companyViewModel.allSkills.map { it.name },
+                    elements = allSkills.value.map { it.name },
                     value = skillId,
                     onValueChanged = { skillId = it }
                 ) {
                     companyViewModel.companySkills.add(it)
                 }
-                if (companyViewModel.allSkills.isNotEmpty()) {
+                if (allSkills.value.isNotEmpty()) {
                     Text("Sugerencias")
-                    ChipFlowRow(companyViewModel.allSkills.map { it.name })
+                    ChipFlowRow(allSkills.value.map { it.name })
                 }
             }
             companyViewModel.companySkills.forEach { Text(it) }

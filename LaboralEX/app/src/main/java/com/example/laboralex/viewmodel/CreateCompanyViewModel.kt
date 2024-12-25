@@ -11,6 +11,7 @@ import com.example.laboralex.database.entity.CompanySkill
 import com.example.laboralex.database.entity.Skill
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,7 +23,9 @@ class CreateCompanyViewModel @Inject constructor(
     private val companySkillDao: CompanySkillDao
 ) : ViewModel() {
 
-    val allSkills = mutableListOf<Skill>()
+    private val _allSkills = MutableStateFlow<List<Skill>>(emptyList())
+    val allSkills: StateFlow<List<Skill>> = _allSkills
+
     val companySkills = mutableStateListOf<String>()
 
     private val _name = MutableStateFlow("")
@@ -30,7 +33,7 @@ class CreateCompanyViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            allSkills.addAll(skillDao.getAll())
+            skillDao.getAllAsFlow().collect { _allSkills.value = it }
         }
     }
 
@@ -43,10 +46,10 @@ class CreateCompanyViewModel @Inject constructor(
         val companyId = companyDao.insert(companyToInsert)
 
         val newSkills =
-            companySkills.filter { skill -> skill !in allSkills.map { it.name } }
+            companySkills.filter { skill -> skill !in allSkills.value.map { it.name } }
                 .map { name -> Skill(name = name) }
 
-        val existingSkills = allSkills.filter { it.name in companySkills }
+        val existingSkills = allSkills.value.filter { it.name in companySkills }
             .map { skill -> skill.id }
 
         val skillsIds =
