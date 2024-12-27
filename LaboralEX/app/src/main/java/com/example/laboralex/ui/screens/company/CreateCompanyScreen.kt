@@ -59,7 +59,9 @@ fun CreateCompanyScreen(
                 }
                 if (allSkills.value.isNotEmpty()) {
                     Text("Sugerencias")
-                    ChipFlowRow(allSkills.value.map { it.name })
+                    ChipFlowRow(allSkills.value.map { it.name }) {
+                        companyViewModel.companySkills.add(it)
+                    }
                 }
             }
             companyViewModel.companySkills.forEach { Text(it) }
