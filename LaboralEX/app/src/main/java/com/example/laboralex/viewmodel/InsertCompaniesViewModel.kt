@@ -34,18 +34,18 @@ class InsertCompaniesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
 
-            skillDao.getAllAsFlow().collect {
-                Log.i("Flows", "Skills flow")
-                _allSkills.value = it
-            }
-
             companyDao.getCompaniesAsFlow().collect {
-                Log.i("Flows", "Companies flow")
+                Log.i("Flows", "Companies flow insertCompanies")
                 _companiesAdded.value = it
             }
 
+            skillDao.getAllAsFlow().collect {
+                Log.i("Flows", "Skills flow insertCompanies")
+                _allSkills.value = it
+            }
+
             companySkillDao.getAllAsFlow().collect {
-                Log.i("Flows", "CompanySkills flow")
+                Log.i("Flows", "CompanySkills flow insertCompanies")
                 _companySkills.value = it
             }
         }
