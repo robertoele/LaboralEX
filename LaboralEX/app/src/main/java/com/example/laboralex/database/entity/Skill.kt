@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Skill(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo("name") val name: String
+    @ColumnInfo("name") val name: String,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0
 ) {
     override fun toString(): String {
         return name

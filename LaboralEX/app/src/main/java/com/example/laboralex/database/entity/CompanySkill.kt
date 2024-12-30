@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class CompanySkill(
-    @PrimaryKey val id: Long = 0,
     @ColumnInfo("company_id") val companyId: Long,
-    @ColumnInfo("skill_id") val skillId: Long
+    @ColumnInfo("skill_id") val skillId: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0
 )

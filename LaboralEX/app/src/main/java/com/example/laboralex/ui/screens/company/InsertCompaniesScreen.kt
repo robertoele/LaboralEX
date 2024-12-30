@@ -75,8 +75,7 @@ private fun CompaniesList(
             Spacer(modifier = Modifier.height(5.dp))
             companiesAdded.forEach { company ->
                 val skills = allSkills.filter { skill ->
-                    skill.id in companySkills.filter { it.companyId == company.id }
-                        .map { companySkill -> companySkill.id }
+                    skill.id in companySkills.map { it.skillId }
                 }
                 CompanyCard(company, skills)
             }
@@ -86,7 +85,9 @@ private fun CompaniesList(
 
 @Composable
 private fun CompanyCard(company: Company, skills: List<Skill>) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 5.dp)) {
         Text(
             text = company.name,
             modifier = Modifier.padding(3.dp),
