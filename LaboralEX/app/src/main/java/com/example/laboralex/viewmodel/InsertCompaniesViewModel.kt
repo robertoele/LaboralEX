@@ -1,6 +1,5 @@
 package com.example.laboralex.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CompanyDao
@@ -33,21 +32,13 @@ class InsertCompaniesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-
-            companyDao.getCompaniesAsFlow().collect {
-                Log.i("Flows", "Companies flow insertCompanies")
-                _companiesAdded.value = it
-            }
-
-            skillDao.getAllAsFlow().collect {
-                Log.i("Flows", "Skills flow insertCompanies")
-                _allSkills.value = it
-            }
-
-            companySkillDao.getAllAsFlow().collect {
-                Log.i("Flows", "CompanySkills flow insertCompanies")
-                _companySkills.value = it
-            }
+            companyDao.getCompaniesAsFlow().collect { _companiesAdded.value = it }
+        }
+        viewModelScope.launch {
+            skillDao.getAllAsFlow().collect { _allSkills.value = it }
+        }
+        viewModelScope.launch {
+            companySkillDao.getAllAsFlow().collect { _companySkills.value = it }
         }
     }
 }
