@@ -57,6 +57,10 @@ class UserViewModel @Inject constructor(
         _skill.value = newSkill
     }
 
+    fun onContinuePressed() {
+
+    }
+
     fun saveUser() {
         viewModelScope.launch {
             val userId = userDao.insert(

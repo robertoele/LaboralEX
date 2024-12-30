@@ -2,6 +2,8 @@ package com.example.laboralex.ui.screens.user
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.laboralex.R
@@ -22,6 +25,7 @@ import com.example.laboralex.ui.components.DropdownTextField
 import com.example.laboralex.ui.components.LoadingScreen
 import com.example.laboralex.ui.components.State
 import com.example.laboralex.ui.components.TextFieldWithHeader
+import com.example.laboralex.ui.components.TextRequiredField
 import com.example.laboralex.viewmodel.UserViewModel
 
 @Composable
@@ -63,17 +67,22 @@ private fun UserForm(
     Column(modifier = modifier.then(Modifier.verticalScroll(rememberScrollState()))) {
         Text(activity.getString(R.string.create_user_welcome))
 
+
         TextFieldWithHeader(
             value = userName.value,
             name = activity.getString(R.string.name),
             onValueChanged = userViewModel::changeName
         )
+        TextRequiredField()
+        Spacer(modifier = Modifier.height(3.dp))
 
         TextFieldWithHeader(
             value = userSurname.value,
             name = activity.getString(R.string.surname),
             onValueChanged = userViewModel::changeSurnames
         )
+        TextRequiredField()
+        Spacer(modifier = Modifier.height(3.dp))
 
         Text("Aptitudes")
         QualitiesForm(userViewModel)
