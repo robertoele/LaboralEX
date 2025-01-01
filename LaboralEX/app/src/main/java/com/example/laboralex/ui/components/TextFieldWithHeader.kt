@@ -1,17 +1,25 @@
 package com.example.laboralex.ui.components
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun TextFieldWithHeader(value: String, name: String, modifier: Modifier = Modifier, onValueChanged: (String) -> Unit) {
-        Text(name)
-        TextField(
-            modifier = modifier,
-            value = value,
-            onValueChange = onValueChanged,
-            label = { Text(name) }
-        )
+fun TextFieldWithHeader(
+    value: String,
+    name: String,
+    modifier: Modifier = Modifier,
+    interactionSource: MutableInteractionSource,
+    onValueChanged: (String) -> Unit
+) {
+    Text(name)
+    TextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChanged,
+        interactionSource = interactionSource,
+        label = { Text(name) }
+    )
 }

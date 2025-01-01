@@ -55,6 +55,14 @@ class UserViewModel @Inject constructor(
         _name.value = newName
     }
 
+    fun changeRequiredName() {
+        _requiredName.value = false
+    }
+
+    fun changeRequiredSurnames() {
+        _requiredSurnames.value = false
+    }
+
     fun changeSurnames(newSurname: String) {
         _surnames.value = newSurname
     }

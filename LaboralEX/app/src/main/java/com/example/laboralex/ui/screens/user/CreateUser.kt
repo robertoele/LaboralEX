@@ -1,6 +1,8 @@
 package com.example.laboralex.ui.screens.user
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -12,6 +14,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,6 +30,7 @@ import com.example.laboralex.ui.components.State
 import com.example.laboralex.ui.components.TextFieldWithHeader
 import com.example.laboralex.ui.components.TextRequiredField
 import com.example.laboralex.viewmodel.UserViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun CreateUser(
@@ -70,12 +74,28 @@ private fun UserForm(
     val requiredName = userViewModel.requiredName.collectAsStateWithLifecycle()
     val requiredSurnames = userViewModel.requiredSurnames.collectAsStateWithLifecycle()
 
+    val nameInteractionSource = remember { MutableInteractionSource() }
+    val surnameInteractionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(nameInteractionSource) {
+        nameInteractionSource.interactions.collectLatest { value ->
+            if (value is PressInteraction.Press) userViewModel.changeRequiredName()
+        }
+    }
+
+    LaunchedEffect(surnameInteractionSource) {
+        surnameInteractionSource.interactions.collectLatest { value ->
+            if (value is PressInteraction.Press) userViewModel.changeRequiredSurnames()
+        }
+    }
+
     Column(modifier = modifier.then(Modifier.verticalScroll(rememberScrollState()))) {
         Text(activity.getString(R.string.create_user_welcome))
 
         TextFieldWithHeader(
             value = userName.value,
             name = activity.getString(R.string.name),
+            interactionSource = nameInteractionSource,
             onValueChanged = userViewModel::changeName
         )
         if (requiredName.value) TextRequiredField()
@@ -84,6 +104,7 @@ private fun UserForm(
         TextFieldWithHeader(
             value = userSurname.value,
             name = activity.getString(R.string.surname),
+            interactionSource = surnameInteractionSource,
             onValueChanged = userViewModel::changeSurnames
         )
         if (requiredSurnames.value) TextRequiredField()
