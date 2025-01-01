@@ -48,8 +48,10 @@ fun CreateUser(
 private fun ContinueButton(userViewModel: UserViewModel, navController: NavController) {
     Button(
         onClick = {
-            userViewModel.saveUser()
-            navController.navigate(NavigationManager.InsertCompaniesScreen)
+            if (userViewModel.onContinuePressed()) {
+                userViewModel.saveUser()
+                navController.navigate(NavigationManager.InsertCompaniesScreen)
+            }
         }
     ) {
         Text("Continuar")
@@ -64,16 +66,19 @@ private fun UserForm(
 ) {
     val userName = userViewModel.name.collectAsStateWithLifecycle()
     val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
+
+    val requiredName = userViewModel.requiredName.collectAsStateWithLifecycle()
+    val requiredSurnames = userViewModel.requiredSurnames.collectAsStateWithLifecycle()
+
     Column(modifier = modifier.then(Modifier.verticalScroll(rememberScrollState()))) {
         Text(activity.getString(R.string.create_user_welcome))
-
 
         TextFieldWithHeader(
             value = userName.value,
             name = activity.getString(R.string.name),
             onValueChanged = userViewModel::changeName
         )
-        TextRequiredField()
+        if (requiredName.value) TextRequiredField()
         Spacer(modifier = Modifier.height(3.dp))
 
         TextFieldWithHeader(
@@ -81,7 +86,7 @@ private fun UserForm(
             name = activity.getString(R.string.surname),
             onValueChanged = userViewModel::changeSurnames
         )
-        TextRequiredField()
+        if (requiredSurnames.value) TextRequiredField()
         Spacer(modifier = Modifier.height(3.dp))
 
         Text("Aptitudes")

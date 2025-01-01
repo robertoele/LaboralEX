@@ -45,6 +45,12 @@ class UserViewModel @Inject constructor(
     private val _skill = MutableStateFlow("")
     val skill = _skill.asStateFlow()
 
+    private val _requiredName = MutableStateFlow(false)
+    val requiredName = _requiredName.asStateFlow()
+
+    private val _requiredSurnames = MutableStateFlow(false)
+    val requiredSurnames = _requiredSurnames.asStateFlow()
+
     fun changeName(newName: String) {
         _name.value = newName
     }
@@ -57,8 +63,13 @@ class UserViewModel @Inject constructor(
         _skill.value = newSkill
     }
 
-    fun onContinuePressed() {
+    fun onContinuePressed(): Boolean {
+        val nameBlank = _name.value.isBlank()
+        val surnamesBlank = _surnames.value.isBlank()
+        if (nameBlank) _requiredName.value = true
+        if (surnamesBlank) _requiredSurnames.value = true
 
+        return !nameBlank && !surnamesBlank
     }
 
     fun saveUser() {
