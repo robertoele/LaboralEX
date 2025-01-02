@@ -31,6 +31,9 @@ class CreateCompanyViewModel @Inject constructor(
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 
+    private val _requiredName = MutableStateFlow(false)
+    val requiredName = _requiredName.asStateFlow()
+
     init {
         viewModelScope.launch {
             skillDao.getAllAsFlow().collect { _allSkills.value = it }
@@ -39,6 +42,16 @@ class CreateCompanyViewModel @Inject constructor(
 
     fun changeName(newName: String) {
         _name.value = newName
+    }
+
+    fun changeRequired() {
+        _requiredName.value = false
+    }
+
+    fun onContinuePressed(): Boolean {
+        val nameBlank = _name.value.isBlank()
+        if (nameBlank) _requiredName.value = true
+        return !nameBlank
     }
 
     suspend fun saveCompany() {
@@ -62,5 +75,4 @@ class CreateCompanyViewModel @Inject constructor(
         companySkillDao.insertAll(*companySkillsToInsert.toTypedArray())
 
     }
-
 }

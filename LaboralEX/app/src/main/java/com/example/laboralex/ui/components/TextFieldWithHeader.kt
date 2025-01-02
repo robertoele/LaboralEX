@@ -11,7 +11,7 @@ fun TextFieldWithHeader(
     value: String,
     name: String,
     modifier: Modifier = Modifier,
-    interactionSource: MutableInteractionSource,
+    interactionSource: MutableInteractionSource? = null,
     onValueChanged: (String) -> Unit
 ) {
     Text(name)
