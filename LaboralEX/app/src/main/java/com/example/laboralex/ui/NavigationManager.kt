@@ -17,4 +17,7 @@ class NavigationManager {
 
     @Serializable
     object CreateCompanyScreen
+
+    @Serializable
+    object CurriculumEditor
 }

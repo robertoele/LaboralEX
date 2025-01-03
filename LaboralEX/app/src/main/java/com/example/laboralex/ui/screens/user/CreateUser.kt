@@ -1,6 +1,5 @@
 package com.example.laboralex.ui.screens.user
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Column
@@ -18,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -33,17 +33,13 @@ import com.example.laboralex.viewmodel.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun CreateUser(
-    navController: NavController,
-    userViewModel: UserViewModel,
-    activity: ComponentActivity
-) {
+fun CreateUser(navController: NavController, userViewModel: UserViewModel) {
     when (userViewModel.loadingState.collectAsState().value) {
         State.LOADING -> LoadingScreen()
         State.LOADED -> {
             Scaffold(
                 floatingActionButton = { ContinueButton(userViewModel, navController) }
-            ) { UserForm(userViewModel, activity, Modifier.padding(it)) }
+            ) { UserForm(userViewModel, Modifier.padding(it)) }
         }
     }
 }
@@ -63,11 +59,7 @@ private fun ContinueButton(userViewModel: UserViewModel, navController: NavContr
 }
 
 @Composable
-private fun UserForm(
-    userViewModel: UserViewModel,
-    activity: ComponentActivity,
-    modifier: Modifier = Modifier
-) {
+private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier) {
     val userName = userViewModel.name.collectAsStateWithLifecycle()
     val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
 
@@ -90,11 +82,11 @@ private fun UserForm(
     }
 
     Column(modifier = modifier.then(Modifier.verticalScroll(rememberScrollState()))) {
-        Text(activity.getString(R.string.create_user_welcome))
+        Text(stringResource(R.string.create_user_welcome))
 
         TextFieldWithHeader(
             value = userName.value,
-            name = activity.getString(R.string.name),
+            name = stringResource(R.string.name),
             interactionSource = nameInteractionSource,
             onValueChanged = userViewModel::changeName
         )
@@ -103,7 +95,7 @@ private fun UserForm(
 
         TextFieldWithHeader(
             value = userSurname.value,
-            name = activity.getString(R.string.surname),
+            name = stringResource(R.string.surname),
             interactionSource = surnameInteractionSource,
             onValueChanged = userViewModel::changeSurnames
         )

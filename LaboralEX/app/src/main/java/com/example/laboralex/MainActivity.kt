@@ -14,12 +14,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.screens.company.CreateCompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
+import com.example.laboralex.ui.screens.curriculum.CurriculumEditor
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.screens.user.CreateUser
 import com.example.laboralex.ui.screens.user.UserScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
+import com.example.laboralex.viewmodel.CurriculumEditorViewModel
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
+import com.example.laboralex.viewmodel.MainScreenViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,6 +37,8 @@ class MainActivity : ComponentActivity() {
                 val userViewModel = hiltViewModel<UserViewModel>()
                 val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
                 val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
+                val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
+                val curriculumEditorViewModel = hiltViewModel<CurriculumEditorViewModel>()
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -41,13 +46,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.padding(25.dp)
                 ) {
                     composable<NavigationManager.MainScreen> {
-                        MainScreen(navController, userViewModel)
+                        MainScreen(navController, mainScreenViewModel)
                     }
                     composable<NavigationManager.UserScreen> {
                         UserScreen(navController, userViewModel)
                     }
                     composable<NavigationManager.CreateUserScreen> {
-                        CreateUser(navController, userViewModel, this@MainActivity)
+                        CreateUser(navController, userViewModel)
                     }
                     composable<NavigationManager.CreateCompanyScreen> {
                         CreateCompanyScreen(
@@ -58,6 +63,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<NavigationManager.InsertCompaniesScreen> {
                         InsertCompaniesScreen(navController, insertCompaniesViewModel)
+                    }
+                    composable<NavigationManager.CurriculumEditor> {
+                        CurriculumEditor(curriculumEditorViewModel)
                     }
                 }
             }

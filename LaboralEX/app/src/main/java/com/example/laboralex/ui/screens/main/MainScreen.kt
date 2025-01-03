@@ -1,25 +1,16 @@
 package com.example.laboralex.ui.screens.main
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.laboralex.viewmodel.UserViewModel
+import com.example.laboralex.ui.NavigationManager
+import com.example.laboralex.viewmodel.MainScreenViewModel
 
 @Composable
-fun MainScreen(navController: NavController, userViewModel: UserViewModel) {
-    UserData(userViewModel)
-}
-
-@Composable
-private fun UserData(userViewModel: UserViewModel) {
-    val userName = userViewModel.name.collectAsStateWithLifecycle()
-
+fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
     Column {
-        TextField(userName.value, onValueChange = userViewModel::changeName)
-        Text(userName.value)
+        Button(onClick = { navController.navigate(NavigationManager.CurriculumEditor) }) { }
     }
-
 }
+
