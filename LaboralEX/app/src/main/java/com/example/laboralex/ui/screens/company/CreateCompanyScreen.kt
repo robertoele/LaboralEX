@@ -3,6 +3,7 @@ package com.example.laboralex.ui.screens.company
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CreateCompanyScreen(
     navController: NavController,
@@ -84,6 +86,9 @@ fun CreateCompanyScreen(
                 ) {
                     companyViewModel.companySkills.add(it)
                 }
+
+                ChipFlowRow(companyViewModel.companySkills)
+
                 if (allSkills.value.isNotEmpty()) {
                     Text("Sugerencias")
                     ChipFlowRow(allSkills.value.map { it.name }) {
@@ -91,7 +96,6 @@ fun CreateCompanyScreen(
                     }
                 }
             }
-            companyViewModel.companySkills.forEach { Text(it) }
         }
     }
 
