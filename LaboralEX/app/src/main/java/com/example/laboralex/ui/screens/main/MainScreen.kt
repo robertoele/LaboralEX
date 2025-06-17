@@ -11,6 +11,7 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
     Column {
         Text("Solicitudes en curso")
         Text("Solicitudes pendientes")
+        Text("Empresas que te interesan")
     }
 }
 
