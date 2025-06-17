@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -82,7 +83,10 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
     }
 
     Column(modifier = modifier.then(Modifier.verticalScroll(rememberScrollState()))) {
-        Text(stringResource(R.string.create_user_welcome))
+        Text(
+            stringResource(R.string.create_user_welcome),
+            style = MaterialTheme.typography.headlineLarge
+        )
 
         TextFieldWithHeader(
             value = userName.value,
@@ -102,7 +106,7 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
         if (requiredSurnames.value) TextRequiredField()
         Spacer(modifier = Modifier.height(3.dp))
 
-        Text("Aptitudes")
+        Text("Aptitudes", style = MaterialTheme.typography.titleMedium)
         QualitiesForm(userViewModel)
     }
 }
@@ -124,7 +128,7 @@ private fun QualitiesForm(viewModel: UserViewModel) {
         }
 
         viewModel.userSkills.forEach { Text(it) }
-        
+
         if (viewModel.allSkills.isNotEmpty()) {
             Text("Sugerencias")
             ChipFlowRow(viewModel.allSkills.map { it.name }) {

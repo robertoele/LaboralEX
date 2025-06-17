@@ -1,6 +1,7 @@
 package com.example.laboralex.ui.components
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -14,7 +15,7 @@ fun TextFieldWithHeader(
     interactionSource: MutableInteractionSource? = null,
     onValueChanged: (String) -> Unit
 ) {
-    Text(name)
+    Text(name, style = MaterialTheme.typography.titleMedium)
     TextField(
         modifier = modifier,
         value = value,

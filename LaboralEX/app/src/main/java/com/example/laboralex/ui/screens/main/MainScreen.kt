@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
+import com.example.laboralex.database.entity.Application
 import com.example.laboralex.database.entity.Company
 import com.example.laboralex.viewmodel.MainScreenViewModel
 
@@ -13,7 +14,7 @@ import com.example.laboralex.viewmodel.MainScreenViewModel
 fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
     Column {
         Text("Solicitudes en curso")
-        Text("Solicitudes pendientes")
+        viewModel.applications.collectAsState().value.forEach { }
         Text("Empresas que te interesan")
         viewModel.allCompanies.collectAsState().value.forEach { CompanyCard(it) }
     }
@@ -23,6 +24,14 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
 private fun CompanyCard(company: Company) {
     Card {
         Text(company.name)
+    }
+}
+
+@Composable
+private fun OnGoingCard(company: Application) {
+    Card {
+        Text(company.requestDate)
+
     }
 }
 
