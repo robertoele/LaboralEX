@@ -38,5 +38,5 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun proviesCompanySkillDao(db: AppDatabase) = db.CompanySkillDao()
+    fun providesCompanySkillDao(db: AppDatabase) = db.CompanySkillDao()
 }
