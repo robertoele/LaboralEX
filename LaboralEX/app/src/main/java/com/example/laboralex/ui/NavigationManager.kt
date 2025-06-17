@@ -7,9 +7,6 @@ class NavigationManager {
     object MainScreen
 
     @Serializable
-    object UserScreen
-
-    @Serializable
     object CreateUserScreen
 
     @Serializable
@@ -17,7 +14,4 @@ class NavigationManager {
 
     @Serializable
     object CreateCompanyScreen
-
-    @Serializable
-    object CurriculumEditor
 }

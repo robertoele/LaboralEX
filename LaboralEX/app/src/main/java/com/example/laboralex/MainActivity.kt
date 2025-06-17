@@ -20,12 +20,10 @@ import com.example.laboralex.ui.components.LoadingScreen
 import com.example.laboralex.ui.components.State
 import com.example.laboralex.ui.screens.company.CreateCompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
-import com.example.laboralex.ui.screens.curriculum.CurriculumEditor
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.screens.user.CreateUser
 import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
-import com.example.laboralex.viewmodel.CurriculumEditorViewModel
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import com.example.laboralex.viewmodel.MainScreenViewModel
 import com.example.laboralex.viewmodel.UserViewModel
@@ -60,7 +58,6 @@ class MainActivity : ComponentActivity() {
                     val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
                     val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
                     val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
-                    val curriculumEditorViewModel = hiltViewModel<CurriculumEditorViewModel>()
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
@@ -84,9 +81,6 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<NavigationManager.InsertCompaniesScreen> {
                             InsertCompaniesScreen(navController, insertCompaniesViewModel)
-                        }
-                        composable<NavigationManager.CurriculumEditor> {
-                            CurriculumEditor(curriculumEditorViewModel)
                         }
                     }
                 }
