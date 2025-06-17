@@ -54,9 +54,7 @@ private fun CompaniesList(
     val allSkills by insertCompaniesViewModel.allSkills.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
-            Button(onClick = {
-                navController.navigate(NavigationManager.MainScreen)
-            }) {
+            Button(onClick = { navController.navigate(NavigationManager.MainScreen) }) {
                 Text("Continuar")
             }
         }
@@ -85,9 +83,11 @@ private fun CompaniesList(
 
 @Composable
 private fun CompanyCard(company: Company, skills: List<Skill>) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 5.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 5.dp)
+    ) {
         Text(
             text = company.name,
             modifier = Modifier.padding(3.dp),
