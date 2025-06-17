@@ -122,12 +122,14 @@ private fun QualitiesForm(viewModel: UserViewModel) {
                 viewModel.userSkills.add(it)
             }
         }
+
+        viewModel.userSkills.forEach { Text(it) }
+        
         if (viewModel.allSkills.isNotEmpty()) {
             Text("Sugerencias")
             ChipFlowRow(viewModel.allSkills.map { it.name }) {
                 viewModel.userSkills.add(it)
             }
         }
-        viewModel.userSkills.forEach { Text(it) }
     }
 }

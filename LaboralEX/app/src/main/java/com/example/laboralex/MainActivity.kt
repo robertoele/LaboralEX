@@ -62,8 +62,8 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination =
-                        if (user != null) NavigationManager.MainScreen
-                        else NavigationManager.CreateUserScreen,
+                        /*if (user != null) NavigationManager.MainScreen
+                        else */NavigationManager.CreateUserScreen,
                         modifier = Modifier.padding(25.dp)
                     ) {
                         composable<NavigationManager.MainScreen> {
