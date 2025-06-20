@@ -28,6 +28,7 @@ class MainScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             companyDao.getCompaniesAsFlow().collect { _allCompanies.value = it }
+            applicationDao.getAsFlow().collect { _applications.value = it }
         }
     }
 

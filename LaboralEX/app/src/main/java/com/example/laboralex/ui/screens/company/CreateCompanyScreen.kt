@@ -3,8 +3,8 @@ package com.example.laboralex.ui.screens.company
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -23,15 +23,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.laboralex.ui.components.ChipFlowRow
-import com.example.laboralex.ui.components.DropdownTextField
+import com.example.laboralex.ui.components.TextFieldWithButton
 import com.example.laboralex.ui.components.TextFieldWithHeader
-import com.example.laboralex.ui.components.TextRequiredField
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CreateCompanyScreen(
     navController: NavController,
@@ -74,13 +72,13 @@ fun CreateCompanyScreen(
                 onValueChanged = companyViewModel::changeName,
                 interactionSource = nameInteractionSource
             )
-            if (requiredName.value) TextRequiredField()
+            if (requiredName.value) Text("Este campo es obligatorio")
             Spacer(modifier = Modifier.height(3.dp))
 
             Text("Aptitudes que busca la empresa: ")
             Card {
-                DropdownTextField(
-                    elements = allSkills.value.map { it.name },
+                TextFieldWithButton(
+                    modifier = Modifier.fillMaxWidth(),
                     value = skillId,
                     onValueChanged = { skillId = it }
                 ) {

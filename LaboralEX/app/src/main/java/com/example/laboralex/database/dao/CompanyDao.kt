@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.laboralex.database.entity.Company
+import com.example.laboralex.database.entity.CompanySkill
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,4 +27,7 @@ interface CompanyDao {
 
     @Query("SELECT * FROM Company")
     fun getCompaniesAsFlow(): Flow<List<Company>>
+
+    @Query("SELECT * FROM CompanySkill WHERE id = :id")
+    fun getCompanySkills(id: Long): List<CompanySkill>
 }
