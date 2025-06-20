@@ -108,11 +108,8 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
                 onValueChange = userViewModel::changeName,
                 onClearPressed = userViewModel::clearName,
                 interactionSource = nameInteractionSource,
-                label = { Text("Nombre") }
-            )
-            if (requiredName.value) Text(
-                "Este campo es obligatorio",
-                color = MaterialTheme.colorScheme.error
+                label = { Text("Nombre") },
+                isError = requiredName.value
             )
             Spacer(modifier = Modifier.height(3.dp))
 
@@ -124,14 +121,9 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
                 onValueChange = userViewModel::changeSurnames,
                 onClearPressed = userViewModel::clearSurnames,
                 interactionSource = surnameInteractionSource,
-                label = { Text("Apellidos") }
+                label = { Text("Apellidos") },
+                isError = requiredSurnames.value
             )
-
-            if (requiredSurnames.value) Text(
-                "Este campo es obligatorio",
-                color = MaterialTheme.colorScheme.error
-            )
-
         }
 
         Spacer(modifier = Modifier.height(30.dp))
