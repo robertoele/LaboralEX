@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +28,7 @@ import androidx.navigation.NavController
 import com.example.laboralex.R
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.ChipFlowRow
+import com.example.laboralex.ui.components.FormTextField
 import com.example.laboralex.ui.components.LoadingScreen
 import com.example.laboralex.ui.components.State
 import com.example.laboralex.ui.components.TextFieldWithButton
@@ -95,12 +95,13 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
                 .clip(shape = RoundedCornerShape(5.dp))
                 .background(MaterialTheme.colorScheme.secondaryContainer)
         ) {
-            OutlinedTextField(
+            FormTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(6.dp),
                 value = userName.value,
                 onValueChange = userViewModel::changeName,
+                onClearPressed = userViewModel::clearName,
                 interactionSource = nameInteractionSource,
                 label = { Text("Nombre") }
             )
@@ -110,12 +111,13 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
             )
             Spacer(modifier = Modifier.height(3.dp))
 
-            OutlinedTextField(
+            FormTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(6.dp),
                 value = userSurname.value,
                 onValueChange = userViewModel::changeSurnames,
+                onClearPressed = userViewModel::clearSurnames,
                 interactionSource = surnameInteractionSource,
                 label = { Text("Apellidos") }
             )

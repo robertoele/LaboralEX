@@ -55,6 +55,10 @@ class UserViewModel @Inject constructor(
         _name.value = newName
     }
 
+    fun clearName() {
+        _name.value = ""
+    }
+
     fun changeRequiredName() {
         _requiredName.value = false
     }
@@ -65,6 +69,10 @@ class UserViewModel @Inject constructor(
 
     fun changeSurnames(newSurname: String) {
         _surnames.value = newSurname
+    }
+
+    fun clearSurnames() {
+        _surnames.value = ""
     }
 
     fun changeSkill(newSkill: String) {
