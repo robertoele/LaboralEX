@@ -23,6 +23,13 @@ fun FormTextField(
     onClearPressed: () -> Unit,
     label: @Composable (() -> Unit)? = null,
     placeHolder: @Composable (() -> Unit)? = null,
+    errorIcon: @Composable (() -> Unit) = {
+        Icon(
+            Icons.Default.Info,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.error
+        )
+    },
     interactionSource: MutableInteractionSource? = null,
     isError: Boolean = false,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
@@ -36,13 +43,8 @@ fun FormTextField(
         label = label,
         placeholder = placeHolder,
         trailingIcon = {
-            if (isError) {
-                Icon(
-                    Icons.Default.Info,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error
-                )
-            } else if (value.isNotEmpty()) {
+            if (isError) errorIcon()
+            else if (value.isNotEmpty()) {
                 IconButton(onClick = onClearPressed) {
                     Icon(
                         Icons.Rounded.Clear,

@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -46,8 +49,10 @@ fun CreateCompanyScreen(
     val name = companyViewModel.name.collectAsStateWithLifecycle()
     val allSkills = companyViewModel.allSkills.collectAsStateWithLifecycle()
     val requiredName = companyViewModel.requiredName.collectAsStateWithLifecycle()
+    val emptySkill = companyViewModel.emptySkill.collectAsStateWithLifecycle()
 
     val nameInteractionSource = remember { MutableInteractionSource() }
+    val skillInteractionSource = remember { MutableInteractionSource() }
 
     LaunchedEffect(nameInteractionSource) {
         nameInteractionSource.interactions.collectLatest {
@@ -55,7 +60,14 @@ fun CreateCompanyScreen(
         }
     }
 
+    LaunchedEffect(skillInteractionSource) {
+        skillInteractionSource.interactions.collectLatest {
+            if (it is PressInteraction.Press) companyViewModel.changeEmptySkill()
+        }
+    }
+
     var skillId by remember { mutableStateOf("") }
+
     Scaffold(
         floatingActionButton = {
             Button(
@@ -98,15 +110,23 @@ fun CreateCompanyScreen(
                     value = skillId,
                     onValueChange = { skillId = it },
                     onClearPressed = { skillId = "" },
-                    placeHolder = { Text("Java, C#, Android, etc...") }
+                    placeHolder = { Text("Java, C#, Android, etc") },
+                    isError = emptySkill.value,
+                    supportingText = "El campo está vacío",
+                    errorIcon = {
+                        Icon(
+                            Icons.Default.Warning,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onError
+                        )
+                    },
+                    colors = OutlinedTextFieldDefaults.colors(errorBorderColor = Color.Yellow)
                 )
                 Button(onClick = {
                     if (skillId.isNotBlank()) {
                         companyViewModel.companySkills.add(skillId)
                         skillId = ""
-                    } else {
-
-                    }
+                    } else companyViewModel.changeEmptySkill()
                 }) {
                     Icon(Icons.Default.Add, contentDescription = null)
                 }
