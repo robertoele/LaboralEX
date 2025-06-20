@@ -23,8 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.laboralex.ui.components.ChipFlowRow
+import com.example.laboralex.ui.components.FormTextField
 import com.example.laboralex.ui.components.TextFieldWithButton
-import com.example.laboralex.ui.components.TextFieldWithHeader
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -66,13 +66,14 @@ fun CreateCompanyScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            TextFieldWithHeader(
+            FormTextField(
                 value = name.value,
-                name = "Nombre",
-                onValueChanged = companyViewModel::changeName,
-                interactionSource = nameInteractionSource
+                onValueChange = companyViewModel::changeName,
+                onClearPressed = companyViewModel::clearName,
+                interactionSource = nameInteractionSource,
+                label = { Text("Nombre") },
+                isError = requiredName.value
             )
-            if (requiredName.value) Text("Este campo es obligatorio")
             Spacer(modifier = Modifier.height(3.dp))
 
             Text("Aptitudes que busca la empresa: ")

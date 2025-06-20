@@ -44,6 +44,10 @@ class CreateCompanyViewModel @Inject constructor(
         _name.value = newName
     }
 
+    fun clearName() {
+        _name.value = ""
+    }
+
     fun changeRequired() {
         _requiredName.value = false
     }

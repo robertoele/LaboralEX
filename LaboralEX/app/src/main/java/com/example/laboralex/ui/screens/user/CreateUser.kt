@@ -98,12 +98,11 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
         Column(
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(5.dp))
+                .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.secondaryContainer)
         ) {
             FormTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(6.dp),
+                modifier = Modifier.padding(6.dp),
                 value = userName.value,
                 onValueChange = userViewModel::changeName,
                 onClearPressed = userViewModel::clearName,
@@ -114,9 +113,7 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
             Spacer(modifier = Modifier.height(3.dp))
 
             FormTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(6.dp),
+                modifier = Modifier.padding(6.dp),
                 value = userSurname.value,
                 onValueChange = userViewModel::changeSurnames,
                 onClearPressed = userViewModel::clearSurnames,
