@@ -108,7 +108,8 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
                 onClearPressed = userViewModel::clearName,
                 interactionSource = nameInteractionSource,
                 label = { Text("Nombre") },
-                isError = requiredName.value
+                isError = requiredName.value,
+                supportingText = "Este campo es obligatorio"
             )
             Spacer(modifier = Modifier.height(3.dp))
 
@@ -119,7 +120,8 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
                 onClearPressed = userViewModel::clearSurnames,
                 interactionSource = surnameInteractionSource,
                 label = { Text("Apellidos") },
-                isError = requiredSurnames.value
+                isError = requiredSurnames.value,
+                supportingText = "Este campo es obligatorio"
             )
         }
 
@@ -146,7 +148,7 @@ private fun QualitiesForm(viewModel: UserViewModel, modifier: Modifier = Modifie
                 value = skill.value,
                 onValueChange = viewModel::changeSkill,
             )
-            Button(modifier = Modifier.clip(RoundedCornerShape(50.dp)), onClick = {
+            Button(onClick = {
                 viewModel.userSkills.add(skill.value)
                 viewModel.changeSkill("")
             }) {

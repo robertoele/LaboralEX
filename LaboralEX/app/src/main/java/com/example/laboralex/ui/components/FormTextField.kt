@@ -8,7 +8,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,8 +22,11 @@ fun FormTextField(
     onValueChange: (String) -> Unit,
     onClearPressed: () -> Unit,
     label: @Composable (() -> Unit)? = null,
+    placeHolder: @Composable (() -> Unit)? = null,
     interactionSource: MutableInteractionSource? = null,
-    isError: Boolean = false
+    isError: Boolean = false,
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    supportingText: String = ""
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -29,6 +34,7 @@ fun FormTextField(
         onValueChange = onValueChange,
         interactionSource = interactionSource,
         label = label,
+        placeholder = placeHolder,
         trailingIcon = {
             if (isError) {
                 Icon(
@@ -48,8 +54,9 @@ fun FormTextField(
         },
         isError = isError,
         supportingText = {
-            if (isError) Text("Este campo es obligatorio")
-        }
+            if (isError) Text(supportingText)
+        },
+        colors = colors
     )
 
 }
