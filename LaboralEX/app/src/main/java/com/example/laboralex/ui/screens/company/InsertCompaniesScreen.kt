@@ -58,7 +58,10 @@ private fun CompaniesList(
     val allSkills by insertCompaniesViewModel.allSkills.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
-            Button(onClick = { navController.navigate(NavigationManager.MainScreen) }) {
+            Button(onClick = {
+                navController.navigate(NavigationManager.MainScreen)
+                insertCompaniesViewModel.updateCoso()
+            }) {
                 Text("Continuar")
             }
         }

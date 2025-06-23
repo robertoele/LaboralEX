@@ -2,6 +2,7 @@ package com.example.laboralex.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.database.dao.CompanyDao
 import com.example.laboralex.database.dao.CompanySkillDao
 import com.example.laboralex.database.dao.SkillDao
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class InsertCompaniesViewModel @Inject constructor(
     private val companyDao: CompanyDao,
     private val skillDao: SkillDao,
-    private val companySkillDao: CompanySkillDao
+    private val companySkillDao: CompanySkillDao,
+    private val appStateRepository: AppStateRepository
 ) :
     ViewModel() {
     private val _companiesAdded = MutableStateFlow<List<Company>>(emptyList())
@@ -39,6 +41,12 @@ class InsertCompaniesViewModel @Inject constructor(
         }
         viewModelScope.launch {
             companySkillDao.getAllAsFlow().collect { _companySkills.value = it }
+        }
+    }
+
+    fun updateCoso() {
+        viewModelScope.launch {
+            appStateRepository.updateFormMade(true)
         }
     }
 }

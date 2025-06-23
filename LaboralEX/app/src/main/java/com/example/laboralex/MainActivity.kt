@@ -15,18 +15,16 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.laboralex.database.dao.UserDao
-import com.example.laboralex.database.entity.User
+import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.ui.NavigationManager
-import com.example.laboralex.ui.components.LoadingScreen
-import com.example.laboralex.ui.components.State
 import com.example.laboralex.ui.screens.company.CreateCompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.MainScreen
@@ -38,62 +36,62 @@ import com.example.laboralex.viewmodel.MainScreenViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val _loadingState = MutableStateFlow(State.LOADING)
     private val _homeSelected = MutableStateFlow(true)
     private val _companiesSelected = MutableStateFlow(false)
     private val _skillsSelected = MutableStateFlow(false)
 
-    private var user: User? = null
-
     @Inject
-    lateinit var userDao: UserDao
+    lateinit var appStateRepository: AppStateRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        lifecycleScope.launch {
-            user = userDao.getAll().firstOrNull()
-            _loadingState.value = State.LOADED
-        }
+        val formMadeStateFlow = appStateRepository.formMadeFlow.stateIn(
+            lifecycleScope,
+            started = SharingStarted.Eagerly,
+            initialValue = AppStateRepository.AppState(false)
+        )
+
         enableEdgeToEdge()
         setContent {
+            val appState by formMadeStateFlow.collectAsStateWithLifecycle()
             LaboralEXTheme {
-                if (_loadingState.collectAsState().value == State.LOADING) LoadingScreen()
-                else {
-                    val userViewModel = hiltViewModel<UserViewModel>()
-                    val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
-                    val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
-                    val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
-                    val navController = rememberNavController()
-                    Scaffold(bottomBar = { /*BottomNavigation()*/ }) { padding ->
-                        NavHost(
-                            navController = navController,
-                            startDestination =
-                            if (user != null) NavigationManager.MainScreen
-                            else NavigationManager.CreateUserScreen,
-                            modifier = Modifier.padding(padding)
-                        ) {
-                            composable<NavigationManager.MainScreen> {
-                                MainScreen(navController, mainScreenViewModel)
-                            }
-                            composable<NavigationManager.CreateUserScreen> {
-                                CreateUser(navController, userViewModel)
-                            }
-                            composable<NavigationManager.CreateCompanyScreen> {
-                                CreateCompanyScreen(
-                                    navController,
-                                    createCompanyViewModel,
-                                    insertCompaniesViewModel
-                                )
-                            }
-                            composable<NavigationManager.InsertCompaniesScreen> {
-                                InsertCompaniesScreen(navController, insertCompaniesViewModel)
-                            }
+                val userViewModel = hiltViewModel<UserViewModel>()
+                val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
+                val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
+                val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
+                val navController = rememberNavController()
+                Scaffold(bottomBar = { if (appState.formMade) BottomNavigation() }) { padding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination =
+                        if (appState.formMade) NavigationManager.MainScreen
+                        else NavigationManager.CreateUserScreen,
+                        modifier = Modifier.padding(padding)
+                    ) {
+                        composable<NavigationManager.MainScreen> {
+                            MainScreen(navController, mainScreenViewModel)
+                        }
+                        composable<NavigationManager.CreateUserScreen> {
+                            CreateUser(navController, userViewModel)
+                        }
+                        composable<NavigationManager.CreateCompanyScreen> {
+                            CreateCompanyScreen(
+                                navController,
+                                createCompanyViewModel,
+                                insertCompaniesViewModel
+                            )
+                        }
+                        composable<NavigationManager.InsertCompaniesScreen> {
+                            InsertCompaniesScreen(navController, insertCompaniesViewModel)
                         }
                     }
                 }
@@ -105,19 +103,19 @@ class MainActivity : ComponentActivity() {
     private fun BottomNavigation() {
         NavigationBar {
             NavigationBarItem(
-                selected = _homeSelected.collectAsState().value,
+                selected = _homeSelected.collectAsStateWithLifecycle().value,
                 onClick = ::selectHome,
                 label = { Text("Inicio") },
                 icon = { Icon(Icons.Default.Home, contentDescription = null) }
             )
             NavigationBarItem(
-                selected = _companiesSelected.collectAsState().value,
+                selected = _companiesSelected.collectAsStateWithLifecycle().value,
                 onClick = ::selectCompanies,
                 label = { Text("Compañías") },
                 icon = { Icon(Icons.Default.Person, contentDescription = null) }
             )
             NavigationBarItem(
-                selected = _skillsSelected.collectAsState().value,
+                selected = _skillsSelected.collectAsStateWithLifecycle().value,
                 onClick = ::selectSkills,
                 label = { Text("Habilidades") },
                 icon = { Icon(Icons.Default.Build, contentDescription = null) }
