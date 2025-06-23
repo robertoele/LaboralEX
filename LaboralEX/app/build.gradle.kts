@@ -82,7 +82,7 @@ dependencies {
     implementation(libs.hilt)
     implementation(libs.androidx.hilt)
     kapt(libs.hilt.android.compiler)
-
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.material3)
 
 }
