@@ -5,9 +5,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
@@ -29,7 +37,6 @@ import com.example.laboralex.viewmodel.MainScreenViewModel
 import com.example.laboralex.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +44,10 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     private val _loadingState = MutableStateFlow(State.LOADING)
-    private val loadingState = _loadingState.asStateFlow()
+    private val _homeSelected = MutableStateFlow(true)
+    private val _companiesSelected = MutableStateFlow(false)
+    private val _skillsSelected = MutableStateFlow(false)
+
     private var user: User? = null
 
     @Inject
@@ -52,35 +62,58 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LaboralEXTheme {
-                if (loadingState.collectAsState().value == State.LOADING) LoadingScreen()
+                if (_loadingState.collectAsState().value == State.LOADING) LoadingScreen()
                 else {
                     val userViewModel = hiltViewModel<UserViewModel>()
                     val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
                     val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
                     val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
                     val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination =
-                        /*if (user != null) NavigationManager.MainScreen
-                        else */NavigationManager.CreateUserScreen,
-                        modifier = Modifier.padding(25.dp)
-                    ) {
-                        composable<NavigationManager.MainScreen> {
-                            MainScreen(navController, mainScreenViewModel)
-                        }
-                        composable<NavigationManager.CreateUserScreen> {
-                            CreateUser(navController, userViewModel)
-                        }
-                        composable<NavigationManager.CreateCompanyScreen> {
-                            CreateCompanyScreen(
-                                navController,
-                                createCompanyViewModel,
-                                insertCompaniesViewModel
+                    Scaffold(bottomBar = {
+                        NavigationBar {
+                            NavigationBarItem(
+                                selected = _homeSelected.collectAsState().value,
+                                onClick = ::selectHome,
+                                label = { Text("Inicio") },
+                                icon = { Icon(Icons.Default.Home, contentDescription = null) }
+                            )
+                            NavigationBarItem(
+                                selected = _companiesSelected.collectAsState().value,
+                                onClick = ::selectCompanies,
+                                label = { Text("Compañías") },
+                                icon = { Icon(Icons.Default.Person, contentDescription = null) }
+                            )
+                            NavigationBarItem(
+                                selected = _skillsSelected.collectAsState().value,
+                                onClick = ::selectSkills,
+                                label = { Text("Habilidades") },
+                                icon = { Icon(Icons.Default.Build, contentDescription = null) }
                             )
                         }
-                        composable<NavigationManager.InsertCompaniesScreen> {
-                            InsertCompaniesScreen(navController, insertCompaniesViewModel)
+                    }) { padding ->
+                        NavHost(
+                            navController = navController,
+                            startDestination =
+                            if (user != null) NavigationManager.MainScreen
+                            else NavigationManager.CreateUserScreen,
+                            modifier = Modifier.padding(padding)
+                        ) {
+                            composable<NavigationManager.MainScreen> {
+                                MainScreen(navController, mainScreenViewModel)
+                            }
+                            composable<NavigationManager.CreateUserScreen> {
+                                CreateUser(navController, userViewModel)
+                            }
+                            composable<NavigationManager.CreateCompanyScreen> {
+                                CreateCompanyScreen(
+                                    navController,
+                                    createCompanyViewModel,
+                                    insertCompaniesViewModel
+                                )
+                            }
+                            composable<NavigationManager.InsertCompaniesScreen> {
+                                InsertCompaniesScreen(navController, insertCompaniesViewModel)
+                            }
                         }
                     }
                 }
@@ -88,5 +121,22 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun selectHome() {
+        _homeSelected.value = true
+        _companiesSelected.value = false
+        _skillsSelected.value = false
+    }
+
+    private fun selectCompanies() {
+        _companiesSelected.value = true
+        _homeSelected.value = false
+        _skillsSelected.value = false
+    }
+
+    private fun selectSkills() {
+        _skillsSelected.value = true
+        _homeSelected.value = false
+        _companiesSelected.value = false
+    }
 
 }
