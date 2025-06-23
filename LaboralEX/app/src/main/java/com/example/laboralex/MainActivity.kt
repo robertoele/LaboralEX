@@ -14,6 +14,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -69,28 +70,7 @@ class MainActivity : ComponentActivity() {
                     val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
                     val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
                     val navController = rememberNavController()
-                    Scaffold(bottomBar = {
-                        NavigationBar {
-                            NavigationBarItem(
-                                selected = _homeSelected.collectAsState().value,
-                                onClick = ::selectHome,
-                                label = { Text("Inicio") },
-                                icon = { Icon(Icons.Default.Home, contentDescription = null) }
-                            )
-                            NavigationBarItem(
-                                selected = _companiesSelected.collectAsState().value,
-                                onClick = ::selectCompanies,
-                                label = { Text("Compañías") },
-                                icon = { Icon(Icons.Default.Person, contentDescription = null) }
-                            )
-                            NavigationBarItem(
-                                selected = _skillsSelected.collectAsState().value,
-                                onClick = ::selectSkills,
-                                label = { Text("Habilidades") },
-                                icon = { Icon(Icons.Default.Build, contentDescription = null) }
-                            )
-                        }
-                    }) { padding ->
+                    Scaffold(bottomBar = { /*BottomNavigation()*/ }) { padding ->
                         NavHost(
                             navController = navController,
                             startDestination =
@@ -118,6 +98,30 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun BottomNavigation() {
+        NavigationBar {
+            NavigationBarItem(
+                selected = _homeSelected.collectAsState().value,
+                onClick = ::selectHome,
+                label = { Text("Inicio") },
+                icon = { Icon(Icons.Default.Home, contentDescription = null) }
+            )
+            NavigationBarItem(
+                selected = _companiesSelected.collectAsState().value,
+                onClick = ::selectCompanies,
+                label = { Text("Compañías") },
+                icon = { Icon(Icons.Default.Person, contentDescription = null) }
+            )
+            NavigationBarItem(
+                selected = _skillsSelected.collectAsState().value,
+                onClick = ::selectSkills,
+                label = { Text("Habilidades") },
+                icon = { Icon(Icons.Default.Build, contentDescription = null) }
+            )
         }
     }
 
