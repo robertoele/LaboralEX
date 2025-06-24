@@ -41,21 +41,21 @@ class CreateCompanyViewModel @Inject constructor(
     private val _emptySkill = MutableStateFlow(false)
     val emptySkill = _emptySkill.asStateFlow()
 
-    private val _companiesExist = MutableStateFlow(false)
-    val companiesExist = _companiesExist.asStateFlow()
-
     val appStateFlow = appStateRepository.formMadeFlow.stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         AppStateRepository.AppState(true)
     )
 
-    init {
+    val companiesStateFlow = companyDao.getCompaniesAsFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+    /*init {
         viewModelScope.launch {
             skillDao.getAllAsFlow().collect { _allSkills.value = it }
             companyDao.getCompaniesAsFlow().collect { _companiesExist.value = it.isNotEmpty() }
         }
-    }
+    }*/
 
     fun changeName(newName: String) {
         _name.value = newName

@@ -42,10 +42,10 @@ fun CreateCompanyScreen(
     onCompanyAdded: () -> Unit
 ) {
     val appState by createCompanyViewModel.appStateFlow.collectAsStateWithLifecycle()
-    val companiesExist by createCompanyViewModel.companiesExist.collectAsStateWithLifecycle()
+    val companies by createCompanyViewModel.companiesStateFlow.collectAsStateWithLifecycle()
     var initialScreen by remember { mutableStateOf(true) }
 
-    if (!appState.formMade && !companiesExist && initialScreen) {
+    if (!appState.formMade && companies.isEmpty() && initialScreen) {
         Column {
             Text("Añadamos algunas empresas")
             Button(onClick = { initialScreen = false }) { Text("Continuar") }
