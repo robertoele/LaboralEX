@@ -54,15 +54,21 @@ private fun CompaniesList(
     insertCompaniesViewModel: InsertCompaniesViewModel,
     companiesAdded: List<Company>
 ) {
+    val appState by insertCompaniesViewModel.appStateFlow.collectAsStateWithLifecycle()
     val companySkills by insertCompaniesViewModel.companySkills.collectAsStateWithLifecycle()
     val allSkills by insertCompaniesViewModel.allSkills.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
             Button(onClick = {
-                navController.navigate(NavigationManager.MainScreen)
-                insertCompaniesViewModel.updateCoso()
+                if (!appState.formMade) {
+                    insertCompaniesViewModel.finishForm()
+                    navController.navigate(NavigationManager.MainScreen) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                } else navController.navigate(NavigationManager.MainScreen)
             }) {
-                Text("Continuar")
+                val text = if (appState.formMade) "Continuar" else "Finalizar"
+                Text(text)
             }
         }
     ) { padding ->

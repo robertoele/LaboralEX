@@ -11,7 +11,9 @@ import com.example.laboralex.database.entity.CompanySkill
 import com.example.laboralex.database.entity.Skill
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,6 +34,12 @@ class InsertCompaniesViewModel @Inject constructor(
     private val _allSkills = MutableStateFlow<List<Skill>>(emptyList())
     val allSkills: StateFlow<List<Skill>> = _allSkills
 
+    val appStateFlow = appStateRepository.formMadeFlow.stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        AppStateRepository.AppState(false)
+    )
+
     init {
         viewModelScope.launch {
             companyDao.getCompaniesAsFlow().collect { _companiesAdded.value = it }
@@ -44,7 +52,7 @@ class InsertCompaniesViewModel @Inject constructor(
         }
     }
 
-    fun updateCoso() {
+    fun finishForm() {
         viewModelScope.launch {
             appStateRepository.updateFormMade(true)
         }
