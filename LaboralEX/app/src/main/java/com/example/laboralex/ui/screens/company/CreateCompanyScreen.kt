@@ -41,94 +41,105 @@ fun CreateCompanyScreen(
     createCompanyViewModel: CreateCompanyViewModel,
     onCompanyAdded: () -> Unit
 ) {
-    val name = createCompanyViewModel.name.collectAsStateWithLifecycle()
-    val allSkills = createCompanyViewModel.allSkills.collectAsStateWithLifecycle()
-    val requiredName = createCompanyViewModel.requiredName.collectAsStateWithLifecycle()
-    val emptySkill = createCompanyViewModel.emptySkill.collectAsStateWithLifecycle()
+    val appState by createCompanyViewModel.appStateFlow.collectAsStateWithLifecycle()
+    val companiesExist by createCompanyViewModel.companiesExist.collectAsStateWithLifecycle()
+    var initialScreen by remember { mutableStateOf(true) }
 
-    val nameInteractionSource = remember { MutableInteractionSource() }
-    val skillInteractionSource = remember { MutableInteractionSource() }
-
-    LaunchedEffect(nameInteractionSource) {
-        nameInteractionSource.interactions.collectLatest {
-            if (it is PressInteraction.Press) createCompanyViewModel.changeRequired()
+    if (!appState.formMade && !companiesExist && initialScreen) {
+        Column {
+            Text("Añadamos algunas empresas")
+            Button(onClick = { initialScreen = false }) { Text("Continuar") }
         }
-    }
+    } else {
+        val name = createCompanyViewModel.name.collectAsStateWithLifecycle()
+        val allSkills = createCompanyViewModel.allSkills.collectAsStateWithLifecycle()
+        val requiredName = createCompanyViewModel.requiredName.collectAsStateWithLifecycle()
+        val emptySkill = createCompanyViewModel.emptySkill.collectAsStateWithLifecycle()
 
-    LaunchedEffect(skillInteractionSource) {
-        skillInteractionSource.interactions.collectLatest {
-            if (it is PressInteraction.Press) createCompanyViewModel.changeEmptySkill()
+        val nameInteractionSource = remember { MutableInteractionSource() }
+        val skillInteractionSource = remember { MutableInteractionSource() }
+
+        LaunchedEffect(nameInteractionSource) {
+            nameInteractionSource.interactions.collectLatest {
+                if (it is PressInteraction.Press) createCompanyViewModel.changeRequired()
+            }
         }
-    }
 
-    var skillId by remember { mutableStateOf("") }
+        LaunchedEffect(skillInteractionSource) {
+            skillInteractionSource.interactions.collectLatest {
+                if (it is PressInteraction.Press) createCompanyViewModel.changeEmptySkill()
+            }
+        }
 
-    Scaffold(
-        floatingActionButton = {
-            Button(
-                onClick = {
-                    if (createCompanyViewModel.onContinuePressed()) {
-                        onCompanyAdded()
-                        createCompanyViewModel.onCompanyAdded()
+        var skillId by remember { mutableStateOf("") }
+
+        Scaffold(
+            floatingActionButton = {
+                Button(
+                    onClick = {
+                        if (createCompanyViewModel.onContinuePressed()) {
+                            onCompanyAdded()
+                            createCompanyViewModel.onCompanyAdded()
+                        }
+                    }
+                ) { Text("Agregar empresa") }
+            }
+        ) { padding ->
+            Column(
+                modifier = Modifier
+                    .padding(padding)
+                    .clip(shape = RoundedCornerShape(5.dp))
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(horizontal = 6.dp)
+            ) {
+                Text("Nombre")
+                FormTextField(
+                    value = name.value,
+                    onValueChange = createCompanyViewModel::changeName,
+                    onClearPressed = createCompanyViewModel::clearName,
+                    interactionSource = nameInteractionSource,
+                    label = { Text("Nombre") },
+                    isError = requiredName.value,
+                    supportingText = "Este campo es obligatorio"
+                )
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text("Aptitudes que busca la empresa")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    FormTextField(
+                        value = skillId,
+                        onValueChange = { skillId = it },
+                        onClearPressed = { skillId = "" },
+                        placeHolder = { Text("Java, C#, Android, etc") },
+                        isError = emptySkill.value,
+                        supportingText = "El campo está vacío",
+                        errorIcon = {
+                            Icon(
+                                Icons.Default.Warning,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onError
+                            )
+                        },
+                        colors = OutlinedTextFieldDefaults.colors(errorBorderColor = Color.Yellow)
+                    )
+                    Button(onClick = {
+                        if (skillId.isNotBlank()) {
+                            createCompanyViewModel.companySkills.add(skillId)
+                            skillId = ""
+                        } else createCompanyViewModel.changeEmptySkill()
+                    }) {
+                        Icon(Icons.Default.Add, contentDescription = null)
                     }
                 }
-            ) { Text("Agregar empresa") }
-        }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .padding(padding)
-                .clip(shape = RoundedCornerShape(5.dp))
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.secondaryContainer)
-                .padding(horizontal = 6.dp)
-        ) {
-            Text("Nombre")
-            FormTextField(
-                value = name.value,
-                onValueChange = createCompanyViewModel::changeName,
-                onClearPressed = createCompanyViewModel::clearName,
-                interactionSource = nameInteractionSource,
-                label = { Text("Nombre") },
-                isError = requiredName.value,
-                supportingText = "Este campo es obligatorio"
-            )
-            Spacer(modifier = Modifier.height(3.dp))
 
-            Text("Aptitudes que busca la empresa")
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                FormTextField(
-                    value = skillId,
-                    onValueChange = { skillId = it },
-                    onClearPressed = { skillId = "" },
-                    placeHolder = { Text("Java, C#, Android, etc") },
-                    isError = emptySkill.value,
-                    supportingText = "El campo está vacío",
-                    errorIcon = {
-                        Icon(
-                            Icons.Default.Warning,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onError
-                        )
-                    },
-                    colors = OutlinedTextFieldDefaults.colors(errorBorderColor = Color.Yellow)
-                )
-                Button(onClick = {
-                    if (skillId.isNotBlank()) {
-                        createCompanyViewModel.companySkills.add(skillId)
-                        skillId = ""
-                    } else createCompanyViewModel.changeEmptySkill()
-                }) {
-                    Icon(Icons.Default.Add, contentDescription = null)
-                }
-            }
+                ChipFlowRow(createCompanyViewModel.companySkills)
 
-            ChipFlowRow(createCompanyViewModel.companySkills)
-
-            if (allSkills.value.isNotEmpty()) {
-                Text("Sugerencias")
-                ChipFlowRow(allSkills.value.map { it.name }) {
-                    createCompanyViewModel.companySkills.add(it)
+                if (allSkills.value.isNotEmpty()) {
+                    Text("Sugerencias")
+                    ChipFlowRow(allSkills.value.map { it.name }) {
+                        createCompanyViewModel.companySkills.add(it)
+                    }
                 }
             }
         }

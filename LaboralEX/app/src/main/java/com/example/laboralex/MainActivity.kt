@@ -87,6 +87,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<NavigationManager.CreateCompanyScreen> {
                             CreateCompanyScreen(createCompanyViewModel) {
+                                navController.navigate(NavigationManager.InsertCompaniesScreen)
                             }
                         }
                         composable<NavigationManager.InsertCompaniesScreen> {
