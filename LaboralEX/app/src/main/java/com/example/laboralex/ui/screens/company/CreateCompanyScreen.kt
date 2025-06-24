@@ -52,7 +52,7 @@ fun CreateCompanyScreen(
         }
     } else {
         val name = createCompanyViewModel.name.collectAsStateWithLifecycle()
-        val allSkills = createCompanyViewModel.allSkills.collectAsStateWithLifecycle()
+        val allSkills = createCompanyViewModel.skillsFlow.collectAsStateWithLifecycle()
         val requiredName = createCompanyViewModel.requiredName.collectAsStateWithLifecycle()
         val emptySkill = createCompanyViewModel.emptySkill.collectAsStateWithLifecycle()
 
@@ -71,7 +71,7 @@ fun CreateCompanyScreen(
             }
         }
 
-        var skillId by remember { mutableStateOf("") }
+        var skillName by remember { mutableStateOf("") }
 
         Scaffold(
             floatingActionButton = {
@@ -108,9 +108,9 @@ fun CreateCompanyScreen(
                 Text("Aptitudes que busca la empresa")
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     FormTextField(
-                        value = skillId,
-                        onValueChange = { skillId = it },
-                        onClearPressed = { skillId = "" },
+                        value = skillName,
+                        onValueChange = { skillName = it },
+                        onClearPressed = { skillName = "" },
                         placeHolder = { Text("Java, C#, Android, etc") },
                         isError = emptySkill.value,
                         supportingText = "El campo está vacío",
@@ -124,9 +124,9 @@ fun CreateCompanyScreen(
                         colors = OutlinedTextFieldDefaults.colors(errorBorderColor = Color.Yellow)
                     )
                     Button(onClick = {
-                        if (skillId.isNotBlank()) {
-                            createCompanyViewModel.companySkills.add(skillId)
-                            skillId = ""
+                        if (skillName.isNotBlank()) {
+                            createCompanyViewModel.companySkills.add(skillName)
+                            skillName = ""
                         } else createCompanyViewModel.changeEmptySkill()
                     }) {
                         Icon(Icons.Default.Add, contentDescription = null)
