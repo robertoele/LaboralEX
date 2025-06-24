@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.ui.NavigationManager
+import com.example.laboralex.ui.components.LoadingScreen
 import com.example.laboralex.ui.screens.company.CreateCompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.MainScreen
@@ -37,6 +38,7 @@ import com.example.laboralex.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -54,51 +56,55 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        val formMadeStateFlow = appStateRepository.formMadeFlow.stateIn(
-            lifecycleScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = AppStateRepository.AppState(false)
-        )
+        val formMadeStateFlow: StateFlow<AppStateRepository.AppState?> =
+            appStateRepository.formMadeFlow.stateIn(
+                lifecycleScope,
+                started = SharingStarted.WhileSubscribed(),
+                initialValue = null
+            )
 
         enableEdgeToEdge()
         setContent {
             val appState by formMadeStateFlow.collectAsStateWithLifecycle()
-            LaboralEXTheme {
-                val userViewModel = hiltViewModel<UserViewModel>()
-                val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
-                val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
-                val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
-                val navController = rememberNavController()
-                Scaffold(bottomBar = { if (appState.formMade) BottomNavigation() }) { padding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination =
-                        if (appState.formMade) NavigationManager.MainScreen
-                        else NavigationManager.CreateUserScreen,
-                        modifier = Modifier.padding(padding)
-                    ) {
-                        composable<NavigationManager.MainScreen> {
-                            MainScreen(mainScreenViewModel)
-                        }
-                        composable<NavigationManager.CreateUserScreen> {
-                            CreateUser(userViewModel) {
-                                navController.navigate(NavigationManager.CreateCompanyScreen)
+            if (appState == null) LoadingScreen()
+            else {
+                LaboralEXTheme {
+                    val userViewModel = hiltViewModel<UserViewModel>()
+                    val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
+                    val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
+                    val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
+                    val navController = rememberNavController()
+                    Scaffold(bottomBar = { if (appState?.formMade == true) BottomNavigation() }) { padding ->
+                        NavHost(
+                            navController = navController,
+                            startDestination =
+                            if (appState?.formMade == true) NavigationManager.MainScreen
+                            else NavigationManager.CreateUserScreen,
+                            modifier = Modifier.padding(padding)
+                        ) {
+                            composable<NavigationManager.MainScreen> {
+                                MainScreen(mainScreenViewModel)
                             }
-                        }
-                        composable<NavigationManager.CreateCompanyScreen> {
-                            CreateCompanyScreen(createCompanyViewModel) {
-                                navController.navigate(NavigationManager.InsertCompaniesScreen)
-                            }
-                        }
-                        composable<NavigationManager.InsertCompaniesScreen> {
-                            InsertCompaniesScreen(
-                                insertCompaniesViewModel,
-                                onContinuePressed = {
-                                    navController.navigate(NavigationManager.MainScreen)
-                                }, onCreatePressed = {
+                            composable<NavigationManager.CreateUserScreen> {
+                                CreateUser(userViewModel) {
                                     navController.navigate(NavigationManager.CreateCompanyScreen)
                                 }
-                            )
+                            }
+                            composable<NavigationManager.CreateCompanyScreen> {
+                                CreateCompanyScreen(createCompanyViewModel) {
+                                    navController.navigate(NavigationManager.InsertCompaniesScreen)
+                                }
+                            }
+                            composable<NavigationManager.InsertCompaniesScreen> {
+                                InsertCompaniesScreen(
+                                    insertCompaniesViewModel,
+                                    onContinuePressed = {
+                                        navController.navigate(NavigationManager.MainScreen)
+                                    }, onCreatePressed = {
+                                        navController.navigate(NavigationManager.CreateCompanyScreen)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
