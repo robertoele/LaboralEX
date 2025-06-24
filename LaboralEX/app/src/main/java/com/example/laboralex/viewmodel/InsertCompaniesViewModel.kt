@@ -6,51 +6,28 @@ import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.database.dao.CompanyDao
 import com.example.laboralex.database.dao.CompanySkillDao
 import com.example.laboralex.database.dao.SkillDao
-import com.example.laboralex.database.entity.Company
-import com.example.laboralex.database.entity.CompanySkill
-import com.example.laboralex.database.entity.Skill
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class InsertCompaniesViewModel @Inject constructor(
-    private val companyDao: CompanyDao,
-    private val skillDao: SkillDao,
-    private val companySkillDao: CompanySkillDao,
+    companyDao: CompanyDao,
+    skillDao: SkillDao,
+    companySkillDao: CompanySkillDao,
     private val appStateRepository: AppStateRepository
 ) :
     ViewModel() {
-    private val _companiesAdded = MutableStateFlow<List<Company>>(emptyList())
-    val companiesAdded: StateFlow<List<Company>> = _companiesAdded
-
-    private val _companySkills = MutableStateFlow<List<CompanySkill>>(emptyList())
-    val companySkills: StateFlow<List<CompanySkill>> = _companySkills
-
-    private val _allSkills = MutableStateFlow<List<Skill>>(emptyList())
-    val allSkills: StateFlow<List<Skill>> = _allSkills
-
-    val appStateFlow = appStateRepository.formMadeFlow.stateIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        AppStateRepository.AppState(false)
-    )
-
-    init {
-        viewModelScope.launch {
-            companyDao.getCompaniesAsFlow().collect { _companiesAdded.value = it }
-        }
-        viewModelScope.launch {
-            skillDao.getAllAsFlow().collect { _allSkills.value = it }
-        }
-        viewModelScope.launch {
-            companySkillDao.getAllAsFlow().collect { _companySkills.value = it }
-        }
-    }
+    val appStateFlow = appStateRepository.formMadeFlow
+        .stateIn(viewModelScope, SharingStarted.Eagerly, AppStateRepository.AppState(false))
+    val companiesAddedFlow = companyDao.getCompaniesAsFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    val skillsFlow = skillDao.getAllAsFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    val companySkillsFlow = companySkillDao.getAllAsFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     fun finishForm() {
         viewModelScope.launch {

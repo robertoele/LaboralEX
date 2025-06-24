@@ -37,7 +37,7 @@ fun InsertCompaniesScreen(
     onContinuePressed: () -> Unit,
     onCreatePressed: () -> Unit
 ) {
-    val companiesAdded by insertCompaniesViewModel.companiesAdded.collectAsStateWithLifecycle()
+    val companiesAdded by insertCompaniesViewModel.companiesAddedFlow.collectAsStateWithLifecycle()
     CompaniesList(
         insertCompaniesViewModel,
         companiesAdded,
@@ -54,8 +54,8 @@ private fun CompaniesList(
     onCreatePressed: () -> Unit
 ) {
     val appState by insertCompaniesViewModel.appStateFlow.collectAsStateWithLifecycle()
-    val companySkills by insertCompaniesViewModel.companySkills.collectAsStateWithLifecycle()
-    val allSkills by insertCompaniesViewModel.allSkills.collectAsStateWithLifecycle()
+    val companySkills by insertCompaniesViewModel.companySkillsFlow.collectAsStateWithLifecycle()
+    val allSkills by insertCompaniesViewModel.skillsFlow.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
             Button(onClick = {
