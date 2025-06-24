@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val formMadeStateFlow = appStateRepository.formMadeFlow.stateIn(
             lifecycleScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(),
             initialValue = AppStateRepository.AppState(false)
         )
 
