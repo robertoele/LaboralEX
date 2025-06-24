@@ -31,38 +31,33 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.FormTextField
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
-import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @Composable
 fun CreateCompanyScreen(
-    navController: NavController,
-    companyViewModel: CreateCompanyViewModel,
-    insertCompaniesViewModel: InsertCompaniesViewModel
+    createCompanyViewModel: CreateCompanyViewModel,
+    onCompanyAdded: () -> Unit
 ) {
-    val name = companyViewModel.name.collectAsStateWithLifecycle()
-    val allSkills = companyViewModel.allSkills.collectAsStateWithLifecycle()
-    val requiredName = companyViewModel.requiredName.collectAsStateWithLifecycle()
-    val emptySkill = companyViewModel.emptySkill.collectAsStateWithLifecycle()
+    val name = createCompanyViewModel.name.collectAsStateWithLifecycle()
+    val allSkills = createCompanyViewModel.allSkills.collectAsStateWithLifecycle()
+    val requiredName = createCompanyViewModel.requiredName.collectAsStateWithLifecycle()
+    val emptySkill = createCompanyViewModel.emptySkill.collectAsStateWithLifecycle()
 
     val nameInteractionSource = remember { MutableInteractionSource() }
     val skillInteractionSource = remember { MutableInteractionSource() }
 
     LaunchedEffect(nameInteractionSource) {
         nameInteractionSource.interactions.collectLatest {
-            if (it is PressInteraction.Press) companyViewModel.changeRequired()
+            if (it is PressInteraction.Press) createCompanyViewModel.changeRequired()
         }
     }
 
     LaunchedEffect(skillInteractionSource) {
         skillInteractionSource.interactions.collectLatest {
-            if (it is PressInteraction.Press) companyViewModel.changeEmptySkill()
+            if (it is PressInteraction.Press) createCompanyViewModel.changeEmptySkill()
         }
     }
 
@@ -72,13 +67,9 @@ fun CreateCompanyScreen(
         floatingActionButton = {
             Button(
                 onClick = {
-                    if (companyViewModel.onContinuePressed()) {
-                        insertCompaniesViewModel.viewModelScope.launch {
-                            companyViewModel.saveCompany()
-                            companyViewModel.companySkills.clear()
-                            navController.popBackStack()
-                        }
-                        companyViewModel.changeName("")
+                    if (createCompanyViewModel.onContinuePressed()) {
+                        onCompanyAdded()
+                        createCompanyViewModel.onCompanyAdded()
                     }
                 }
             ) { Text("Agregar empresa") }
@@ -95,8 +86,8 @@ fun CreateCompanyScreen(
             Text("Nombre")
             FormTextField(
                 value = name.value,
-                onValueChange = companyViewModel::changeName,
-                onClearPressed = companyViewModel::clearName,
+                onValueChange = createCompanyViewModel::changeName,
+                onClearPressed = createCompanyViewModel::clearName,
                 interactionSource = nameInteractionSource,
                 label = { Text("Nombre") },
                 isError = requiredName.value,
@@ -124,20 +115,20 @@ fun CreateCompanyScreen(
                 )
                 Button(onClick = {
                     if (skillId.isNotBlank()) {
-                        companyViewModel.companySkills.add(skillId)
+                        createCompanyViewModel.companySkills.add(skillId)
                         skillId = ""
-                    } else companyViewModel.changeEmptySkill()
+                    } else createCompanyViewModel.changeEmptySkill()
                 }) {
                     Icon(Icons.Default.Add, contentDescription = null)
                 }
             }
 
-            ChipFlowRow(companyViewModel.companySkills)
+            ChipFlowRow(createCompanyViewModel.companySkills)
 
             if (allSkills.value.isNotEmpty()) {
                 Text("Sugerencias")
                 ChipFlowRow(allSkills.value.map { it.name }) {
-                    companyViewModel.companySkills.add(it)
+                    createCompanyViewModel.companySkills.add(it)
                 }
             }
         }

@@ -1,6 +1,5 @@
 package com.example.laboralex.ui.screens.company
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,32 +26,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.Skill
-import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 
 @Composable
 fun InsertCompaniesScreen(
-    navController: NavController,
-    insertCompaniesViewModel: InsertCompaniesViewModel
+    insertCompaniesViewModel: InsertCompaniesViewModel,
+    onContinuePressed: () -> Unit,
+    onCreatePressed: () -> Unit
 ) {
     val companiesAdded by insertCompaniesViewModel.companiesAdded.collectAsStateWithLifecycle()
-    if (companiesAdded.isNotEmpty()) CompaniesList(
-        navController,
+    CompaniesList(
         insertCompaniesViewModel,
-        companiesAdded
+        companiesAdded,
+        onContinuePressed,
+        onCreatePressed
     )
-    else WelcomeScreen(navController)
 }
 
 @Composable
 private fun CompaniesList(
-    navController: NavController,
     insertCompaniesViewModel: InsertCompaniesViewModel,
-    companiesAdded: List<Company>
+    companiesAdded: List<Company>,
+    onContinuePressed: () -> Unit,
+    onCreatePressed: () -> Unit
 ) {
     val appState by insertCompaniesViewModel.appStateFlow.collectAsStateWithLifecycle()
     val companySkills by insertCompaniesViewModel.companySkills.collectAsStateWithLifecycle()
@@ -60,12 +59,8 @@ private fun CompaniesList(
     Scaffold(
         floatingActionButton = {
             Button(onClick = {
-                if (!appState.formMade) {
-                    insertCompaniesViewModel.finishForm()
-                    navController.navigate(NavigationManager.MainScreen) {
-                        popUpTo(0) { inclusive = true }
-                    }
-                } else navController.navigate(NavigationManager.MainScreen)
+                if (!appState.formMade) insertCompaniesViewModel.finishForm()
+                onContinuePressed()
             }) {
                 val text = if (appState.formMade) "Continuar" else "Finalizar"
                 Text(text)
@@ -83,7 +78,7 @@ private fun CompaniesList(
                     "Empresas en las que estoy interesado",
                     textAlign = TextAlign.Center
                 )
-                Button(onClick = { navController.navigate(NavigationManager.CreateCompanyScreen) }) {
+                Button(onClick = onCreatePressed) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = null)
                 }
             }
@@ -131,24 +126,4 @@ private fun CompanyCardPreview() {
             Skill(name = "Retrofit")
         )
     )
-}
-
-@Composable
-private fun WelcomeScreen(navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            "Ahora, añadamos algunas empresas en las que estés interesado",
-            style = MaterialTheme.typography.headlineLarge,
-            textAlign = TextAlign.Center
-        )
-        Button(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = { navController.navigate(NavigationManager.CreateCompanyScreen) },
-        ) {
-            Text("Comenzar")
-        }
-    }
 }

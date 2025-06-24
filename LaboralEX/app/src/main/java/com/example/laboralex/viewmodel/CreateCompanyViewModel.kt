@@ -65,7 +65,15 @@ class CreateCompanyViewModel @Inject constructor(
         return !nameBlank
     }
 
-    suspend fun saveCompany() {
+    fun onCompanyAdded() {
+        viewModelScope.launch {
+            saveCompany()
+            companySkills.clear()
+        }
+        changeName("")
+    }
+
+    private suspend fun saveCompany() {
         val companyToInsert = Company(name = name.value)
         val companyId = companyDao.insert(companyToInsert)
 

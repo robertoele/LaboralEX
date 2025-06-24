@@ -78,20 +78,26 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(padding)
                     ) {
                         composable<NavigationManager.MainScreen> {
-                            MainScreen(navController, mainScreenViewModel)
+                            MainScreen(mainScreenViewModel)
                         }
                         composable<NavigationManager.CreateUserScreen> {
-                            CreateUser(navController, userViewModel)
+                            CreateUser(userViewModel) {
+                                navController.navigate(NavigationManager.CreateCompanyScreen)
+                            }
                         }
                         composable<NavigationManager.CreateCompanyScreen> {
-                            CreateCompanyScreen(
-                                navController,
-                                createCompanyViewModel,
-                                insertCompaniesViewModel
-                            )
+                            CreateCompanyScreen(createCompanyViewModel) {
+                            }
                         }
                         composable<NavigationManager.InsertCompaniesScreen> {
-                            InsertCompaniesScreen(navController, insertCompaniesViewModel)
+                            InsertCompaniesScreen(
+                                insertCompaniesViewModel,
+                                onContinuePressed = {
+                                    navController.navigate(NavigationManager.MainScreen)
+                                }, onCreatePressed = {
+                                    navController.navigate(NavigationManager.CreateCompanyScreen)
+                                }
+                            )
                         }
                     }
                 }
@@ -104,19 +110,19 @@ class MainActivity : ComponentActivity() {
         NavigationBar {
             NavigationBarItem(
                 selected = _homeSelected.collectAsStateWithLifecycle().value,
-                onClick = ::selectHome,
+                onClick = { selectHome() },
                 label = { Text("Inicio") },
                 icon = { Icon(Icons.Default.Home, contentDescription = null) }
             )
             NavigationBarItem(
                 selected = _companiesSelected.collectAsStateWithLifecycle().value,
-                onClick = ::selectCompanies,
+                onClick = { selectCompanies() },
                 label = { Text("Compañías") },
                 icon = { Icon(Icons.Default.Person, contentDescription = null) }
             )
             NavigationBarItem(
                 selected = _skillsSelected.collectAsStateWithLifecycle().value,
-                onClick = ::selectSkills,
+                onClick = { selectSkills() },
                 label = { Text("Habilidades") },
                 icon = { Icon(Icons.Default.Build, contentDescription = null) }
             )

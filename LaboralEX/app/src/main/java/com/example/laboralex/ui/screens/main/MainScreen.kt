@@ -6,13 +6,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.navigation.NavController
 import com.example.laboralex.database.entity.Application
 import com.example.laboralex.database.entity.Company
 import com.example.laboralex.viewmodel.MainScreenViewModel
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
+fun MainScreen(viewModel: MainScreenViewModel) {
     Column {
         Text("Solicitudes en curso", style = MaterialTheme.typography.titleMedium)
         viewModel.applications.collectAsState().value.forEach { OnGoingCard(it) }

@@ -30,9 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.example.laboralex.R
-import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.FormTextField
 import com.example.laboralex.ui.components.LoadingScreen
@@ -41,24 +39,24 @@ import com.example.laboralex.viewmodel.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun CreateUser(navController: NavController, userViewModel: UserViewModel) {
+fun CreateUser(userViewModel: UserViewModel, onContinuePressed: () -> Unit) {
     when (userViewModel.loadingState.collectAsState().value) {
         State.LOADING -> LoadingScreen()
         State.LOADED -> {
             Scaffold(
-                floatingActionButton = { ContinueButton(userViewModel, navController) }
+                floatingActionButton = { ContinueButton(userViewModel, onContinuePressed) }
             ) { UserForm(userViewModel, Modifier.padding(it)) }
         }
     }
 }
 
 @Composable
-private fun ContinueButton(userViewModel: UserViewModel, navController: NavController) {
+private fun ContinueButton(userViewModel: UserViewModel, onContinuePressed: () -> Unit) {
     Button(
         onClick = {
             if (userViewModel.onContinuePressed()) {
                 userViewModel.saveUser()
-                navController.navigate(NavigationManager.InsertCompaniesScreen)
+                onContinuePressed()
             }
         }
     ) {
