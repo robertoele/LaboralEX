@@ -79,6 +79,9 @@ class MainActivity : ComponentActivity() {
                                 NavigationBarItem(
                                     selected = _homeSelected.collectAsStateWithLifecycle().value,
                                     onClick = {
+                                        navController.navigate(NavigationManager.MainScreen) {
+                                            launchSingleTop = true
+                                        }
                                         _homeSelected.value = true
                                         _companiesSelected.value = false
                                         _skillsSelected.value = false
@@ -89,6 +92,9 @@ class MainActivity : ComponentActivity() {
                                 NavigationBarItem(
                                     selected = _companiesSelected.collectAsStateWithLifecycle().value,
                                     onClick = {
+                                        navController.navigate(NavigationManager.InsertCompaniesScreen) {
+                                            launchSingleTop = true
+                                        }
                                         _companiesSelected.value = true
                                         _homeSelected.value = false
                                         _skillsSelected.value = false
@@ -99,6 +105,9 @@ class MainActivity : ComponentActivity() {
                                 NavigationBarItem(
                                     selected = _skillsSelected.collectAsStateWithLifecycle().value,
                                     onClick = {
+                                        navController.navigate(NavigationManager.CreateUserScreen) {
+                                            launchSingleTop = true
+                                        }
                                         _skillsSelected.value = true
                                         _homeSelected.value = false
                                         _companiesSelected.value = false
