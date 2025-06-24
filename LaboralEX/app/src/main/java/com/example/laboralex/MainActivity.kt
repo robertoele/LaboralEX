@@ -14,7 +14,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -74,7 +73,42 @@ class MainActivity : ComponentActivity() {
                     val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
                     val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
                     val navController = rememberNavController()
-                    Scaffold(bottomBar = { if (appState?.formMade == true) BottomNavigation() }) { padding ->
+                    Scaffold(bottomBar = {
+                        if (appState?.formMade == true) {
+                            NavigationBar {
+                                NavigationBarItem(
+                                    selected = _homeSelected.collectAsStateWithLifecycle().value,
+                                    onClick = {
+                                        _homeSelected.value = true
+                                        _companiesSelected.value = false
+                                        _skillsSelected.value = false
+                                    },
+                                    label = { Text("Inicio") },
+                                    icon = { Icon(Icons.Default.Home, contentDescription = null) }
+                                )
+                                NavigationBarItem(
+                                    selected = _companiesSelected.collectAsStateWithLifecycle().value,
+                                    onClick = {
+                                        _companiesSelected.value = true
+                                        _homeSelected.value = false
+                                        _skillsSelected.value = false
+                                    },
+                                    label = { Text("Compañías") },
+                                    icon = { Icon(Icons.Default.Person, contentDescription = null) }
+                                )
+                                NavigationBarItem(
+                                    selected = _skillsSelected.collectAsStateWithLifecycle().value,
+                                    onClick = {
+                                        _skillsSelected.value = true
+                                        _homeSelected.value = false
+                                        _companiesSelected.value = false
+                                    },
+                                    label = { Text("Habilidades") },
+                                    icon = { Icon(Icons.Default.Build, contentDescription = null) }
+                                )
+                            }
+                        }
+                    }) { padding ->
                         NavHost(
                             navController = navController,
                             startDestination =
@@ -111,47 +145,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    @Composable
-    private fun BottomNavigation() {
-        NavigationBar {
-            NavigationBarItem(
-                selected = _homeSelected.collectAsStateWithLifecycle().value,
-                onClick = { selectHome() },
-                label = { Text("Inicio") },
-                icon = { Icon(Icons.Default.Home, contentDescription = null) }
-            )
-            NavigationBarItem(
-                selected = _companiesSelected.collectAsStateWithLifecycle().value,
-                onClick = { selectCompanies() },
-                label = { Text("Compañías") },
-                icon = { Icon(Icons.Default.Person, contentDescription = null) }
-            )
-            NavigationBarItem(
-                selected = _skillsSelected.collectAsStateWithLifecycle().value,
-                onClick = { selectSkills() },
-                label = { Text("Habilidades") },
-                icon = { Icon(Icons.Default.Build, contentDescription = null) }
-            )
-        }
-    }
-
-    private fun selectHome() {
-        _homeSelected.value = true
-        _companiesSelected.value = false
-        _skillsSelected.value = false
-    }
-
-    private fun selectCompanies() {
-        _companiesSelected.value = true
-        _homeSelected.value = false
-        _skillsSelected.value = false
-    }
-
-    private fun selectSkills() {
-        _skillsSelected.value = true
-        _homeSelected.value = false
-        _companiesSelected.value = false
-    }
-
 }
