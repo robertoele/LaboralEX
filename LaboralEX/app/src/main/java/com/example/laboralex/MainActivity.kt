@@ -85,6 +85,7 @@ class MainActivity : ComponentActivity() {
                                         selected = _homeSelected.collectAsStateWithLifecycle().value,
                                         onClick = {
                                             navController.navigate(NavigationManager.MainScreen) {
+                                                popUpTo<NavigationManager.MainScreen>()
                                                 launchSingleTop = true
                                             }
                                             _homeSelected.value = true
@@ -103,6 +104,9 @@ class MainActivity : ComponentActivity() {
                                         selected = _companiesSelected.collectAsStateWithLifecycle().value,
                                         onClick = {
                                             navController.navigate(NavigationManager.InsertCompaniesScreen) {
+                                                popUpTo<NavigationManager.InsertCompaniesScreen> {
+                                                    inclusive = false
+                                                }
                                                 launchSingleTop = true
                                             }
                                             _companiesSelected.value = true
@@ -120,7 +124,10 @@ class MainActivity : ComponentActivity() {
                                     NavigationBarItem(
                                         selected = _skillsSelected.collectAsStateWithLifecycle().value,
                                         onClick = {
-                                            navController.navigate(NavigationManager.UserSkillsViewModel) {
+                                            navController.navigate(NavigationManager.UserSkills) {
+                                                popUpTo<NavigationManager.UserSkills> {
+                                                    inclusive = false
+                                                }
                                                 launchSingleTop = true
                                             }
                                             _skillsSelected.value = true
@@ -170,7 +177,7 @@ class MainActivity : ComponentActivity() {
                                 composable<NavigationManager.MainScreen> {
                                     MainScreen(mainScreenViewModel)
                                 }
-                                composable<NavigationManager.UserSkillsViewModel> {
+                                composable<NavigationManager.UserSkills> {
                                     UserSkillsScreen(userSkillsViewModel)
                                 }
                                 composable<NavigationManager.CreateCompanyScreen> {

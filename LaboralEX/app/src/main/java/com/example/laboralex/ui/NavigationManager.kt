@@ -6,7 +6,7 @@ class NavigationManager {
 
     @Serializable
     object AppRoot
-    
+
     @Serializable
     object MainScreen
 
@@ -14,7 +14,7 @@ class NavigationManager {
     object CreateUserScreen
 
     @Serializable
-    object UserSkillsViewModel
+    object UserSkills
 
     @Serializable
     object InsertCompaniesScreen
