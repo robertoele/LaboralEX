@@ -156,14 +156,15 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             composable<NavigationManager.CreateCompanyScreen> {
-                                CreateCompanyScreen(createCompanyViewModel, initialForm = true) {
-                                    navController.navigate(NavigationManager.InsertCompaniesScreen)
+                                CreateCompanyScreen(createCompanyViewModel) {
+                                    navController.navigate(NavigationManager.InsertCompaniesScreenForm)
                                 }
                             }
-                            composable<NavigationManager.InsertCompaniesScreen> {
+                            composable<NavigationManager.InsertCompaniesScreenForm> {
                                 InsertCompaniesScreen(
                                     insertCompaniesViewModel,
-                                    onContinuePressed = {
+                                    initialForm = true,
+                                    onEndPressed = {
                                         navController.navigate(NavigationManager.AppRoot)
                                     }, onCreatePressed = {
                                         navController.navigate(NavigationManager.CreateCompanyScreen)
@@ -185,6 +186,11 @@ class MainActivity : ComponentActivity() {
                                     UserSkillsScreen(userSkillsViewModel)
                                 }
                                 composable<NavigationManager.CreateCompanyScreen> {
+                                    CreateCompanyScreen(createCompanyViewModel) {
+                                        navController.navigate(NavigationManager.InsertCompaniesScreen)
+                                    }
+                                }
+                                composable<NavigationManager.InsertCompaniesScreen> {
                                     BackHandler {
                                         navController.navigate(NavigationManager.MainScreen) {
                                             popUpTo<NavigationManager.MainScreen> {
@@ -192,11 +198,8 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                     }
-                                    CreateCompanyScreen(
-                                        createCompanyViewModel,
-                                        initialForm = false
-                                    ) {
-                                        navController.navigate(NavigationManager.InsertCompaniesScreen)
+                                    InsertCompaniesScreen(insertCompaniesViewModel, false) {
+                                        navController.navigate(NavigationManager.CreateCompanyScreen)
                                     }
                                 }
                             }

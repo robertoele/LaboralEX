@@ -20,8 +20,6 @@ class InsertCompaniesViewModel @Inject constructor(
     private val appStateRepository: AppStateRepository
 ) :
     ViewModel() {
-    val appStateFlow = appStateRepository.formMadeFlow
-        .stateIn(viewModelScope, SharingStarted.Eagerly, AppStateRepository.AppState(false))
     val companiesAddedFlow = companyDao.getCompaniesAsFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     val skillsFlow = skillDao.getAllAsFlow()

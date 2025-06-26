@@ -34,36 +34,22 @@ import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 @Composable
 fun InsertCompaniesScreen(
     insertCompaniesViewModel: InsertCompaniesViewModel,
-    onContinuePressed: () -> Unit,
+    initialForm: Boolean = false,
+    onEndPressed: () -> Unit = {},
     onCreatePressed: () -> Unit
 ) {
     val companiesAdded by insertCompaniesViewModel.companiesAddedFlow.collectAsStateWithLifecycle()
-    CompaniesList(
-        insertCompaniesViewModel,
-        companiesAdded,
-        onContinuePressed,
-        onCreatePressed
-    )
-}
-
-@Composable
-private fun CompaniesList(
-    insertCompaniesViewModel: InsertCompaniesViewModel,
-    companiesAdded: List<Company>,
-    onContinuePressed: () -> Unit,
-    onCreatePressed: () -> Unit
-) {
-    val appState by insertCompaniesViewModel.appStateFlow.collectAsStateWithLifecycle()
     val companySkills by insertCompaniesViewModel.companySkillsFlow.collectAsStateWithLifecycle()
     val allSkills by insertCompaniesViewModel.skillsFlow.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
-            Button(onClick = {
-                if (!appState.formMade) insertCompaniesViewModel.finishForm()
-                onContinuePressed()
-            }) {
-                val text = if (appState.formMade) "Continuar" else "Finalizar"
-                Text(text)
+            if (initialForm) {
+                Button(onClick = {
+                    insertCompaniesViewModel.finishForm()
+                    onEndPressed()
+                }) {
+                    Text("Finalizar")
+                }
             }
         }
     ) { padding ->

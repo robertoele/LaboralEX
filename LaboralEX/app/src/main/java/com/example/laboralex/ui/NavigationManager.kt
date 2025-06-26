@@ -20,5 +20,8 @@ class NavigationManager {
     object InsertCompaniesScreen
 
     @Serializable
+    object InsertCompaniesScreenForm
+
+    @Serializable
     object CreateCompanyScreen
 }
