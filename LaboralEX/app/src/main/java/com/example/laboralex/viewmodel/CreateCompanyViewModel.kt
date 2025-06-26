@@ -3,7 +3,6 @@ package com.example.laboralex.viewmodel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.database.dao.CompanyDao
 import com.example.laboralex.database.dao.CompanySkillDao
 import com.example.laboralex.database.dao.SkillDao
@@ -22,17 +21,13 @@ import javax.inject.Inject
 class CreateCompanyViewModel @Inject constructor(
     private val companyDao: CompanyDao,
     private val skillDao: SkillDao,
-    private val companySkillDao: CompanySkillDao,
-    appStateRepository: AppStateRepository
+    private val companySkillDao: CompanySkillDao
 ) : ViewModel() {
 
     val skillsFlow = skillDao.getAllAsFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     val companySkills = mutableStateListOf<String>()
-
-    val companiesStateFlow = companyDao.getCompaniesAsFlow()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
@@ -42,12 +37,6 @@ class CreateCompanyViewModel @Inject constructor(
 
     private val _emptySkill = MutableStateFlow(false)
     val emptySkill = _emptySkill.asStateFlow()
-
-    val appStateFlow = appStateRepository.formMadeFlow.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(),
-        AppStateRepository.AppState(true)
-    )
 
     fun changeName(newName: String) {
         _name.value = newName

@@ -39,13 +39,12 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun CreateCompanyScreen(
     createCompanyViewModel: CreateCompanyViewModel,
+    initialForm: Boolean = false,
     onCompanyAdded: () -> Unit
 ) {
-    val appState by createCompanyViewModel.appStateFlow.collectAsStateWithLifecycle()
-    val companies by createCompanyViewModel.companiesStateFlow.collectAsStateWithLifecycle()
-    var initialScreen by remember { mutableStateOf(true) }
+    var initialScreen by remember { mutableStateOf(initialForm) }
 
-    if (!appState.formMade && companies.isEmpty() && initialScreen) {
+    if (initialScreen) {
         Column {
             Text("Añadamos algunas empresas")
             Button(onClick = { initialScreen = false }) { Text("Continuar") }

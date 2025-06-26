@@ -35,11 +35,11 @@ import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.FormTextField
 import com.example.laboralex.ui.components.LoadingScreen
 import com.example.laboralex.ui.components.State
-import com.example.laboralex.viewmodel.UserViewModel
+import com.example.laboralex.viewmodel.CreateUserViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun CreateUser(userViewModel: UserViewModel, onContinuePressed: () -> Unit) {
+fun CreateUser(userViewModel: CreateUserViewModel, onContinuePressed: () -> Unit) {
     when (userViewModel.loadingState.collectAsState().value) {
         State.LOADING -> LoadingScreen()
         State.LOADED -> {
@@ -51,7 +51,7 @@ fun CreateUser(userViewModel: UserViewModel, onContinuePressed: () -> Unit) {
 }
 
 @Composable
-private fun ContinueButton(userViewModel: UserViewModel, onContinuePressed: () -> Unit) {
+private fun ContinueButton(userViewModel: CreateUserViewModel, onContinuePressed: () -> Unit) {
     Button(
         onClick = {
             if (userViewModel.onContinuePressed()) {
@@ -65,7 +65,7 @@ private fun ContinueButton(userViewModel: UserViewModel, onContinuePressed: () -
 }
 
 @Composable
-private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier) {
+private fun UserForm(userViewModel: CreateUserViewModel, modifier: Modifier = Modifier) {
     val userName = userViewModel.name.collectAsStateWithLifecycle()
     val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
 
@@ -137,7 +137,7 @@ private fun UserForm(userViewModel: UserViewModel, modifier: Modifier = Modifier
 }
 
 @Composable
-private fun QualitiesForm(viewModel: UserViewModel, modifier: Modifier = Modifier) {
+private fun QualitiesForm(viewModel: CreateUserViewModel, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         val skill = viewModel.skill.collectAsStateWithLifecycle()
         Row(verticalAlignment = Alignment.CenterVertically) {

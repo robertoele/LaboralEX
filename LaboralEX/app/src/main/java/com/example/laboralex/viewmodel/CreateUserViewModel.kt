@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(
+class CreateUserViewModel @Inject constructor(
     private val userDao: UserDao,
     private val skillDao: SkillDao,
     private val userSkillDao: UserSkillDao

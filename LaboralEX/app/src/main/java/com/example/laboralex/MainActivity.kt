@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.ui.NavigationManager
@@ -29,11 +30,13 @@ import com.example.laboralex.ui.screens.company.CreateCompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.screens.user.CreateUser
+import com.example.laboralex.ui.screens.user.UserSkillsScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
+import com.example.laboralex.viewmodel.CreateUserViewModel
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import com.example.laboralex.viewmodel.MainScreenViewModel
-import com.example.laboralex.viewmodel.UserViewModel
+import com.example.laboralex.viewmodel.UserSkillsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -68,73 +71,88 @@ class MainActivity : ComponentActivity() {
             if (appState == null) LoadingScreen()
             else {
                 LaboralEXTheme {
-                    val userViewModel = hiltViewModel<UserViewModel>()
+                    val userViewModel = hiltViewModel<CreateUserViewModel>()
+                    val userSkillsViewModel = hiltViewModel<UserSkillsViewModel>()
                     val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
                     val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
                     val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
                     val navController = rememberNavController()
-                    Scaffold(bottomBar = {
-                        if (appState?.formMade == true) {
-                            NavigationBar {
-                                NavigationBarItem(
-                                    selected = _homeSelected.collectAsStateWithLifecycle().value,
-                                    onClick = {
-                                        navController.navigate(NavigationManager.MainScreen) {
-                                            launchSingleTop = true
+                    Scaffold(
+                        bottomBar = {
+                            if (appState?.formMade == true) {
+                                NavigationBar {
+                                    NavigationBarItem(
+                                        selected = _homeSelected.collectAsStateWithLifecycle().value,
+                                        onClick = {
+                                            navController.navigate(NavigationManager.MainScreen) {
+                                                launchSingleTop = true
+                                            }
+                                            _homeSelected.value = true
+                                            _companiesSelected.value = false
+                                            _skillsSelected.value = false
+                                        },
+                                        label = { Text("Inicio") },
+                                        icon = {
+                                            Icon(
+                                                Icons.Default.Home,
+                                                contentDescription = null
+                                            )
                                         }
-                                        _homeSelected.value = true
-                                        _companiesSelected.value = false
-                                        _skillsSelected.value = false
-                                    },
-                                    label = { Text("Inicio") },
-                                    icon = { Icon(Icons.Default.Home, contentDescription = null) }
-                                )
-                                NavigationBarItem(
-                                    selected = _companiesSelected.collectAsStateWithLifecycle().value,
-                                    onClick = {
-                                        navController.navigate(NavigationManager.InsertCompaniesScreen) {
-                                            launchSingleTop = true
+                                    )
+                                    NavigationBarItem(
+                                        selected = _companiesSelected.collectAsStateWithLifecycle().value,
+                                        onClick = {
+                                            navController.navigate(NavigationManager.InsertCompaniesScreen) {
+                                                launchSingleTop = true
+                                            }
+                                            _companiesSelected.value = true
+                                            _homeSelected.value = false
+                                            _skillsSelected.value = false
+                                        },
+                                        label = { Text("Compañías") },
+                                        icon = {
+                                            Icon(
+                                                Icons.Default.Person,
+                                                contentDescription = null
+                                            )
                                         }
-                                        _companiesSelected.value = true
-                                        _homeSelected.value = false
-                                        _skillsSelected.value = false
-                                    },
-                                    label = { Text("Compañías") },
-                                    icon = { Icon(Icons.Default.Person, contentDescription = null) }
-                                )
-                                NavigationBarItem(
-                                    selected = _skillsSelected.collectAsStateWithLifecycle().value,
-                                    onClick = {
-                                        navController.navigate(NavigationManager.CreateUserScreen) {
-                                            launchSingleTop = true
+                                    )
+                                    NavigationBarItem(
+                                        selected = _skillsSelected.collectAsStateWithLifecycle().value,
+                                        onClick = {
+                                            navController.navigate(NavigationManager.UserSkillsViewModel) {
+                                                launchSingleTop = true
+                                            }
+                                            _skillsSelected.value = true
+                                            _homeSelected.value = false
+                                            _companiesSelected.value = false
+                                        },
+                                        label = { Text("Habilidades") },
+                                        icon = {
+                                            Icon(
+                                                Icons.Default.Build,
+                                                contentDescription = null
+                                            )
                                         }
-                                        _skillsSelected.value = true
-                                        _homeSelected.value = false
-                                        _companiesSelected.value = false
-                                    },
-                                    label = { Text("Habilidades") },
-                                    icon = { Icon(Icons.Default.Build, contentDescription = null) }
-                                )
+                                    )
+                                }
                             }
                         }
-                    }) { padding ->
+                    ) { padding ->
                         NavHost(
                             navController = navController,
                             startDestination =
-                            if (appState?.formMade == true) NavigationManager.MainScreen
+                            if (appState?.formMade == true) NavigationManager.AppRoot
                             else NavigationManager.CreateUserScreen,
                             modifier = Modifier.padding(padding)
                         ) {
-                            composable<NavigationManager.MainScreen> {
-                                MainScreen(mainScreenViewModel)
-                            }
                             composable<NavigationManager.CreateUserScreen> {
                                 CreateUser(userViewModel) {
                                     navController.navigate(NavigationManager.CreateCompanyScreen)
                                 }
                             }
                             composable<NavigationManager.CreateCompanyScreen> {
-                                CreateCompanyScreen(createCompanyViewModel) {
+                                CreateCompanyScreen(createCompanyViewModel, initialForm = true) {
                                     navController.navigate(NavigationManager.InsertCompaniesScreen)
                                 }
                             }
@@ -142,11 +160,27 @@ class MainActivity : ComponentActivity() {
                                 InsertCompaniesScreen(
                                     insertCompaniesViewModel,
                                     onContinuePressed = {
-                                        navController.navigate(NavigationManager.MainScreen)
+                                        navController.navigate(NavigationManager.AppRoot)
                                     }, onCreatePressed = {
                                         navController.navigate(NavigationManager.CreateCompanyScreen)
                                     }
                                 )
+                            }
+                            navigation<NavigationManager.AppRoot>(startDestination = NavigationManager.MainScreen) {
+                                composable<NavigationManager.MainScreen> {
+                                    MainScreen(mainScreenViewModel)
+                                }
+                                composable<NavigationManager.UserSkillsViewModel> {
+                                    UserSkillsScreen(userSkillsViewModel)
+                                }
+                                composable<NavigationManager.CreateCompanyScreen> {
+                                    CreateCompanyScreen(
+                                        createCompanyViewModel,
+                                        initialForm = false
+                                    ) {
+                                        navController.navigate(NavigationManager.InsertCompaniesScreen)
+                                    }
+                                }
                             }
                         }
                     }

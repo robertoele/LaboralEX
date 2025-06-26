@@ -3,11 +3,18 @@ package com.example.laboralex.ui
 import kotlinx.serialization.Serializable
 
 class NavigationManager {
+
+    @Serializable
+    object AppRoot
+    
     @Serializable
     object MainScreen
 
     @Serializable
     object CreateUserScreen
+
+    @Serializable
+    object UserSkillsViewModel
 
     @Serializable
     object InsertCompaniesScreen
