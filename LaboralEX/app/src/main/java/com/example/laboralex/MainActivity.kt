@@ -2,6 +2,7 @@ package com.example.laboralex
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
@@ -104,9 +105,7 @@ class MainActivity : ComponentActivity() {
                                         selected = _companiesSelected.collectAsStateWithLifecycle().value,
                                         onClick = {
                                             navController.navigate(NavigationManager.InsertCompaniesScreen) {
-                                                popUpTo<NavigationManager.InsertCompaniesScreen> {
-                                                    inclusive = false
-                                                }
+                                                popUpTo<NavigationManager.InsertCompaniesScreen>()
                                                 launchSingleTop = true
                                             }
                                             _companiesSelected.value = true
@@ -125,9 +124,7 @@ class MainActivity : ComponentActivity() {
                                         selected = _skillsSelected.collectAsStateWithLifecycle().value,
                                         onClick = {
                                             navController.navigate(NavigationManager.UserSkills) {
-                                                popUpTo<NavigationManager.UserSkills> {
-                                                    inclusive = false
-                                                }
+                                                popUpTo<NavigationManager.UserSkills>()
                                                 launchSingleTop = true
                                             }
                                             _skillsSelected.value = true
@@ -178,9 +175,23 @@ class MainActivity : ComponentActivity() {
                                     MainScreen(mainScreenViewModel)
                                 }
                                 composable<NavigationManager.UserSkills> {
+                                    BackHandler {
+                                        navController.navigate(NavigationManager.MainScreen) {
+                                            popUpTo<NavigationManager.MainScreen> {
+                                                inclusive = true
+                                            }
+                                        }
+                                    }
                                     UserSkillsScreen(userSkillsViewModel)
                                 }
                                 composable<NavigationManager.CreateCompanyScreen> {
+                                    BackHandler {
+                                        navController.navigate(NavigationManager.MainScreen) {
+                                            popUpTo<NavigationManager.MainScreen> {
+                                                inclusive = true
+                                            }
+                                        }
+                                    }
                                     CreateCompanyScreen(
                                         createCompanyViewModel,
                                         initialForm = false
