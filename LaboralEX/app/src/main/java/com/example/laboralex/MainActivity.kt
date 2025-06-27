@@ -145,10 +145,10 @@ class MainActivity : ComponentActivity() {
                     ) { padding ->
                         NavHost(
                             navController = navController,
+                            modifier = Modifier.padding(padding),
                             startDestination =
                             if (appState?.formMade == true) NavigationManager.AppRoot
-                            else NavigationManager.CreateUserScreen,
-                            modifier = Modifier.padding(padding)
+                            else NavigationManager.CreateUserScreen
                         ) {
                             composable<NavigationManager.CreateUserScreen> {
                                 CreateUser(userViewModel) {
@@ -179,7 +179,7 @@ class MainActivity : ComponentActivity() {
                                     BackHandler {
                                         navController.navigate(NavigationManager.MainScreen) {
                                             popUpTo<NavigationManager.MainScreen> {
-                                                inclusive = true
+                                                saveState = true
                                             }
                                         }
                                     }
@@ -194,7 +194,7 @@ class MainActivity : ComponentActivity() {
                                     BackHandler {
                                         navController.navigate(NavigationManager.MainScreen) {
                                             popUpTo<NavigationManager.MainScreen> {
-                                                inclusive = true
+                                                saveState = true
                                             }
                                         }
                                     }
@@ -204,6 +204,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
+
                     }
                 }
             }
