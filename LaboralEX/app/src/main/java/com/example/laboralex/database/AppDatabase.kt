@@ -7,16 +7,14 @@ import com.example.laboralex.database.dao.CompanyDao
 import com.example.laboralex.database.dao.CompanySkillDao
 import com.example.laboralex.database.dao.SkillDao
 import com.example.laboralex.database.dao.UserDao
-import com.example.laboralex.database.dao.UserSkillDao
 import com.example.laboralex.database.entity.Application
 import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.CompanySkill
 import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.database.entity.User
-import com.example.laboralex.database.entity.UserSkill
 
 @Database(
-    entities = [Company::class, CompanySkill::class, Skill::class, User::class, UserSkill::class, Application::class],
+    entities = [Company::class, CompanySkill::class, Skill::class, User::class, Application::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -24,6 +22,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun SkillDao(): SkillDao
     abstract fun CompanySkillDao(): CompanySkillDao
     abstract fun UserDao(): UserDao
-    abstract fun UserSkillDao(): UserSkillDao
     abstract fun ApplicationDao(): ApplicationDao
 }

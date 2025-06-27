@@ -21,7 +21,6 @@ import com.example.laboralex.viewmodel.UserSkillsViewModel
 fun UserSkillsScreen(viewModel: UserSkillsViewModel) {
     Column {
         val skill = viewModel.skill.collectAsStateWithLifecycle()
-        val userSkills = viewModel.userSkills.collectAsStateWithLifecycle()
         val allSkills = viewModel.allSkills.collectAsStateWithLifecycle()
         Row(verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
@@ -33,8 +32,6 @@ fun UserSkillsScreen(viewModel: UserSkillsViewModel) {
                 Icon(Icons.Default.Add, contentDescription = null)
             }
         }
-
-        ChipFlowRow(userSkills.value)
 
         if (allSkills.value.isNotEmpty()) {
             Text("Sugerencias")

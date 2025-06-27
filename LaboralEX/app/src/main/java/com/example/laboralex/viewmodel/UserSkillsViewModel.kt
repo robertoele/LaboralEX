@@ -3,7 +3,6 @@ package com.example.laboralex.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.SkillDao
-import com.example.laboralex.database.dao.UserSkillDao
 import com.example.laboralex.database.entity.Skill
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,18 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserSkillsViewModel @Inject constructor(
-    private val skillDao: SkillDao,
-    userSkillDao: UserSkillDao
-) :
-    ViewModel() {
+class UserSkillsViewModel @Inject constructor(private val skillDao: SkillDao) : ViewModel() {
 
-    val userSkills = userSkillDao.getAllAsFlow()
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = emptyList()
-        )
     val allSkills = skillDao.getAllAsFlow()
         .stateIn(
             viewModelScope,

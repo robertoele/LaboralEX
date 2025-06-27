@@ -5,10 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.SkillDao
 import com.example.laboralex.database.dao.UserDao
-import com.example.laboralex.database.dao.UserSkillDao
 import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.database.entity.User
-import com.example.laboralex.database.entity.UserSkill
 import com.example.laboralex.ui.components.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateUserViewModel @Inject constructor(
     private val userDao: UserDao,
-    private val skillDao: SkillDao,
-    private val userSkillDao: UserSkillDao
+    private val skillDao: SkillDao
 ) : ViewModel() {
 
     val allSkills = mutableListOf<Skill>()
@@ -90,7 +87,7 @@ class CreateUserViewModel @Inject constructor(
 
     fun saveUser() {
         viewModelScope.launch {
-            val userId = userDao.insert(
+            userDao.insert(
                 User(
                     firstName = name.value,
                     surnames = surnames.value,
@@ -102,15 +99,7 @@ class CreateUserViewModel @Inject constructor(
                 userSkills.filter { it !in allSkills.map { skill -> skill.name } }
                     .map { name -> Skill(name = name) }
 
-            val existingSkills =
-                allSkills.filter { it.name in userSkills }.map { skill -> skill.id }
-
-            val userSkillsIds = skillDao.insertAll(*newSkills.toTypedArray()) + existingSkills
-
-            val userSkillsToInsert =
-                userSkillsIds.map { UserSkill(userId = userId, skillId = it) }
-
-            userSkillDao.insertAll(*userSkillsToInsert.toTypedArray())
+            skillDao.insertAll(*newSkills.toTypedArray())
         }
     }
 }
