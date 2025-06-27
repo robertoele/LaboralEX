@@ -39,7 +39,7 @@ fun InsertCompaniesScreen(
     onCreatePressed: () -> Unit
 ) {
     val companiesAdded by insertCompaniesViewModel.companiesAddedFlow.collectAsStateWithLifecycle()
-    val companySkills by insertCompaniesViewModel.companySkillsFlow.collectAsStateWithLifecycle()
+    val companiesSkills by insertCompaniesViewModel.companySkillsFlow.collectAsStateWithLifecycle()
     val allSkills by insertCompaniesViewModel.skillsFlow.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
@@ -70,6 +70,7 @@ fun InsertCompaniesScreen(
             }
             Spacer(modifier = Modifier.height(5.dp))
             companiesAdded.forEach { company ->
+                val companySkills = companiesSkills.filter { it.companyId == company.id }
                 val skills = allSkills.filter { skill ->
                     skill.id in companySkills.map { it.skillId }
                 }
