@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -45,27 +46,6 @@ fun InsertCompaniesScreen(
     val companiesSkills by insertCompaniesViewModel.companySkillsFlow.collectAsStateWithLifecycle()
     val allSkills by insertCompaniesViewModel.skillsFlow.collectAsStateWithLifecycle()
     Box(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier.align(Alignment.BottomEnd)) {
-            if (initialForm) {
-                FloatingActionButton(
-                    onClick = {
-                        insertCompaniesViewModel.finishForm()
-                        onEndPressed()
-                    }) {
-                    Text("Finalizar")
-                }
-            }
-            FloatingActionButton(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .size(50.dp),
-                shape = CircleShape,
-                onClick = onCreatePressed
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = null)
-            }
-        }
-
         Column(
             Modifier
                 .fillMaxSize()
@@ -85,7 +65,27 @@ fun InsertCompaniesScreen(
                 CompanyCard(company, skills)
             }
         }
-
+        Row(modifier = Modifier.align(Alignment.BottomEnd)) {
+            if (initialForm) {
+                ExtendedFloatingActionButton(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    onClick = {
+                        insertCompaniesViewModel.finishForm()
+                        onEndPressed()
+                    }) {
+                    Text("Finalizar")
+                }
+            }
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .size(50.dp),
+                shape = CircleShape,
+                onClick = onCreatePressed
+            ) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+            }
+        }
     }
 }
 
