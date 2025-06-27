@@ -20,7 +20,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,12 +42,17 @@ fun InsertCompaniesScreen(
     val allSkills by insertCompaniesViewModel.skillsFlow.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
-            if (initialForm) {
-                Button(onClick = {
-                    insertCompaniesViewModel.finishForm()
-                    onEndPressed()
-                }) {
-                    Text("Finalizar")
+            Row {
+                Button(modifier = Modifier.padding(horizontal = 2.dp), onClick = onCreatePressed) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                }
+                if (initialForm) {
+                    Button(onClick = {
+                        insertCompaniesViewModel.finishForm()
+                        onEndPressed()
+                    }) {
+                        Text("Finalizar")
+                    }
                 }
             }
         }
@@ -59,15 +63,7 @@ fun InsertCompaniesScreen(
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    "Empresas en las que estoy interesado",
-                    textAlign = TextAlign.Center
-                )
-                Button(onClick = onCreatePressed) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                }
-            }
+            Text("Empresas en las que estoy interesado", textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.height(5.dp))
             companiesAdded.forEach { company ->
                 val companySkills = companiesSkills.filter { it.companyId == company.id }
