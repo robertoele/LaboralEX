@@ -12,6 +12,9 @@ interface SkillDao {
     @Insert
     suspend fun insertAll(vararg skills: Skill): List<Long>
 
+    @Insert
+    suspend fun insert(skill: Skill): Long
+    
     @Delete
     suspend fun delete(skill: Skill)
 

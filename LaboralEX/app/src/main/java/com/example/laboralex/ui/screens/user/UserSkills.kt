@@ -21,27 +21,27 @@ import com.example.laboralex.viewmodel.UserSkillsViewModel
 fun UserSkillsScreen(viewModel: UserSkillsViewModel) {
     Column {
         val skill = viewModel.skill.collectAsStateWithLifecycle()
+        val userSkills = viewModel.userSkills.collectAsStateWithLifecycle()
+        val allSkills = viewModel.allSkills.collectAsStateWithLifecycle()
         Row(verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 modifier = Modifier.padding(horizontal = 3.dp),
                 value = skill.value,
                 onValueChange = viewModel::changeSkill,
             )
-            Button(onClick = {
-                viewModel.userSkills.add(skill.value)
-                viewModel.changeSkill("")
-            }) {
+            Button(onClick = viewModel::addSkill) {
                 Icon(Icons.Default.Add, contentDescription = null)
             }
         }
 
-        ChipFlowRow(viewModel.userSkills)
+        ChipFlowRow(userSkills.value)
 
-        if (viewModel.allSkills.isNotEmpty()) {
+        if (allSkills.value.isNotEmpty()) {
             Text("Sugerencias")
-            ChipFlowRow(viewModel.allSkills.map { it.name }) {
-                viewModel.userSkills.add(it)
-            }
+            ChipFlowRow(
+                chipsList = allSkills.value.map { it.name },
+                onSelected = viewModel::addSkill
+            )
         }
     }
 }
