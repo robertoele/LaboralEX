@@ -64,7 +64,7 @@ fun CreateUser(userViewModel: CreateUserViewModel, onContinuePressed: () -> Unit
                         })
                 },
                 floatingActionButton = { ContinueButton(userViewModel, onContinuePressed) }
-            ) { UserForm(userViewModel, Modifier.padding(it)) }
+            ) { UserForm(Modifier.padding(it), userViewModel) }
         }
     }
 }
@@ -84,7 +84,7 @@ private fun ContinueButton(userViewModel: CreateUserViewModel, onContinuePressed
 }
 
 @Composable
-private fun UserForm(userViewModel: CreateUserViewModel, modifier: Modifier = Modifier) {
+private fun UserForm(modifier: Modifier = Modifier, userViewModel: CreateUserViewModel) {
     val userName = userViewModel.name.collectAsStateWithLifecycle()
     val userSurname = userViewModel.surnames.collectAsStateWithLifecycle()
 
@@ -109,10 +109,16 @@ private fun UserForm(userViewModel: CreateUserViewModel, modifier: Modifier = Mo
     Column(modifier = modifier.then(Modifier.verticalScroll(rememberScrollState()))) {
         Column(
             modifier = Modifier
+                .padding(5.dp)
                 .clip(shape = RoundedCornerShape(5.dp))
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.secondaryContainer)
         ) {
+            Text(
+                "Datos personales",
+                modifier = Modifier.padding(horizontal = 6.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
             FormTextField(
                 modifier = Modifier.padding(6.dp),
                 value = userName.value,
@@ -137,14 +143,18 @@ private fun UserForm(userViewModel: CreateUserViewModel, modifier: Modifier = Mo
             )
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
-
         Column(
             Modifier
+                .padding(5.dp)
                 .clip(shape = RoundedCornerShape(5.dp))
+                .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.secondaryContainer)
         ) {
-            Text("Aptitudes", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "Aptitudes",
+                modifier = Modifier.padding(horizontal = 6.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
             QualitiesForm(userViewModel, Modifier.padding(horizontal = 6.dp))
         }
     }
