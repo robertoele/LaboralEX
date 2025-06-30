@@ -83,8 +83,8 @@ class MainActivity : ComponentActivity() {
                         bottomBar = {
                             if (appState?.formMade == true) {
                                 NavigationBar(
-                                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                                    contentColor = MaterialTheme.colorScheme.onSurface
                                 ) {
                                     NavigationBarItem(
                                         selected = _homeSelected.collectAsStateWithLifecycle().value,

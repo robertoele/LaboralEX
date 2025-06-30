@@ -29,8 +29,8 @@ fun UserSkillsScreen(viewModel: UserSkillsViewModel) {
     Scaffold(topBar = {
         TopAppBar(
             colors = topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
             ),
             title = {
                 Text(

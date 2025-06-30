@@ -1,6 +1,8 @@
 package com.example.laboralex.ui.screens.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,8 +27,8 @@ fun MainScreen(viewModel: MainScreenViewModel) {
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
                 ),
                 title = {
                     Text(
@@ -38,7 +40,12 @@ fun MainScreen(viewModel: MainScreenViewModel) {
             )
         }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
             viewModel.allCompanies.collectAsState().value.forEach { CompanyCard(it) }
         }
     }

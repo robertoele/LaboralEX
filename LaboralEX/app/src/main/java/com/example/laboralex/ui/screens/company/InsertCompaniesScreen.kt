@@ -1,5 +1,6 @@
 package com.example.laboralex.ui.screens.company
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,6 +51,8 @@ fun InsertCompaniesScreen(
         floatingActionButton = {
             Column {
                 FloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier
                         .padding(vertical = 20.dp)
                         .align(Alignment.End)
@@ -61,6 +64,8 @@ fun InsertCompaniesScreen(
                 }
                 if (initialForm) {
                     ExtendedFloatingActionButton(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         onClick = {
                             insertCompaniesViewModel.finishForm()
                             onEndPressed()
@@ -74,8 +79,8 @@ fun InsertCompaniesScreen(
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
                 ),
                 title = {
                     Text(
@@ -89,6 +94,7 @@ fun InsertCompaniesScreen(
     ) { innerPadding ->
         Column(
             Modifier
+                .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
