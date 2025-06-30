@@ -14,33 +14,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.laboralex.database.entity.Company
-import com.example.laboralex.ui.components.LoadingScreen
 import com.example.laboralex.viewmodel.MainScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
-    val loading = viewModel.loading.collectAsStateWithLifecycle()
-    if (loading.value) LoadingScreen()
-    else {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "Hola, ${viewModel.user?.firstName}",
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.headlineSmall
-                        )
-                    }
-                )
-            }
-        ) { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding)) {
-                viewModel.allCompanies.collectAsState().value.forEach { CompanyCard(it) }
-            }
+    val userFlow = viewModel.userFlow.collectAsStateWithLifecycle()
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Hola, ${userFlow.value.firstOrNull()?.firstName}",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                }
+            )
         }
-
+    ) { innerPadding ->
+        Column(modifier = Modifier.padding(innerPadding)) {
+            viewModel.allCompanies.collectAsState().value.forEach { CompanyCard(it) }
+        }
     }
 }
 
