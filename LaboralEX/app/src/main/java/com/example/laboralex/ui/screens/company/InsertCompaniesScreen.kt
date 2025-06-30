@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -68,13 +69,18 @@ fun InsertCompaniesScreen(
             }
         },
         topBar = {
-            TopAppBar(title = {
-                Text(
-                    "Empresas",
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.headlineSmall
-                )
-            })
+            TopAppBar(
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
+                title = {
+                    Text(
+                        "Empresas",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                })
         }
 
     ) { innerPadding ->
@@ -83,6 +89,7 @@ fun InsertCompaniesScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
+                .padding(horizontal = 15.dp)
         ) {
             companiesAdded.forEach { company ->
                 val companySkills = companiesSkills.filter { it.companyId == company.id }

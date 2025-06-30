@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,13 +50,18 @@ fun CreateUser(userViewModel: CreateUserViewModel, onContinuePressed: () -> Unit
         State.LOADED -> {
             Scaffold(
                 topBar = {
-                    TopAppBar(title = {
-                        Text(
-                            stringResource(R.string.create_user_welcome),
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.headlineSmall
-                        )
-                    })
+                    TopAppBar(
+                        colors = topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        ),
+                        title = {
+                            Text(
+                                stringResource(R.string.create_user_welcome),
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.headlineSmall
+                            )
+                        })
                 },
                 floatingActionButton = { ContinueButton(userViewModel, onContinuePressed) }
             ) { UserForm(userViewModel, Modifier.padding(it)) }

@@ -13,6 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,15 +27,24 @@ import com.example.laboralex.viewmodel.UserSkillsViewModel
 @Composable
 fun UserSkillsScreen(viewModel: UserSkillsViewModel) {
     Scaffold(topBar = {
-        TopAppBar(title = {
-            Text(
-                "Habilidades",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        })
+        TopAppBar(
+            colors = topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            ),
+            title = {
+                Text(
+                    "Habilidades",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            })
     }) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(10.dp)
+        ) {
             val skillField = viewModel.skill.collectAsStateWithLifecycle()
             val allSkills = viewModel.allSkills.collectAsStateWithLifecycle()
             Row(verticalAlignment = Alignment.CenterVertically) {
