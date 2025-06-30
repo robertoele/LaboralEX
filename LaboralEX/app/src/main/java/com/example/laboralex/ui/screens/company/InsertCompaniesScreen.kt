@@ -1,12 +1,9 @@
 package com.example.laboralex.ui.screens.company
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -16,13 +13,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +33,7 @@ import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InsertCompaniesScreen(
     insertCompaniesViewModel: InsertCompaniesViewModel,
@@ -44,39 +44,46 @@ fun InsertCompaniesScreen(
     val companiesAdded by insertCompaniesViewModel.companiesAddedFlow.collectAsStateWithLifecycle()
     val companiesSkills by insertCompaniesViewModel.companySkillsFlow.collectAsStateWithLifecycle()
     val allSkills by insertCompaniesViewModel.skillsFlow.collectAsStateWithLifecycle()
-    Box(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier.align(Alignment.BottomEnd)) {
-            if (initialForm) {
+    Scaffold(
+        floatingActionButton = {
+            Row {
+                if (initialForm) {
+                    FloatingActionButton(
+                        onClick = {
+                            insertCompaniesViewModel.finishForm()
+                            onEndPressed()
+                        }) {
+                        Text("Finalizar")
+                    }
+                }
                 FloatingActionButton(
-                    onClick = {
-                        insertCompaniesViewModel.finishForm()
-                        onEndPressed()
-                    }) {
-                    Text("Finalizar")
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .size(50.dp),
+                    shape = CircleShape,
+                    onClick = onCreatePressed
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
                 }
             }
-            FloatingActionButton(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .size(50.dp),
-                shape = CircleShape,
-                onClick = onCreatePressed
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = null)
-            }
+        },
+        topBar = {
+            TopAppBar(title = {
+                Text(
+                    "Empresas",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            })
         }
 
+    ) { innerPadding ->
         Column(
             Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
+                .padding(innerPadding)
         ) {
-            Text(
-                "Empresas",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Spacer(modifier = Modifier.height(5.dp))
             companiesAdded.forEach { company ->
                 val companySkills = companiesSkills.filter { it.companyId == company.id }
                 val skills = allSkills.filter { skill ->
@@ -85,8 +92,8 @@ fun InsertCompaniesScreen(
                 CompanyCard(company, skills)
             }
         }
-
     }
+
 }
 
 @Composable
