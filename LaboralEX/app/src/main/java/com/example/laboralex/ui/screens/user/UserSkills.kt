@@ -64,7 +64,6 @@ fun UserSkillsScreen(viewModel: UserSkillsViewModel) {
                 .padding(innerPadding)
                 .padding(10.dp)
         ) {
-            val skillField = viewModel.skill.collectAsStateWithLifecycle()
             val allSkills = viewModel.allSkills.collectAsStateWithLifecycle()
             allSkills.value.forEach { SkillCard(it) }
         }

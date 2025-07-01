@@ -14,11 +14,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.laboralex.ui.components.ChipFlowRow
@@ -36,6 +40,7 @@ import com.example.laboralex.ui.components.FormTextField
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateCompanyScreen(
     createCompanyViewModel: CreateCompanyViewModel,
@@ -64,6 +69,21 @@ fun CreateCompanyScreen(
     var skillName by remember { mutableStateOf("") }
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Crear empresa",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                },
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                )
+            )
+        },
         floatingActionButton = {
             Button(
                 onClick = {
@@ -72,16 +92,16 @@ fun CreateCompanyScreen(
                         createCompanyViewModel.onCompanyAdded()
                     }
                 }
-            ) { Text("Agregar empresa") }
+            ) { Text("Crear") }
         }
     ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
+                .padding(6.dp)
                 .clip(shape = RoundedCornerShape(5.dp))
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.secondaryContainer)
-                .padding(horizontal = 6.dp)
         ) {
             Text("Nombre")
             FormTextField(
