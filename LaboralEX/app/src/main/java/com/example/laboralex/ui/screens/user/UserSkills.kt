@@ -1,26 +1,29 @@
 package com.example.laboralex.ui.screens.user
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.laboralex.database.entity.Skill
@@ -80,11 +83,17 @@ private fun SkillCard(skill: Skill) {
         colors = CardDefaults.cardColors()
             .copy(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
-        Text(
-            text = skill.name,
-            modifier = Modifier.padding(3.dp),
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = skill.name,
+                modifier = Modifier
+                    .padding(3.dp)
+                    .weight(1f),
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+            IconButton(onClick = {}) {
+                Icon(Icons.Default.Edit, contentDescription = "Editar habilidad")
+            }
+        }
     }
 }
