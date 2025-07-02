@@ -28,11 +28,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.LoadingScreen
+import com.example.laboralex.ui.screens.CreateUser
+import com.example.laboralex.ui.screens.UserSkillsScreen
 import com.example.laboralex.ui.screens.company.CreateCompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.MainScreen
-import com.example.laboralex.ui.screens.user.CreateUser
-import com.example.laboralex.ui.screens.user.UserSkillsScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
 import com.example.laboralex.viewmodel.CreateUserViewModel

@@ -1,4 +1,4 @@
-package com.example.laboralex.ui.screens.user
+package com.example.laboralex.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
