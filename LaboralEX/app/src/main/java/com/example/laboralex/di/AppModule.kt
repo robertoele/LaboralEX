@@ -53,6 +53,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun providesCourseSkillDao(db: AppDatabase) = db.CourseSkillDao()
+
+    @Provides
+    @Singleton
     fun providesAppStateDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(produceNewData = { emptyPreferences() }),
