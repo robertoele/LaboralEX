@@ -5,9 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CourseDao
 import com.example.laboralex.database.dao.CourseSkillDao
 import com.example.laboralex.database.dao.SkillDao
+import com.example.laboralex.ui.screens.SkillSelect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -18,13 +21,16 @@ class CreateCourseViewModel @Inject constructor(
     courseSkillDao: CourseSkillDao
 ) : ViewModel() {
     private val _nameField = MutableStateFlow("")
-    val nameField = _nameField.value
+    val nameField = _nameField.asStateFlow()
 
     private val _linkField = MutableStateFlow("")
-    val linkField = _linkField.value
+    val linkField = _linkField.asStateFlow()
 
-    val allSkills = skillDao.getAllAsFlow()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    val allSkills = skillDao.getAllAsFlow().map { it.map { skill -> SkillSelect(skill) } }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        emptyList()
+    )
 
     fun changeNameField(newValue: String) {
         _nameField.value = newValue
@@ -36,5 +42,9 @@ class CreateCourseViewModel @Inject constructor(
         _linkField.value = newValue
     }
 
-    fun clearLinkField() = changeNameField("")
+    fun clearLinkField() = changeLinkField("")
+
+    fun addCourse() {
+
+    }
 }

@@ -244,7 +244,9 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                                 composable<NavigationManager.CreateCourseScreen> {
-                                    CreateCourse(createCourseViewModel)
+                                    CreateCourse(createCourseViewModel) {
+                                        navController.popBackStack()
+                                    }
                                 }
                                 composable<NavigationManager.InsertCompaniesScreen> {
                                     BackHandler {

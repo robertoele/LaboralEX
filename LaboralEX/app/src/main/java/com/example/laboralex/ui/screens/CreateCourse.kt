@@ -1,7 +1,11 @@
 package com.example.laboralex.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.MaterialTheme
@@ -12,14 +16,17 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.laboralex.ui.components.FormTextField
 import com.example.laboralex.viewmodel.CreateCourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateCourse(viewModel: CreateCourseViewModel) {
+fun CreateCourse(viewModel: CreateCourseViewModel, onAddSelected: () -> Unit) {
     val allSkills = viewModel.allSkills.collectAsStateWithLifecycle()
+    val nameField = viewModel.nameField.collectAsStateWithLifecycle()
+    val linkField = viewModel.linkField.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -40,6 +47,8 @@ fun CreateCourse(viewModel: CreateCourseViewModel) {
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
+                    viewModel.addCourse()
+                    onAddSelected()
                 }
             ) {
                 Text("Añadir")
@@ -47,26 +56,47 @@ fun CreateCourse(viewModel: CreateCourseViewModel) {
         }
     ) { innerPadding ->
 
-        Column(modifier = Modifier.padding(innerPadding)) {
-            //Nombre
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(5.dp)
+        ) {
+            Text("Nombre")
             FormTextField(
-                value = viewModel.nameField,
+                value = nameField.value,
                 onValueChange = viewModel::changeNameField,
                 onClearPressed = viewModel::clearNameField,
                 label = { Text("Nombre") }
             )
-            //Habilidades que trabaja
-            allSkills.value.forEach {
-                Text(it.name) //TODO Tarjeta guapa
-            }
-            //Enlace
+            Text("Enlace al curso")
             FormTextField(
-                value = viewModel.linkField,
+                value = linkField.value,
                 onValueChange = viewModel::changeLinkField,
                 onClearPressed = viewModel::clearLinkField,
                 label = { Text("Enlace") }
             )
+            Text("Habilidades utilizadas")
+            allSkills.value.forEach { SkillCard(it) }
         }
 
+    }
+}
+
+@Composable
+private fun SkillCard(skillSelect: SkillSelect) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 5.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+    ) {
+        Row {
+            Text(
+                text = skillSelect.skill.name,
+                modifier = Modifier
+                    .padding(3.dp),
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
     }
 }
