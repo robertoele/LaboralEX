@@ -17,6 +17,9 @@ class NavigationManager {
     object UserSkills
 
     @Serializable
+    object CreateSkill
+
+    @Serializable
     object InsertCompaniesScreen
 
     @Serializable

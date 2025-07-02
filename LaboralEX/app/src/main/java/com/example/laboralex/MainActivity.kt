@@ -28,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.LoadingScreen
+import com.example.laboralex.ui.screens.CreateSkill
 import com.example.laboralex.ui.screens.CreateUser
 import com.example.laboralex.ui.screens.UserSkillsScreen
 import com.example.laboralex.ui.screens.company.CreateCompanyScreen
@@ -35,6 +36,7 @@ import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
+import com.example.laboralex.viewmodel.CreateSkillViewModel
 import com.example.laboralex.viewmodel.CreateUserViewModel
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import com.example.laboralex.viewmodel.MainScreenViewModel
@@ -75,6 +77,7 @@ class MainActivity : ComponentActivity() {
                 LaboralEXTheme {
                     val userViewModel = hiltViewModel<CreateUserViewModel>()
                     val userSkillsViewModel = hiltViewModel<UserSkillsViewModel>()
+                    val createSkillViewModel = hiltViewModel<CreateSkillViewModel>()
                     val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
                     val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
                     val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
@@ -187,7 +190,16 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                     }
-                                    UserSkillsScreen(userSkillsViewModel)
+                                    UserSkillsScreen(userSkillsViewModel) {
+                                        navController.navigate(NavigationManager.CreateSkill)
+                                    }
+                                }
+                                composable<NavigationManager.CreateSkill> {
+                                    CreateSkill(
+                                        viewModel = createSkillViewModel,
+                                        backNavigation = navController::popBackStack
+                                    )
+
                                 }
                                 composable<NavigationManager.CreateCompanyScreen> {
                                     CreateCompanyScreen(createCompanyViewModel) {

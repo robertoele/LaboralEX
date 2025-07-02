@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,23 +29,8 @@ import com.example.laboralex.viewmodel.UserSkillsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserSkillsScreen(viewModel: UserSkillsViewModel) {
+fun UserSkillsScreen(viewModel: UserSkillsViewModel, onCreatePressed: () -> Unit) {
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier
-                    .padding(vertical = 20.dp)
-                    .size(50.dp),
-                shape = CircleShape,
-                onClick = {
-                    //TODO Abrir pantalla de creación de habilidad
-                }
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Crear habilidad")
-            }
-        },
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
@@ -60,7 +43,18 @@ fun UserSkillsScreen(viewModel: UserSkillsViewModel) {
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineSmall
                     )
-                })
+                },
+                actions = {
+                    IconButton(onClick = onCreatePressed) {
+                        Icon(
+                            modifier = Modifier.size(25.dp),
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Crear habilidad",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+            )
         }) { innerPadding ->
         Column(
             modifier = Modifier
