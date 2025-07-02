@@ -17,7 +17,10 @@ class NavigationManager {
     object UserSkills
 
     @Serializable
-    object Experience
+    object CoursesScreen
+
+    @Serializable
+    object CreateCourseScreen
 
     @Serializable
     object CreateSkill

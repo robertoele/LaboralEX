@@ -33,6 +33,7 @@ import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.LoadingScreen
 import com.example.laboralex.ui.screens.CoursesScreen
+import com.example.laboralex.ui.screens.CreateCourse
 import com.example.laboralex.ui.screens.CreateSkill
 import com.example.laboralex.ui.screens.CreateUser
 import com.example.laboralex.ui.screens.UserSkillsScreen
@@ -42,6 +43,7 @@ import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
 import com.example.laboralex.viewmodel.CoursesViewModel
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
+import com.example.laboralex.viewmodel.CreateCourseViewModel
 import com.example.laboralex.viewmodel.CreateSkillViewModel
 import com.example.laboralex.viewmodel.CreateUserViewModel
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
@@ -87,6 +89,7 @@ class MainActivity : ComponentActivity() {
                     val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
                     val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
                     val courseViewModel = hiltViewModel<CoursesViewModel>()
+                    val createCourseViewModel = hiltViewModel<CreateCourseViewModel>()
                     val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
                     val navController = rememberNavController()
                     Scaffold(
@@ -159,8 +162,8 @@ class MainActivity : ComponentActivity() {
                                     NavigationBarItem(
                                         selected = experienceSelected,
                                         onClick = {
-                                            navController.navigate(NavigationManager.Experience) {
-                                                popUpTo<NavigationManager.Experience>()
+                                            navController.navigate(NavigationManager.CoursesScreen) {
+                                                popUpTo<NavigationManager.CoursesScreen>()
                                                 launchSingleTop = true
                                             }
                                             experienceSelected = true
@@ -229,15 +232,19 @@ class MainActivity : ComponentActivity() {
                                         viewModel = createSkillViewModel,
                                         backNavigation = navController::popBackStack
                                     )
-
                                 }
                                 composable<NavigationManager.CreateCompanyScreen> {
                                     CreateCompanyScreen(createCompanyViewModel) {
                                         navController.navigate(NavigationManager.InsertCompaniesScreen)
                                     }
                                 }
-                                composable<NavigationManager.Experience> {
-                                    CoursesScreen(courseViewModel)
+                                composable<NavigationManager.CoursesScreen> {
+                                    CoursesScreen(courseViewModel) {
+                                        navController.navigate(NavigationManager.CreateCourseScreen)
+                                    }
+                                }
+                                composable<NavigationManager.CreateCourseScreen> {
+                                    CreateCourse(createCourseViewModel)
                                 }
                                 composable<NavigationManager.InsertCompaniesScreen> {
                                     BackHandler {
