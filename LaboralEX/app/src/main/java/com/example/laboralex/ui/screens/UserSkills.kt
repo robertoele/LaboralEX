@@ -74,8 +74,7 @@ private fun SkillCard(skill: Skill) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 5.dp),
-        colors = CardDefaults.cardColors()
-            .copy(containerColor = MaterialTheme.colorScheme.primaryContainer)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(

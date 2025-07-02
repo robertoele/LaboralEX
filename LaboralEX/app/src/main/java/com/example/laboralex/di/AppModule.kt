@@ -49,7 +49,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesApplicationDao(db: AppDatabase) = db.ApplicationDao()
+    fun providesCourseDao(db: AppDatabase) = db.CourseDao()
 
     @Provides
     @Singleton

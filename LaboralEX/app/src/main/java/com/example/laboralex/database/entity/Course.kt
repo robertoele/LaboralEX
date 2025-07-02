@@ -1,11 +1,13 @@
 package com.example.laboralex.database.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Entity
 data class Course(
     @ColumnInfo("name") val name: String,
-    @ColumnInfo("reference") val reference: String,
-    @ColumnInfo("progress") val progress: Int,
+    @ColumnInfo("progress") val progress: Int = 0,
+    @ColumnInfo("reference") val reference: String? = null,
     @PrimaryKey(true) val id: Long = 0
 )

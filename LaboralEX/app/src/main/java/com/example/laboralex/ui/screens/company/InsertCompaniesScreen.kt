@@ -118,8 +118,7 @@ private fun CompanyCard(company: Company, skills: List<Skill>) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 5.dp),
-        colors = CardDefaults.cardColors()
-            .copy(containerColor = MaterialTheme.colorScheme.primaryContainer)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         Text(
             text = company.name,

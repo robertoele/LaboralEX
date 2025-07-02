@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
@@ -17,6 +18,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.LoadingScreen
+import com.example.laboralex.ui.screens.CoursesScreen
 import com.example.laboralex.ui.screens.CreateSkill
 import com.example.laboralex.ui.screens.CreateUser
 import com.example.laboralex.ui.screens.UserSkillsScreen
@@ -35,6 +40,7 @@ import com.example.laboralex.ui.screens.company.CreateCompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.MainScreen
 import com.example.laboralex.ui.theme.LaboralEXTheme
+import com.example.laboralex.viewmodel.CoursesViewModel
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
 import com.example.laboralex.viewmodel.CreateSkillViewModel
 import com.example.laboralex.viewmodel.CreateUserViewModel
@@ -42,7 +48,6 @@ import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 import com.example.laboralex.viewmodel.MainScreenViewModel
 import com.example.laboralex.viewmodel.UserSkillsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -51,10 +56,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val _homeSelected = MutableStateFlow(true)
-    private val _companiesSelected = MutableStateFlow(false)
-    private val _skillsSelected = MutableStateFlow(false)
 
     @Inject
     lateinit var appStateRepository: AppStateRepository
@@ -71,6 +72,11 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+            var homeSelected by remember { mutableStateOf(true) }
+            var companiesSelected by remember { mutableStateOf(false) }
+            var skillsSelected by remember { mutableStateOf(false) }
+            var experienceSelected by remember { mutableStateOf(false) }
+
             val appState by formMadeStateFlow.collectAsStateWithLifecycle()
             if (appState == null) LoadingScreen()
             else {
@@ -80,6 +86,7 @@ class MainActivity : ComponentActivity() {
                     val createSkillViewModel = hiltViewModel<CreateSkillViewModel>()
                     val insertCompaniesViewModel = hiltViewModel<InsertCompaniesViewModel>()
                     val createCompanyViewModel = hiltViewModel<CreateCompanyViewModel>()
+                    val courseViewModel = hiltViewModel<CoursesViewModel>()
                     val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
                     val navController = rememberNavController()
                     Scaffold(
@@ -90,15 +97,16 @@ class MainActivity : ComponentActivity() {
                                     contentColor = MaterialTheme.colorScheme.onSurface
                                 ) {
                                     NavigationBarItem(
-                                        selected = _homeSelected.collectAsStateWithLifecycle().value,
+                                        selected = homeSelected,
                                         onClick = {
                                             navController.navigate(NavigationManager.MainScreen) {
                                                 popUpTo<NavigationManager.MainScreen>()
                                                 launchSingleTop = true
                                             }
-                                            _homeSelected.value = true
-                                            _companiesSelected.value = false
-                                            _skillsSelected.value = false
+                                            homeSelected = true
+                                            companiesSelected = false
+                                            skillsSelected = false
+                                            experienceSelected = false
                                         },
                                         label = { Text("Inicio") },
                                         icon = {
@@ -109,15 +117,16 @@ class MainActivity : ComponentActivity() {
                                         }
                                     )
                                     NavigationBarItem(
-                                        selected = _companiesSelected.collectAsStateWithLifecycle().value,
+                                        selected = companiesSelected,
                                         onClick = {
                                             navController.navigate(NavigationManager.InsertCompaniesScreen) {
                                                 popUpTo<NavigationManager.InsertCompaniesScreen>()
                                                 launchSingleTop = true
                                             }
-                                            _companiesSelected.value = true
-                                            _homeSelected.value = false
-                                            _skillsSelected.value = false
+                                            companiesSelected = true
+                                            homeSelected = false
+                                            skillsSelected = false
+                                            experienceSelected = false
                                         },
                                         label = { Text("Compañías") },
                                         icon = {
@@ -128,20 +137,41 @@ class MainActivity : ComponentActivity() {
                                         }
                                     )
                                     NavigationBarItem(
-                                        selected = _skillsSelected.collectAsStateWithLifecycle().value,
+                                        selected = skillsSelected,
                                         onClick = {
                                             navController.navigate(NavigationManager.UserSkills) {
                                                 popUpTo<NavigationManager.UserSkills>()
                                                 launchSingleTop = true
                                             }
-                                            _skillsSelected.value = true
-                                            _homeSelected.value = false
-                                            _companiesSelected.value = false
+                                            skillsSelected = true
+                                            homeSelected = false
+                                            companiesSelected = false
+                                            experienceSelected = false
                                         },
                                         label = { Text("Habilidades") },
                                         icon = {
                                             Icon(
                                                 Icons.Default.Build,
+                                                contentDescription = null
+                                            )
+                                        }
+                                    )
+                                    NavigationBarItem(
+                                        selected = experienceSelected,
+                                        onClick = {
+                                            navController.navigate(NavigationManager.Experience) {
+                                                popUpTo<NavigationManager.Experience>()
+                                                launchSingleTop = true
+                                            }
+                                            experienceSelected = true
+                                            skillsSelected = false
+                                            homeSelected = false
+                                            companiesSelected = false
+                                        },
+                                        label = { Text("Experiencia") },
+                                        icon = {
+                                            Icon(
+                                                Icons.Default.Face,
                                                 contentDescription = null
                                             )
                                         }
@@ -205,6 +235,9 @@ class MainActivity : ComponentActivity() {
                                     CreateCompanyScreen(createCompanyViewModel) {
                                         navController.navigate(NavigationManager.InsertCompaniesScreen)
                                     }
+                                }
+                                composable<NavigationManager.Experience> {
+                                    CoursesScreen(courseViewModel)
                                 }
                                 composable<NavigationManager.InsertCompaniesScreen> {
                                     BackHandler {

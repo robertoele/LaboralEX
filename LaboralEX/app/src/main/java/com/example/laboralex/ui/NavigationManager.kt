@@ -17,6 +17,9 @@ class NavigationManager {
     object UserSkills
 
     @Serializable
+    object Experience
+
+    @Serializable
     object CreateSkill
 
     @Serializable
