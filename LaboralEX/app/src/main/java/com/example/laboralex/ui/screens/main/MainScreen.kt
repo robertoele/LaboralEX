@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.laboralex.database.entity.Company
+import com.example.laboralex.database.entity.company.Company
 import com.example.laboralex.viewmodel.MainScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

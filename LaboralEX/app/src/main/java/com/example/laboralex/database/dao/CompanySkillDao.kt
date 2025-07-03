@@ -3,7 +3,7 @@ package com.example.laboralex.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.laboralex.database.entity.CompanySkill
+import com.example.laboralex.database.entity.company.CompanySkill
 import kotlinx.coroutines.flow.Flow
 
 @Dao

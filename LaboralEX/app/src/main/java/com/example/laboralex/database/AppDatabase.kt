@@ -8,10 +8,10 @@ import com.example.laboralex.database.dao.CourseDao
 import com.example.laboralex.database.dao.CourseSkillDao
 import com.example.laboralex.database.dao.SkillDao
 import com.example.laboralex.database.dao.UserDao
-import com.example.laboralex.database.entity.Company
-import com.example.laboralex.database.entity.CompanySkill
 import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.database.entity.User
+import com.example.laboralex.database.entity.company.Company
+import com.example.laboralex.database.entity.company.CompanySkill
 import com.example.laboralex.database.entity.course.Course
 import com.example.laboralex.database.entity.course.CourseSkill
 

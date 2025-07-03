@@ -31,8 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.Skill
+import com.example.laboralex.database.entity.company.Company
+import com.example.laboralex.database.entity.company.CompanyWithSkills
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.viewmodel.InsertCompaniesViewModel
 
@@ -45,8 +46,6 @@ fun InsertCompaniesScreen(
     onCreatePressed: () -> Unit
 ) {
     val companiesAdded by insertCompaniesViewModel.companiesAddedFlow.collectAsStateWithLifecycle()
-    val companiesSkills by insertCompaniesViewModel.companySkillsFlow.collectAsStateWithLifecycle()
-    val allSkills by insertCompaniesViewModel.skillsFlow.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
             Column {
@@ -100,20 +99,14 @@ fun InsertCompaniesScreen(
                 .padding(innerPadding)
                 .padding(horizontal = 15.dp)
         ) {
-            companiesAdded.forEach { company ->
-                val companySkills = companiesSkills.filter { it.companyId == company.companyId }
-                val skills = allSkills.filter { skill ->
-                    skill.skillId in companySkills.map { it.skillId }
-                }
-                CompanyCard(company, skills)
-            }
+            companiesAdded.forEach { CompanyCard(it) }
         }
     }
 
 }
 
 @Composable
-private fun CompanyCard(company: Company, skills: List<Skill>) {
+private fun CompanyCard(company: CompanyWithSkills) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,12 +114,12 @@ private fun CompanyCard(company: Company, skills: List<Skill>) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         Text(
-            text = company.name,
+            text = company.company.name,
             modifier = Modifier.padding(3.dp),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )
-        ChipFlowRow(skills)
+        ChipFlowRow(company.skills)
     }
 }
 
@@ -134,14 +127,16 @@ private fun CompanyCard(company: Company, skills: List<Skill>) {
 @Composable
 private fun CompanyCardPreview() {
     CompanyCard(
-        Company(name = "Este"),
-        listOf(
-            Skill(name = "Jetpack Compose"),
-            Skill(name = "Kotlin"),
-            Skill(name = "Android"),
-            Skill(name = "Godot"),
-            Skill(name = "Unity"),
-            Skill(name = "Retrofit")
+        CompanyWithSkills(
+            Company("kjhaskjhaskd"),
+            listOf(
+                Skill(name = "Jetpack Compose"),
+                Skill(name = "Kotlin"),
+                Skill(name = "Android"),
+                Skill(name = "Godot"),
+                Skill(name = "Unity"),
+                Skill(name = "Retrofit")
+            )
         )
     )
 }

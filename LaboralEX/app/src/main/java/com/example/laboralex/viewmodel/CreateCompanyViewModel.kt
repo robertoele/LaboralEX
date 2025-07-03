@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CompanyDao
 import com.example.laboralex.database.dao.CompanySkillDao
 import com.example.laboralex.database.dao.SkillDao
-import com.example.laboralex.database.entity.Company
-import com.example.laboralex.database.entity.CompanySkill
 import com.example.laboralex.database.entity.Skill
+import com.example.laboralex.database.entity.company.Company
+import com.example.laboralex.database.entity.company.CompanySkill
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
