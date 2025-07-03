@@ -127,13 +127,6 @@ private fun SkillCard(skill: Skill) {
                     .padding(3.dp),
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
-            Text(
-                text = skill.id.toString(),
-                modifier = Modifier
-                    .padding(3.dp),
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-
         }
     }
 }

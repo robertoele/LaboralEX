@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -85,7 +86,7 @@ fun CreateCompanyScreen(
             )
         },
         floatingActionButton = {
-            Button(
+            ExtendedFloatingActionButton(
                 onClick = {
                     if (createCompanyViewModel.onContinuePressed()) {
                         onCompanyAdded()
