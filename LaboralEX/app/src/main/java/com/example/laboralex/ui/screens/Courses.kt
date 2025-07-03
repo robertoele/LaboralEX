@@ -56,7 +56,11 @@ fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
             )
         }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(10.dp)
+        ) {
             coursesList.value.forEach {
                 Text(it.name) //TODO Card de curso/experiencia
             }
