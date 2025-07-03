@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CourseDao {
     @Insert
-    fun insert(course: Course): Long
+    suspend fun insert(course: Course): Long
 
     @Delete
-    fun delete(course: Course)
+    suspend fun delete(course: Course)
 
     @Query("SELECT * FROM Course")
     fun getAsFlow(): Flow<List<Course>>

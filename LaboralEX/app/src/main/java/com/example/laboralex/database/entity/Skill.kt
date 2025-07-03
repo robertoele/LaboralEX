@@ -12,4 +12,6 @@ data class Skill(
     override fun toString(): String {
         return name
     }
+
+    fun notInDB() = id.compareTo(0) == 0
 }

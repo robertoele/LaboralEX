@@ -58,7 +58,8 @@ fun FormTextField(
         supportingText = {
             if (isError) Text(supportingText)
         },
-        colors = colors
+        colors = colors,
+        singleLine = true
     )
 
 }
