@@ -1,6 +1,5 @@
 package com.example.laboralex.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CourseDao
@@ -13,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,8 +38,13 @@ class CreateCourseViewModel @Inject constructor(
         emptyList()
     )
 
-    private val _addedSkills = MutableStateFlow(emptyList<Skill>())
-    val addedSkills = _addedSkills.asStateFlow()
+    private val _existingAddedSkills = MutableStateFlow(emptyList<Skill>())
+    private val _newAddedSkills = MutableStateFlow(emptyList<Skill>())
+
+    val displayedSkills =
+        _existingAddedSkills
+            .combine(_newAddedSkills) { existing, new -> existing + new }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     fun changeNameField(newValue: String) {
         _nameField.value = newValue
@@ -61,33 +66,36 @@ class CreateCourseViewModel @Inject constructor(
 
     fun addSkill() {
         val skill = Skill(_skillField.value)
-        val newList = _addedSkills.value.toMutableList()
-        newList.add(skill)
-        _addedSkills.value = newList
+        val skillInDB = _skillField.value in allSkills.value.map { it.name }
+        if (skillInDB) {
+            val newList = _existingAddedSkills.value + skill
+            _existingAddedSkills.value = newList
+        } else {
+            val newList = _newAddedSkills.value + skill
+            _newAddedSkills.value = newList
+        }
         _skillField.value = ""
     }
 
     fun addSkill(skill: Skill) {
-        val newList = _addedSkills.value.toMutableList()
+        val newList = _existingAddedSkills.value.toMutableList()
         newList.add(skill)
-        _addedSkills.value = newList
+        _existingAddedSkills.value = newList
     }
 
     fun addCourse() {
-        val newSkills = _addedSkills.value.filter { it.notInDB() }
         val course = Course(name = _nameField.value, reference = _linkField.value)
         viewModelScope.launch {
-            Log.i("Cors", newSkills.size.toString())
-            skillDao.insertAll(*newSkills.toTypedArray())
+            val newIds = skillDao.insertAll(*_newAddedSkills.value.toTypedArray())
             val courseId = courseDao.insert(course)
-            Log.i("Cors", _addedSkills.value.size.toString())
-            val courseSkills = _addedSkills.value.map { CourseSkill(courseId, it.skillId) }
-            Log.i("Cors", courseSkills.size.toString())
+            val courseSkills = _existingAddedSkills.value
+                .map { CourseSkill(courseId, it.skillId) } +
+                    newIds.map { CourseSkill(courseId, it) }
             courseSkillDao.insertAll(*courseSkills.toTypedArray())
             clearNameField()
             clearLinkField()
             clearSkillField()
-            _addedSkills.value = emptyList()
+            _existingAddedSkills.value = emptyList()
         }
     }
 }

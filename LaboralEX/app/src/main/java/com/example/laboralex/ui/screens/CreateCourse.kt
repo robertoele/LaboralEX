@@ -33,7 +33,7 @@ import com.example.laboralex.viewmodel.CreateCourseViewModel
 @Composable
 fun CreateCourse(viewModel: CreateCourseViewModel, onAddSelected: () -> Unit) {
     val allSkills = viewModel.allSkills.collectAsStateWithLifecycle()
-    val addedSkills = viewModel.addedSkills.collectAsStateWithLifecycle()
+    val addedSkills = viewModel.displayedSkills.collectAsStateWithLifecycle()
     val nameField = viewModel.nameField.collectAsStateWithLifecycle()
     val linkField = viewModel.linkField.collectAsStateWithLifecycle()
     val skillField = viewModel.skillField.collectAsStateWithLifecycle()
