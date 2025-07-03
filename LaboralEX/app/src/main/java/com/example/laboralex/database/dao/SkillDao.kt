@@ -14,7 +14,7 @@ interface SkillDao {
 
     @Insert
     suspend fun insert(skill: Skill): Long
-    
+
     @Delete
     suspend fun delete(skill: Skill)
 
@@ -24,6 +24,6 @@ interface SkillDao {
     @Query("SELECT * FROM Skill")
     fun getAllAsFlow(): Flow<List<Skill>>
 
-    @Query("SELECT * FROM Skill WHERE id = :id")
+    @Query("SELECT * FROM Skill WHERE skillId = :id")
     suspend fun getById(id: Long): List<Skill>
 }

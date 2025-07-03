@@ -1,5 +1,6 @@
 package com.example.laboralex.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CourseDao
@@ -76,14 +77,17 @@ class CreateCourseViewModel @Inject constructor(
         val newSkills = _addedSkills.value.filter { it.notInDB() }
         val course = Course(name = _nameField.value, reference = _linkField.value)
         viewModelScope.launch {
+            Log.i("Cors", newSkills.size.toString())
             skillDao.insertAll(*newSkills.toTypedArray())
             val courseId = courseDao.insert(course)
-            val courseSkills = _addedSkills.value.map { CourseSkill(courseId, it.id) }
+            Log.i("Cors", _addedSkills.value.size.toString())
+            val courseSkills = _addedSkills.value.map { CourseSkill(courseId, it.skillId) }
+            Log.i("Cors", courseSkills.size.toString())
             courseSkillDao.insertAll(*courseSkills.toTypedArray())
+            clearNameField()
+            clearLinkField()
+            clearSkillField()
+            _addedSkills.value = emptyList()
         }
-        clearNameField()
-        clearLinkField()
-        clearSkillField()
-        _addedSkills.value = emptyList()
     }
 }

@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey
 @Entity
 data class Skill(
     @ColumnInfo("name") val name: String,
-    @PrimaryKey(autoGenerate = true) val id: Long = 0
+    @PrimaryKey(autoGenerate = true) val skillId: Long = 0
 ) {
     override fun toString(): String {
         return name
     }
 
-    fun notInDB() = id.compareTo(0) == 0
+    fun notInDB() = skillId.compareTo(0) == 0
 }

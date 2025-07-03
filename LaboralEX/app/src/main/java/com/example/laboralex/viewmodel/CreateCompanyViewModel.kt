@@ -77,7 +77,7 @@ class CreateCompanyViewModel @Inject constructor(
                 .map { name -> Skill(name = name) }
 
         val existingSkills = skillsFlow.value.filter { it.name in companySkills }
-            .map { skill -> skill.id }
+            .map { skill -> skill.skillId }
 
         val skillsIds =
             skillDao.insertAll(*newSkills.toTypedArray()) + existingSkills

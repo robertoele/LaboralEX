@@ -101,9 +101,9 @@ fun InsertCompaniesScreen(
                 .padding(horizontal = 15.dp)
         ) {
             companiesAdded.forEach { company ->
-                val companySkills = companiesSkills.filter { it.companyId == company.id }
+                val companySkills = companiesSkills.filter { it.companyId == company.companyId }
                 val skills = allSkills.filter { skill ->
-                    skill.id in companySkills.map { it.skillId }
+                    skill.skillId in companySkills.map { it.skillId }
                 }
                 CompanyCard(company, skills)
             }

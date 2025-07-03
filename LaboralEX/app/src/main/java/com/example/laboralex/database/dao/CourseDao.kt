@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.laboralex.database.entity.Course
+import com.example.laboralex.database.entity.CourseWithSkills
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,4 +19,8 @@ interface CourseDao {
 
     @Query("SELECT * FROM Course")
     fun getAsFlow(): Flow<List<Course>>
+
+    @Transaction
+    @Query("SELECT * FROM Course")
+    fun getAllWithSkills(): Flow<List<CourseWithSkills>>
 }

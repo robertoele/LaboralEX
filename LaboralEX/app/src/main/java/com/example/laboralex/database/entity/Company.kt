@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 @Entity
 data class Company(
     @ColumnInfo("name") val name: String,
-    @PrimaryKey(autoGenerate = true) val id: Long = 0
+    @PrimaryKey(autoGenerate = true) val companyId: Long = 0
 )

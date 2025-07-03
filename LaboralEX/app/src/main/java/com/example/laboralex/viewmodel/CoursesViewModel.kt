@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class CoursesViewModel @Inject constructor(courseDao: CourseDao) : ViewModel() {
+class CoursesViewModel @Inject constructor(courseDao: CourseDao) :
+    ViewModel() {
     val courseList =
-        courseDao.getAsFlow().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-    
+        courseDao.getAllWithSkills()
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CourseSkillDao {
     @Insert
-    suspend fun insert(courseSkill: CourseSkill)
+    suspend fun insert(courseSkill: CourseSkill): Long
 
     @Insert
     suspend fun insertAll(vararg courseSkills: CourseSkill): List<Long>

@@ -1,11 +1,13 @@
 package com.example.laboralex.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -19,13 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.laboralex.database.entity.CourseWithSkills
+import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.viewmodel.CoursesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
     val coursesList = viewModel.courseList.collectAsStateWithLifecycle()
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -61,9 +64,17 @@ fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
                 .padding(innerPadding)
                 .padding(10.dp)
         ) {
-            coursesList.value.forEach {
-                Text(it.name) //TODO Card de curso/experiencia
-            }
+            coursesList.value.forEach { CourseCard(it) }
+        }
+    }
+}
+
+@Composable
+private fun CourseCard(course: CourseWithSkills) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column {
+            Text(course.course.name)
+            ChipFlowRow(course.skills)
         }
     }
 }

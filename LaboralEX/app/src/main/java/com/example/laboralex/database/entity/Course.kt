@@ -9,5 +9,5 @@ data class Course(
     @ColumnInfo("name") val name: String,
     @ColumnInfo("reference") val reference: String? = null,
     @ColumnInfo("finished") var finished: Boolean = false,
-    @PrimaryKey(true) val id: Long = 0
+    @PrimaryKey(true) val courseId: Long = 0
 )

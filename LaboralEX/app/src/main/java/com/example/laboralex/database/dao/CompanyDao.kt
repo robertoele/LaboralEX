@@ -22,12 +22,12 @@ interface CompanyDao {
     @Query("SELECT * FROM Company")
     suspend fun getAll(): List<Company>
 
-    @Query("SELECT * FROM Company WHERE id = :id")
+    @Query("SELECT * FROM Company WHERE companyId = :id")
     suspend fun getById(id: Long): Company
 
     @Query("SELECT * FROM Company")
     fun getCompaniesAsFlow(): Flow<List<Company>>
 
-    @Query("SELECT * FROM CompanySkill WHERE id = :id")
+    @Query("SELECT * FROM CompanySkill WHERE companyId = :id")
     fun getCompanySkills(id: Long): List<CompanySkill>
 }
