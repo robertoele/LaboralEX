@@ -1,4 +1,4 @@
-package com.example.laboralex.database.entity
+package com.example.laboralex.database.entity.course
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

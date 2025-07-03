@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.laboralex.database.entity.CourseWithSkills
+import com.example.laboralex.database.entity.course.CourseWithSkills
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.viewmodel.CoursesViewModel
 

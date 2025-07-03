@@ -10,10 +10,10 @@ import com.example.laboralex.database.dao.SkillDao
 import com.example.laboralex.database.dao.UserDao
 import com.example.laboralex.database.entity.Company
 import com.example.laboralex.database.entity.CompanySkill
-import com.example.laboralex.database.entity.Course
-import com.example.laboralex.database.entity.CourseSkill
 import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.database.entity.User
+import com.example.laboralex.database.entity.course.Course
+import com.example.laboralex.database.entity.course.CourseSkill
 
 @Database(
     entities = [Company::class, CompanySkill::class, Skill::class, User::class, Course::class, CourseSkill::class],

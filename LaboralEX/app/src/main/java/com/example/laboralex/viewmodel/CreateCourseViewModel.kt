@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.laboralex.database.dao.CourseDao
 import com.example.laboralex.database.dao.CourseSkillDao
 import com.example.laboralex.database.dao.SkillDao
-import com.example.laboralex.database.entity.Course
-import com.example.laboralex.database.entity.CourseSkill
 import com.example.laboralex.database.entity.Skill
+import com.example.laboralex.database.entity.course.Course
+import com.example.laboralex.database.entity.course.CourseSkill
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

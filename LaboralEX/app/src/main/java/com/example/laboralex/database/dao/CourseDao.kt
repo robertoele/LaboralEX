@@ -5,8 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.laboralex.database.entity.Course
-import com.example.laboralex.database.entity.CourseWithSkills
+import com.example.laboralex.database.entity.course.Course
+import com.example.laboralex.database.entity.course.CourseWithSkills
 import kotlinx.coroutines.flow.Flow
 
 @Dao
