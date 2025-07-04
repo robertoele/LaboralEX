@@ -73,11 +73,16 @@ fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
 @Composable
 private fun CourseCard(course: CourseWithSkills) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 5.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         Column {
-            Text(course.course.name)
+            Text(
+                course.course.name,
+                modifier = Modifier.padding(horizontal = 3.dp)
+            )
             ChipFlowRow(course.skills)
         }
     }
