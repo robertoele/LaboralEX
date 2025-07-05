@@ -40,7 +40,7 @@ import com.example.laboralex.ui.screens.UserSkillsScreen
 import com.example.laboralex.ui.screens.company.CreateCompanyScreen
 import com.example.laboralex.ui.screens.company.InsertCompaniesScreen
 import com.example.laboralex.ui.screens.main.MainScreen
-import com.example.laboralex.ui.theme.LaboralEXTheme
+import com.example.laboralex.ui.theme.AppTheme
 import com.example.laboralex.viewmodel.CoursesViewModel
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
 import com.example.laboralex.viewmodel.CreateCourseViewModel
@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
             val appState by formMadeStateFlow.collectAsStateWithLifecycle()
             if (appState == null) LoadingScreen()
             else {
-                LaboralEXTheme {
+                AppTheme {
                     val userViewModel = hiltViewModel<CreateUserViewModel>()
                     val userSkillsViewModel = hiltViewModel<UserSkillsViewModel>()
                     val createSkillViewModel = hiltViewModel<CreateSkillViewModel>()

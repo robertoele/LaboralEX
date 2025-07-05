@@ -13,12 +13,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -54,8 +57,8 @@ fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
                     )
                 },
                 colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                    containerColor = colorScheme.surfaceContainer,
+                    titleContentColor = colorScheme.onSurface
                 )
             )
         }
@@ -76,14 +79,26 @@ private fun CourseCard(course: CourseWithSkills) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 5.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+        colors = CardDefaults.cardColors(containerColor = colorScheme.primaryContainer)
     ) {
-        Column {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 course.course.name,
                 modifier = Modifier.padding(horizontal = 3.dp)
             )
             ChipFlowRow(course.skills)
+            val (ongoing, color) =
+                if (course.course.finished) Pair("¡Curso completado!", Color.Red)
+                else Pair("En curso", Color.Red)
+
+            Text(
+                ongoing,
+                fontWeight = FontWeight.Bold,
+                color = color,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(horizontal = 3.dp)
+            )
         }
     }
 }
