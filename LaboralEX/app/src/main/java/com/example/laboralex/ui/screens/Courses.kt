@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -70,6 +72,7 @@ fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(10.dp)
+                .verticalScroll(rememberScrollState()),
         ) {
             coursesList.value.forEach { CourseCard(it, viewModel) }
         }
@@ -90,6 +93,7 @@ private fun CourseCard(course: CourseWithSkills, viewModel: CoursesViewModel) {
                 modifier = Modifier.padding(horizontal = 3.dp),
                 color = colorScheme.onPrimaryContainer
             )
+            Text(course.course.reference ?: "", color = colorScheme.onPrimaryContainer)
             ChipFlowRow(course.skills)
             val (ongoing, color) =
                 if (course.course.finished) Pair("¡Curso completado!", extendedLight.success.color)
