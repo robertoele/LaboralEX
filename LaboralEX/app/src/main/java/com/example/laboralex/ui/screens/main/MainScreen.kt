@@ -19,13 +19,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.laboralex.database.entity.course.Course
+import com.example.laboralex.ui.screens.company.CompanyCard
 import com.example.laboralex.viewmodel.MainScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
     val users = viewModel.userFlow.collectAsStateWithLifecycle()
-    val unfinishedCourses = viewModel.unfinishedCoursesFlow.collectAsStateWithLifecycle()
+    val notFinishedCourses = viewModel.notFinishedCoursesFlow.collectAsStateWithLifecycle()
+    val sortedCompanies = viewModel.sortedCompaniesFlow.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -51,9 +53,10 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 .padding(innerPadding)
                 .padding(horizontal = 5.dp)
         ) {
-            if (unfinishedCourses.value.isNotEmpty()) {
+            sortedCompanies.value.forEach { CompanyCard(it) }
+            if (notFinishedCourses.value.isNotEmpty()) {
                 Text("¡Continúa estos cursos!")
-                unfinishedCourses.value.forEach { CourseCard(it) }
+                notFinishedCourses.value.forEach { CourseCard(it) }
             }
         }
     }
