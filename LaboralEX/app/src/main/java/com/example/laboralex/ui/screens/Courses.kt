@@ -1,6 +1,7 @@
 package com.example.laboralex.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +15,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -21,12 +23,13 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.laboralex.database.entity.course.CourseWithSkills
 import com.example.laboralex.ui.components.ChipFlowRow
+import com.example.laboralex.ui.theme.extendedLight
 import com.example.laboralex.viewmodel.CoursesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,8 +39,8 @@ fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                containerColor = colorScheme.secondaryContainer,
+                contentColor = colorScheme.onSecondaryContainer,
                 modifier = Modifier
                     .padding(vertical = 20.dp)
                     .size(50.dp),
@@ -68,13 +71,13 @@ fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
                 .padding(innerPadding)
                 .padding(10.dp)
         ) {
-            coursesList.value.forEach { CourseCard(it) }
+            coursesList.value.forEach { CourseCard(it, viewModel) }
         }
     }
 }
 
 @Composable
-private fun CourseCard(course: CourseWithSkills) {
+private fun CourseCard(course: CourseWithSkills, viewModel: CoursesViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -84,21 +87,28 @@ private fun CourseCard(course: CourseWithSkills) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 course.course.name,
-                modifier = Modifier.padding(horizontal = 3.dp)
+                modifier = Modifier.padding(horizontal = 3.dp),
+                color = colorScheme.onPrimaryContainer
             )
             ChipFlowRow(course.skills)
             val (ongoing, color) =
-                if (course.course.finished) Pair("¡Curso completado!", Color.Red)
-                else Pair("En curso", Color.Red)
+                if (course.course.finished) Pair("¡Curso completado!", extendedLight.success.color)
+                else Pair("En curso", colorScheme.onPrimaryContainer)
 
-            Text(
-                ongoing,
-                fontWeight = FontWeight.Bold,
-                color = color,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(horizontal = 3.dp)
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    ongoing,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.End,
+                    color = color,
+                    modifier = Modifier
+                        .padding(horizontal = 3.dp)
+                        .weight(1f)
+                )
+                RadioButton(course.course.finished, onClick = {
+                    viewModel.changeCourseFinished(course.course.copy(finished = !course.course.finished))
+                })
+            }
         }
     }
 }

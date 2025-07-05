@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.laboralex.database.entity.course.Course
 import com.example.laboralex.database.entity.course.CourseWithSkills
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,9 @@ interface CourseDao {
 
     @Delete
     suspend fun delete(course: Course)
+
+    @Update
+    suspend fun update(course: Course)
 
     @Query("SELECT * FROM Course")
     fun getAsFlow(): Flow<List<Course>>
