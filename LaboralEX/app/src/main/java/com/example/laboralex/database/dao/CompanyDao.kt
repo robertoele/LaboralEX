@@ -21,14 +21,14 @@ interface CompanyDao {
     @Delete
     suspend fun delete(company: Company)
 
-    @Query("SELECT * FROM Company")
-    suspend fun getAll(): List<Company>
-
     @Query("SELECT * FROM Company WHERE companyId = :id")
     suspend fun getById(id: Long): Company
 
     @Query("SELECT * FROM Company")
     fun getCompaniesAsFlow(): Flow<List<Company>>
+
+    /*TODO Mostrar todas las compañías, ordenadas por la cantidad de habilidades que coinciden
+    con las entrenadas en cursos terminados*/
 
     @Transaction
     @Query("SELECT * FROM Company")

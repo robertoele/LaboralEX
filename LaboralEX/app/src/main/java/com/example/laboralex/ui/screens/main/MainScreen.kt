@@ -41,7 +41,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                     Text(
                         text = "Hola, ${users.value.firstOrNull()?.firstName}",
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.headlineSmall
+                        style = typography.headlineSmall
                     )
                 }
             )
