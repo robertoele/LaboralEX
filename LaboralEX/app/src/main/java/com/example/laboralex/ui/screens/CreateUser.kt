@@ -80,7 +80,7 @@ private fun ContinueButton(userViewModel: CreateUserViewModel, onContinuePressed
             }
         }
     ) {
-        Text("Continuar")
+        Text(stringResource(R.string.continue_string))
     }
 }
 
@@ -116,7 +116,7 @@ private fun UserForm(modifier: Modifier = Modifier, userViewModel: CreateUserVie
                 .background(MaterialTheme.colorScheme.secondaryContainer)
         ) {
             Text(
-                "Datos personales",
+                stringResource(R.string.personal_data),
                 modifier = Modifier.padding(horizontal = 6.dp),
                 style = MaterialTheme.typography.titleMedium
             )
@@ -126,9 +126,9 @@ private fun UserForm(modifier: Modifier = Modifier, userViewModel: CreateUserVie
                 onValueChange = userViewModel::changeName,
                 onClearPressed = userViewModel::clearName,
                 interactionSource = nameInteractionSource,
-                label = { Text("Nombre") },
+                label = { Text(stringResource(R.string.name)) },
                 isError = requiredName.value,
-                supportingText = "Este campo es obligatorio"
+                supportingText = stringResource(R.string.mandatory_field)
             )
             Spacer(modifier = Modifier.height(3.dp))
 
@@ -138,9 +138,9 @@ private fun UserForm(modifier: Modifier = Modifier, userViewModel: CreateUserVie
                 onValueChange = userViewModel::changeSurnames,
                 onClearPressed = userViewModel::clearSurnames,
                 interactionSource = surnameInteractionSource,
-                label = { Text("Apellidos") },
+                label = { Text(stringResource(R.string.surname)) },
                 isError = requiredSurnames.value,
-                supportingText = "Este campo es obligatorio"
+                supportingText = stringResource(R.string.mandatory_field)
             )
         }
 
@@ -152,7 +152,7 @@ private fun UserForm(modifier: Modifier = Modifier, userViewModel: CreateUserVie
                 .background(MaterialTheme.colorScheme.secondaryContainer)
         ) {
             Text(
-                "Aptitudes",
+                stringResource(R.string.skills),
                 modifier = Modifier.padding(horizontal = 6.dp),
                 style = MaterialTheme.typography.titleMedium
             )
@@ -182,7 +182,7 @@ private fun QualitiesForm(viewModel: CreateUserViewModel, modifier: Modifier = M
         ChipFlowRow(viewModel.userSkills)
 
         if (viewModel.allSkills.isNotEmpty()) {
-            Text("Sugerencias")
+            Text(stringResource(R.string.suggestions))
             ChipFlowRow(viewModel.allSkills.map { it.name }) {
                 viewModel.userSkills.add(it)
             }

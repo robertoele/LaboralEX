@@ -16,9 +16,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.laboralex.R
 import com.example.laboralex.database.entity.course.Course
 import com.example.laboralex.ui.screens.company.CompanyCard
 import com.example.laboralex.viewmodel.MainScreenViewModel
@@ -39,7 +41,10 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 ),
                 title = {
                     Text(
-                        text = "Hola, ${users.value.firstOrNull()?.firstName}",
+                        text = stringResource(
+                            R.string.hello_string,
+                            users.value.firstOrNull()?.firstName ?: ""
+                        ),
                         fontWeight = FontWeight.Bold,
                         style = typography.headlineSmall
                     )
@@ -55,11 +60,11 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 .padding(horizontal = 5.dp)
         ) {
             Text(
-                "Empresas con las que coincide tu perfil", style = typography.titleMedium
+                stringResource(R.string.matching_companies), style = typography.titleMedium
             )
             sortedCompanies.value.forEach { CompanyCard(it) }
             if (notFinishedCourses.value.isNotEmpty()) {
-                Text("¡Continúa estos cursos!")
+                Text(stringResource(R.string.continue_courses))
                 notFinishedCourses.value.forEach { CourseCard(it) }
             }
         }

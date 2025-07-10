@@ -25,10 +25,12 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.laboralex.R
 import com.example.laboralex.database.entity.course.CourseWithSkills
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.theme.extendedLight
@@ -56,7 +58,7 @@ fun CoursesScreen(viewModel: CoursesViewModel, onCreatePressed: () -> Unit) {
             TopAppBar(
                 title = {
                     Text(
-                        "Cursos y experiencia laboral",
+                        stringResource(R.string.courses_title),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineSmall
                     )
@@ -96,8 +98,11 @@ private fun CourseCard(course: CourseWithSkills, viewModel: CoursesViewModel) {
             Text(course.course.reference ?: "", color = colorScheme.onPrimaryContainer)
             ChipFlowRow(course.skills)
             val (ongoing, color) =
-                if (course.course.finished) Pair("¡Curso completado!", extendedLight.success.color)
-                else Pair("En curso", colorScheme.onPrimaryContainer)
+                if (course.course.finished) Pair(
+                    stringResource(R.string.course_completed),
+                    extendedLight.success.color
+                )
+                else Pair(stringResource(R.string.ongoing), colorScheme.onPrimaryContainer)
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(

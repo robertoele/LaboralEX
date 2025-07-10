@@ -33,9 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.laboralex.R
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.FormTextField
 import com.example.laboralex.viewmodel.CreateCompanyViewModel
@@ -74,7 +76,7 @@ fun CreateCompanyScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Crear empresa",
+                        text = stringResource(R.string.create_company),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineSmall
                     )
@@ -93,7 +95,7 @@ fun CreateCompanyScreen(
                         createCompanyViewModel.onCompanyAdded()
                     }
                 }
-            ) { Text("Crear") }
+            ) { Text(stringResource(R.string.create)) }
         }
     ) { padding ->
         Column(
@@ -104,27 +106,27 @@ fun CreateCompanyScreen(
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.secondaryContainer)
         ) {
-            Text("Nombre")
+            Text(stringResource(R.string.name))
             FormTextField(
                 value = name.value,
                 onValueChange = createCompanyViewModel::changeName,
                 onClearPressed = createCompanyViewModel::clearName,
                 interactionSource = nameInteractionSource,
-                label = { Text("Nombre") },
+                label = { Text(stringResource(R.string.name)) },
                 isError = requiredName.value,
-                supportingText = "Este campo es obligatorio"
+                supportingText = stringResource(R.string.mandatory_field)
             )
             Spacer(modifier = Modifier.height(3.dp))
 
-            Text("Aptitudes que busca la empresa")
+            Text(stringResource(R.string.searching_skills))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 FormTextField(
                     value = skillName,
                     onValueChange = { skillName = it },
                     onClearPressed = { skillName = "" },
-                    placeHolder = { Text("Java, C#, Android, etc") },
+                    placeHolder = { Text(stringResource(R.string.skills_example)) },
                     isError = emptySkill.value,
-                    supportingText = "El campo está vacío",
+                    supportingText = stringResource(R.string.empty_field),
                     errorIcon = {
                         Icon(
                             Icons.Default.Warning,
@@ -147,7 +149,7 @@ fun CreateCompanyScreen(
             ChipFlowRow(createCompanyViewModel.companySkills)
 
             if (allSkills.value.isNotEmpty()) {
-                Text("Sugerencias")
+                Text(stringResource(R.string.suggestions))
                 ChipFlowRow(allSkills.value.map { it.name }) {
                     createCompanyViewModel.companySkills.add(it)
                 }

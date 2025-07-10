@@ -1,7 +1,33 @@
 <resources>
     <string name="app_name">LaboralEX</string>
+    <string name="continue_string">Continuar</string>
+    <string name="add">Añadir</string>
+    <string name="cancel">Cancelar</string>
+
     <string name="name">Nombre</string>
     <string name="surname">Apellidos</string>
     <string name="create_user_welcome">¡Cuéntanos algo de ti!"</string>
     <string name="description">Descripción</string>
+    <string name="matching_companies">Empresas con las que coincide tu perfil</string>
+    <string name="companies">Empresas</string>
+    <string name="continue_courses">¡Continúa estos cursos!</string>
+    <string name="personal_data">Datos personales</string>
+    <string name="mandatory_field">Este campo es obligatorio</string>
+    <string name="empty_field">El campo está vacío</string>
+    <string name="suggestions">Sugerencias</string>
+    <string name="add_course">Añadir curso</string>
+    <string name="course_link">Enlace al curso</string>
+    <string name="link">Enlace</string>
+    <string name="skills">Habilidades</string>
+    <string name="create">Crear</string>
+    <string name="searching_skills">Aptitudes que busca la empresa</string>
+    <string name="which_skill">¿Qué habilidad quieres añadir?</string>
+    <string name="skills_example" translatable="false">Java, C#, Android, etc</string>
+    <string name="create_company">Crear empresa</string>
+    <string name="courses_title">Cursos y experiencia laboral</string>
+    <string name="course_completed">¡Curso completado!</string>
+    <string name="ongoing">En curso</string>
+    <string name="create_skill">Crear habilidad</string>
+    <string name="finish">Finalizar</string>
+    <string name="hello_string">Hola, %1$s</string>
 </resources>

@@ -21,9 +21,11 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.laboralex.R
 import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.ui.components.ChipFlowRow
 import com.example.laboralex.ui.components.FormTextField
@@ -43,7 +45,7 @@ fun CreateCourse(viewModel: CreateCourseViewModel, url: String?, onAddSelected: 
             TopAppBar(
                 title = {
                     Text(
-                        "Añadir curso",
+                        stringResource(R.string.add_course),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineSmall
                     )
@@ -61,7 +63,7 @@ fun CreateCourse(viewModel: CreateCourseViewModel, url: String?, onAddSelected: 
                     onAddSelected()
                 }
             ) {
-                Text("Añadir")
+                Text(stringResource(R.string.add))
             }
         }
     ) { innerPadding ->
@@ -71,23 +73,23 @@ fun CreateCourse(viewModel: CreateCourseViewModel, url: String?, onAddSelected: 
                 .padding(innerPadding)
                 .padding(5.dp)
         ) {
-            Text("Nombre")
+            Text(stringResource(R.string.name))
             FormTextField(
                 modifier = Modifier.width(300.dp),
                 value = nameField.value,
                 onValueChange = viewModel::changeNameField,
                 onClearPressed = viewModel::clearNameField,
-                label = { Text("Nombre") }
+                label = { Text(stringResource(R.string.name)) }
             )
-            Text("Enlace al curso")
+            Text(stringResource(R.string.course_link))
             FormTextField(
                 modifier = Modifier.width(300.dp),
                 value = linkField.value,
                 onValueChange = viewModel::changeLinkField,
                 onClearPressed = viewModel::clearLinkField,
-                label = { Text("Enlace") }
+                label = { Text(stringResource(R.string.link)) }
             )
-            Text("Habilidades")
+            Text(stringResource(R.string.skills))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 FormTextField(
                     modifier = Modifier.width(300.dp),
@@ -103,7 +105,7 @@ fun CreateCourse(viewModel: CreateCourseViewModel, url: String?, onAddSelected: 
                     Icon(Icons.Default.Add, contentDescription = null)
                 }
             }
-            Text("Sugerencias")
+            Text(stringResource(R.string.suggestions))
             ChipFlowRow(allSkills.value, viewModel::addSkill)
 
             addedSkills.value.forEach { SkillCard(it) }

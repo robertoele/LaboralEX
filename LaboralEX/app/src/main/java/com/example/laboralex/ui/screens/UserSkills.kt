@@ -18,9 +18,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.laboralex.R
 import com.example.laboralex.database.entity.Skill
 import com.example.laboralex.viewmodel.UserSkillsViewModel
 
@@ -36,7 +38,7 @@ fun UserSkillsScreen(viewModel: UserSkillsViewModel, onCreatePressed: () -> Unit
                 ),
                 title = {
                     Text(
-                        "Habilidades",
+                        stringResource(R.string.skills),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineSmall
                     )
@@ -46,7 +48,7 @@ fun UserSkillsScreen(viewModel: UserSkillsViewModel, onCreatePressed: () -> Unit
                         Icon(
                             modifier = Modifier.size(25.dp),
                             imageVector = Icons.Default.Add,
-                            contentDescription = "Crear habilidad",
+                            contentDescription = stringResource(R.string.create_skill),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }

@@ -11,8 +11,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.laboralex.R
 import com.example.laboralex.viewmodel.CreateSkillViewModel
 
 @Composable
@@ -23,7 +25,7 @@ fun CreateSkill(viewModel: CreateSkillViewModel, backNavigation: () -> Unit) {
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("¿Qué habilidad quieres añadir?")
+            Text(stringResource(R.string.which_skill))
             TextField(value = skillField.value, onValueChange = viewModel::changeSkillField)
             Row {
                 Button(
@@ -31,17 +33,18 @@ fun CreateSkill(viewModel: CreateSkillViewModel, backNavigation: () -> Unit) {
                         .padding(3.dp),
                     onClick = backNavigation
                 ) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.cancel))
                 }
-                Button(modifier = Modifier
-                    .padding(3.dp),
+                Button(
+                    modifier = Modifier
+                        .padding(3.dp),
                     onClick = {
                         viewModel.addSkill()
                         viewModel.changeSkillField("")
                         backNavigation()
                     }
                 ) {
-                    Text("Añadir")
+                    Text(stringResource(R.string.add))
                 }
             }
         }
