@@ -1,5 +1,6 @@
 package com.example.laboralex
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -29,8 +30,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navDeepLink
-import androidx.navigation.toRoute
 import com.example.laboralex.database.AppStateRepository
 import com.example.laboralex.ui.NavigationManager
 import com.example.laboralex.ui.components.LoadingScreen
@@ -65,7 +64,6 @@ class MainActivity : ComponentActivity() {
     lateinit var appStateRepository: AppStateRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         val formMadeStateFlow: StateFlow<AppStateRepository.AppState?> =
             appStateRepository.formMadeFlow.stateIn(
@@ -73,6 +71,9 @@ class MainActivity : ComponentActivity() {
                 started = SharingStarted.WhileSubscribed(),
                 initialValue = null
             )
+        val courseURL =
+            if (intent?.type == "text/plain") intent.getStringExtra(Intent.EXTRA_TEXT)
+            else null
 
         enableEdgeToEdge()
         setContent {
@@ -213,7 +214,11 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                             }
-                            navigation<NavigationManager.AppRoot>(startDestination = NavigationManager.MainScreen) {
+                            navigation<NavigationManager.AppRoot>(
+                                startDestination =
+                                if (courseURL != null) NavigationManager.CreateCourseScreen
+                                else NavigationManager.MainScreen
+                            ) {
                                 composable<NavigationManager.MainScreen> {
                                     MainScreen(mainScreenViewModel)
                                 }
@@ -242,28 +247,11 @@ class MainActivity : ComponentActivity() {
                                 }
                                 composable<NavigationManager.CoursesScreen> {
                                     CoursesScreen(courseViewModel) {
-                                        navController.navigate(NavigationManager.CreateCourseScreen())
+                                        navController.navigate(NavigationManager.CreateCourseScreen)
                                     }
                                 }
-                                composable<NavigationManager.CreateCourseScreen>(
-                                    deepLinks = listOf(
-                                        navDeepLink<NavigationManager.CreateCourseScreen>(
-                                            basePath = "https://www.youtube.com"
-                                        ),
-                                        navDeepLink<NavigationManager.CreateCourseScreen>(
-                                            basePath = "https://youtube.com"
-                                        ),
-                                        navDeepLink<NavigationManager.CreateCourseScreen>(
-                                            basePath = "https://youtu.be"
-                                        ),
-                                        navDeepLink<NavigationManager.CreateCourseScreen>(
-                                            basePath = "https://www.youtu.be"
-                                        )
-                                    )
-                                ) {
-                                    val url =
-                                        it.toRoute<NavigationManager.CreateCourseScreen>().courseURL
-                                    CreateCourse(createCourseViewModel, url) {
+                                composable<NavigationManager.CreateCourseScreen> {
+                                    CreateCourse(createCourseViewModel, courseURL) {
                                         navController.popBackStack()
                                     }
                                 }

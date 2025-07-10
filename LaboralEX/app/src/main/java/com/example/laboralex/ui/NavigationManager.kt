@@ -20,7 +20,7 @@ class NavigationManager {
     data object CoursesScreen
 
     @Serializable
-    data class CreateCourseScreen(val courseURL: String? = "")
+    data object CreateCourseScreen
 
     @Serializable
     data object CreateSkill
