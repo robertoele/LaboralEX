@@ -31,7 +31,7 @@ import com.example.laboralex.viewmodel.CreateCourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateCourse(viewModel: CreateCourseViewModel, onAddSelected: () -> Unit) {
+fun CreateCourse(viewModel: CreateCourseViewModel, url: String?, onAddSelected: () -> Unit) {
     val allSkills = viewModel.allSkills.collectAsStateWithLifecycle()
     val addedSkills = viewModel.displayedSkills.collectAsStateWithLifecycle()
     val nameField = viewModel.nameField.collectAsStateWithLifecycle()
@@ -65,7 +65,7 @@ fun CreateCourse(viewModel: CreateCourseViewModel, onAddSelected: () -> Unit) {
             }
         }
     ) { innerPadding ->
-
+        url?.let { viewModel.changeLinkField(it) }
         Column(
             modifier = Modifier
                 .padding(innerPadding)

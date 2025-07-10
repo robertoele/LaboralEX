@@ -5,32 +5,32 @@ import kotlinx.serialization.Serializable
 class NavigationManager {
 
     @Serializable
-    object AppRoot
+    data object AppRoot
 
     @Serializable
-    object MainScreen
+    data object MainScreen
 
     @Serializable
-    object CreateUserScreen
+    data object CreateUserScreen
 
     @Serializable
-    object UserSkills
+    data object UserSkills
 
     @Serializable
-    object CoursesScreen
+    data object CoursesScreen
 
     @Serializable
-    object CreateCourseScreen
+    data class CreateCourseScreen(val courseURL: String? = "")
 
     @Serializable
-    object CreateSkill
+    data object CreateSkill
 
     @Serializable
-    object InsertCompaniesScreen
+    data object InsertCompaniesScreen
 
     @Serializable
-    object InsertCompaniesScreenForm
+    data object InsertCompaniesScreenForm
 
     @Serializable
-    object CreateCompanyScreen
+    data object CreateCompanyScreen
 }
