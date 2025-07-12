@@ -30,4 +30,6 @@
     <string name="create_skill">Crear habilidad</string>
     <string name="finish">Finalizar</string>
     <string name="hello_string">Hola, %1$s</string>
+    <string name="experience">Experiencia</string>
+    <string name="home">Inicio</string>
 </resources>

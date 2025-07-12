@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -114,7 +115,7 @@ class MainActivity : ComponentActivity() {
                                             skillsSelected = false
                                             experienceSelected = false
                                         },
-                                        label = { Text("Inicio") },
+                                        label = { Text(stringResource(R.string.home)) },
                                         icon = {
                                             Icon(
                                                 Icons.Default.Home,
@@ -134,7 +135,7 @@ class MainActivity : ComponentActivity() {
                                             skillsSelected = false
                                             experienceSelected = false
                                         },
-                                        label = { Text("Compañías") },
+                                        label = { Text(stringResource(R.string.companies)) },
                                         icon = {
                                             Icon(
                                                 Icons.Default.Person,
@@ -154,7 +155,7 @@ class MainActivity : ComponentActivity() {
                                             companiesSelected = false
                                             experienceSelected = false
                                         },
-                                        label = { Text("Habilidades") },
+                                        label = { Text(stringResource(R.string.skills)) },
                                         icon = {
                                             Icon(
                                                 Icons.Default.Build,
@@ -174,7 +175,7 @@ class MainActivity : ComponentActivity() {
                                             homeSelected = false
                                             companiesSelected = false
                                         },
-                                        label = { Text("Experiencia") },
+                                        label = { Text(stringResource(R.string.experience)) },
                                         icon = {
                                             Icon(
                                                 Icons.Default.Face,
@@ -190,8 +191,8 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             modifier = Modifier.padding(padding),
                             startDestination =
-                            if (appState?.formMade == true) NavigationManager.AppRoot
-                            else NavigationManager.CreateUserScreen
+                                if (appState?.formMade == true) NavigationManager.AppRoot
+                                else NavigationManager.CreateUserScreen
                         ) {
                             composable<NavigationManager.CreateUserScreen> {
                                 CreateUser(userViewModel) {
@@ -216,8 +217,8 @@ class MainActivity : ComponentActivity() {
                             }
                             navigation<NavigationManager.AppRoot>(
                                 startDestination =
-                                if (courseURL != null) NavigationManager.CreateCourseScreen
-                                else NavigationManager.MainScreen
+                                    if (courseURL != null) NavigationManager.CreateCourseScreen
+                                    else NavigationManager.MainScreen
                             ) {
                                 composable<NavigationManager.MainScreen> {
                                     MainScreen(mainScreenViewModel)
